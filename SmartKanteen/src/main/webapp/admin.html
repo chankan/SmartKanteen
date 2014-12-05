@@ -1,0 +1,39 @@
+<!doctype html>
+<html ng-app="canteen">
+<head>
+<script src="js/angular.min.js"></script>
+<script src="js/angular-resource.min.js"></script>
+<script src="js/angular-route.min.js"></script>
+<script src="js/admin.js"></script>
+<!--     <link rel="stylesheet" href="bootstrap.css"> -->
+<link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css" media="screen" />
+</head>
+<body>
+	<table width="100%">
+		<tr>
+			<td>
+				<h2>Canteen Admin</h2>
+				<br/>
+<!-- 				<table border="0" ><tr class="well"><td >Menus &nbsp;&nbsp;&nbsp;&nbsp;</td><td class=""><a href="#new">Add Menu</a>&nbsp;&nbsp;</td><td class=""><a href="#/">Menu Master</a></td></tr></table> -->
+				<div ng-controller="MenuCtrl">
+					<ul class="nav">
+    <li class="active">
+        <a href="/">
+            <i class="icon-home icon-white"></i> Home
+        </a>
+    </li>
+
+</ul>
+				</div>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td><div ng-view></div></td>
+		</tr>
+	</table>
+
+
+</body>
+</html>

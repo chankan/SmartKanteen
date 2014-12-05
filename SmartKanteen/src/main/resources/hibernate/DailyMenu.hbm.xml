@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.mastek.topcoders.smartkanteen.bean.DailyMenu" table="DAILY_MENU" schema="PUBLIC" catalog="SMARTKANTEEN">
+        <id name="dailylMenuId" type="int">
+            <column name="DAILYLMENUID" />
+            <generator class="assigned" />
+        </id>
+        <!-- <property name="item" type="java.lang.Integer">
+            <column name="ITEM" />
+        </property> -->
+        <property name="menuDate" type="date">
+            <column name="MENUDATE" length="8" />
+        </property>
+        <many-to-one name="item" column="item" unique="true" class="com.mastek.topcoders.smartkanteen.bean.Menu"/>
+    </class>
+</hibernate-mapping>

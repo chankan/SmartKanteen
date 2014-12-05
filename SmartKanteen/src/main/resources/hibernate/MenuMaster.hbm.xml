@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.mastek.topcoders.smartkanteen.bean.Menu" table="MENU_MASTER" schema="PUBLIC" catalog="SMARTKANTEEN">
+        <id name="itemId" type="int">
+            <column name="ITEMID" />
+            <generator class="assigned" />
+        </id>
+        <property name="itemName" type="string">
+            <column name="ITEMNAME" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="price" type="big_decimal">
+            <column name="PRICE" precision="10" />
+        </property>
+        <property name="prepTime" type="int">
+            <column name="PREPTIME" precision="3" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>
