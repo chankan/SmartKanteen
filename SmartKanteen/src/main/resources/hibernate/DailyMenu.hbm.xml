@@ -5,15 +5,12 @@
 <hibernate-mapping>
     <class name="com.mastek.topcoders.smartkanteen.bean.DailyMenu" table="DAILY_MENU" schema="PUBLIC" catalog="SMARTKANTEEN">
         <id name="dailylMenuId" type="int">
-            <column name="DAILYLMENUID" />
+            <column name="daily_menu_id" />
             <generator class="assigned" />
         </id>
-        <!-- <property name="item" type="java.lang.Integer">
-            <column name="ITEM" />
-        </property> -->
-        <property name="menuDate" type="date">
-            <column name="MENUDATE" length="8" />
+       <property name="menuDate" type="date">
+            <column name="menu_date" length="8" />
         </property>
-        <many-to-one name="item" column="item" unique="true" class="com.mastek.topcoders.smartkanteen.bean.Menu"/>
+       <!--  <many-to-one name="menuItems" column="item" unique="true" class="com.mastek.topcoders.smartkanteen.bean.Menu"/> -->
     </class>
 </hibernate-mapping>

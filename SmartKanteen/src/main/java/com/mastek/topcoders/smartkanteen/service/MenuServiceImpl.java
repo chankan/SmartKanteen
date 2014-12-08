@@ -24,6 +24,7 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 		return dao.getMenuMaster(catererId);
 	}
+	
 
 	public Integer addItemInMenuMaster(Menu menuMaster)
 	{
@@ -88,15 +89,53 @@ public class MenuServiceImpl implements MenuService
 
 	public Caterer getCaterer(Integer catererId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		 MenuDAO dao=new MenuDAO();
+		  Caterer caterer = dao.getCaterer(catererId);
+		 return caterer;
 	}
 
 	public List<Caterer> getCaterers()
 	{
-		// TODO Auto-generated method stub
-		return null;
+	  MenuDAO  dao=new MenuDAO();
+	  List<Caterer> catererList=  dao.getCaterers();
+      return catererList;
 	}
+	
+	public  Integer addCaterer(Caterer caterer) {
+     MenuDAO dao=new MenuDAO();
+     Integer result = dao.addCaterer(caterer);
+	 return result;
+	}
+	
+	public  boolean updateCaterer(Integer catererId,String catererName) {
+    
+		boolean result=false;
+		
+		if(catererId==0 && catererId==null)
+		{
+			System.out.println("CatererId not found");
+		}
+		 MenuDAO dao=new MenuDAO();
+	     Caterer caterer = dao.getCaterer(catererId); 
+		 
+		if(caterer!=null)
+		{
+				if(catererName!=null)
+				{
+					caterer.setCatererName(catererName);
+				} 		
+		   result =  dao.updateCaterer(caterer);
+		}
+	return result;	
+	}
+	
+	public  boolean deleteCaterer(Integer catererId) {
+     
+		MenuDAO dao=new MenuDAO();
+        boolean result= dao.deleteCaterer(catererId);
+	    return result;
+	}
+	
 
 	public DailyMenu getDailyMenu(Date menuDate, Integer catererId)
 	{
@@ -110,12 +149,17 @@ public class MenuServiceImpl implements MenuService
 		{
 			MenuServiceImpl service = new MenuServiceImpl();
 
-			System.out.println("Menu List");
+			/*System.out.println("Menu List");
 
 			service.deleteAllItems();
-			System.out.println(service.getMenuMaster());
-
-			Menu menuMaster = new Menu();
+*/		    /*List<Menu>  menuList= service.getMenuMaster();
+           
+            for(Menu menu :menuList)
+            {
+            	System.out.println(menu.getItemName());
+            }*/
+            
+            /*Menu menuMaster = new Menu();
 			menuMaster.setItemId(26);
 			menuMaster.setItemName("Thai Rice");
 			menuMaster.setDescription("Chinese preparation");
@@ -134,10 +178,55 @@ public class MenuServiceImpl implements MenuService
 			service.deleteItemFromMenuMaster(26);
 
 			System.out.println("After Deleting Item");
-			System.out.println(service.getMenuMaster());
-
+			System.out.println(service.getMenuMaster());*/
+			
+			
+			/*List<Caterer> catererList= service.getCaterers();
+			for(Caterer caterer:catererList)
+			{
+				System.out.println("Caterer Id  :=" +caterer.getCatererId());
+				System.out.println("Caterer Name:=" +caterer.getCatererName());
+			    System.out.println("=========================================");
+			}*/
+            
+			/*Caterer caterer=new  Caterer();
+			 caterer.setCatererName("Vaibhav Caterer");
+			
+			 Integer result= service.addCaterer(caterer);
+			  if(result==1)
+			  {
+				  System.out.println("Inserted Successfully...");
+			  }
+			  else
+			  {
+				  System.out.println("Insertion Unsuccessfully...");
+			  }*/
+			
+			
 			// System.out.println(service.getMenuMasterByCaterer(1));
 
+			  
+			/*boolean result =service.updateCaterer(1,"royal caterers");
+			 if(result==true)
+			  {
+				  System.out.println("Updated  Successfully...");
+			  }
+			  else
+			  {
+				  System.out.println("Updation Unsuccessfully...");
+			  }*/
+			
+			 
+			 
+			/*boolean result =service.deleteCaterer(0);
+			 if(result==true)
+			  {
+				  System.out.println("Deleted   Successfully...");
+			  }
+			  else
+			  {
+				  System.out.println("Deletion Unsuccessfully...");
+			  }*/
 		}
 		catch (HibernateException e)
 		{

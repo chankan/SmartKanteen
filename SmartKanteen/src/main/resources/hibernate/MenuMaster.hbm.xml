@@ -3,22 +3,22 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.mastek.topcoders.smartkanteen.bean.Menu" table="MENU_MASTER" schema="PUBLIC" catalog="SMARTKANTEEN">
+    <class name="com.mastek.topcoders.smartkanteen.bean.Menu" table="MENU" schema="PUBLIC" catalog="SMARTKANTEEN">
         <id name="itemId" type="int">
-            <column name="ITEMID" />
+            <column name="item_id" />
             <generator class="assigned" />
         </id>
         <property name="itemName" type="string">
-            <column name="ITEMNAME" />
+            <column name="item_name" />
         </property>
         <property name="description" type="string">
-            <column name="DESCRIPTION" />
+            <column name="description" />
         </property>
         <property name="price" type="big_decimal">
-            <column name="PRICE" precision="10" />
+            <column name="price" precision="10" />
         </property>
         <property name="prepTime" type="int">
-            <column name="PREPTIME" precision="3" scale="0" />
+            <column name="prep_time" precision="3" scale="0" />
         </property>
     </class>
 </hibernate-mapping>

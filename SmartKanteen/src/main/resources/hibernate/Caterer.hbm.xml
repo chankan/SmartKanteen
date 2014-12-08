@@ -3,13 +3,13 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.mastek.topcoders.smartkanteen.bean.Caterer" table="CATERER" schema="PUBLIC" catalog="SMARTKANTEEN">
+    <class name="com.mastek.topcoders.smartkanteen.bean.Caterer" table="CATERER" schema="PUBLIC" catalog="SMARTKANTEEN" >
         <id name="catererId" type="int">
-            <column name="CATERERID" />
+            <column name="caterer_id" />
             <generator class="assigned" />
         </id>
         <property name="catererName" type="string">
-            <column name="CATERERNAME" />
+            <column name="caterer_name" />
         </property>
     </class>
 </hibernate-mapping>
