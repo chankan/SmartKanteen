@@ -107,7 +107,7 @@ public class MenuDAO
 
 		System.out.println("menuId" + menuId);
 		int result = query.executeUpdate();
-
+		session.update(menuMaster);
 		tx.commit();
 		DatabaseUtil.closeSession(session);
 	}

@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class DailyMenu implements java.io.Serializable
 {
-
 	private int catererId;
 	private Date menuDate;
 	private List<Menu> menuItems;

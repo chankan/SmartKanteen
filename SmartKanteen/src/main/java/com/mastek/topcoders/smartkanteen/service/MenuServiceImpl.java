@@ -35,49 +35,50 @@ public class MenuServiceImpl implements MenuService
 		dao.addItemInMenuMaster(menuMaster, caterer);
 		return null;
 	}
-	
-	/* Added by @vaibhav
-	 * testing Post Operation on RS
+
+	/*
+	 * Added by @vaibhav testing Post Operation on RS
 	 */
 	@Override
-	public void addItemMenuMaster(String itemName, String description,
-			BigDecimal price, Integer prepTime,Integer category) {
+	public void addItemMenuMaster(String itemName, String description, BigDecimal price, Integer prepTime,
+			Integer category)
+	{
 		// TODO Auto-generated method stub
 		MenuDAO dao = new MenuDAO();
-		//dao.addItemInMenuMaster(itemName,  description,
-			//	 price, prepTime,category);
-		
-		//MenuDAO dao = new MenuDAO();
-		
-		//Menu menuMaster = dao.getItem(itemId);
-		
-		Menu menuMaster =new Menu();
-		
-		if(itemName!=null)
+		// dao.addItemInMenuMaster(itemName, description,
+		// price, prepTime,category);
+
+		// MenuDAO dao = new MenuDAO();
+
+		// Menu menuMaster = dao.getItem(itemId);
+
+		Menu menuMaster = new Menu();
+
+		if (itemName != null)
 		{
 			menuMaster.setItemName(itemName);
 		}
-		
-		if(description!=null)
+
+		if (description != null)
 		{
 			menuMaster.setDescription(description);
 		}
-		
-		if(price!=null)
+
+		if (price != null)
 		{
 			menuMaster.setPrice(price);
 		}
-		
-		if(prepTime!=null)
+
+		if (prepTime != null)
 		{
 			menuMaster.setPrepTime(prepTime);
 		}
-		
-		if(category!=null)
+
+		if (category != null)
 		{
-			//menuMaster.se(prepTime);
+			// menuMaster.se(prepTime);
 		}
-		
+
 		dao.addItem(menuMaster);
 	}
 
@@ -158,13 +159,13 @@ public class MenuServiceImpl implements MenuService
 
 	public Boolean updateCaterer(Integer catererId, String catererName)
 	{
+
 		boolean result = false;
 
 		if (catererId == 0 || catererId == null)
 		{
 			System.out.println("CatererId not found");
 		}
-
 		MenuDAO dao = new MenuDAO();
 		Caterer caterer = dao.getCaterer(catererId);
 
@@ -176,14 +177,9 @@ public class MenuServiceImpl implements MenuService
 			}
 			result = dao.updateCaterer(caterer);
 		}
-		else
-		{
-			System.out.println("Caterer not found!!");
-		}
 		return result;
 	}
 
-	@Override
 	public Boolean deleteCaterer(Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -196,7 +192,7 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 		dao.deleteAllCaterers();
 	}
-	
+
 	public DailyMenu getDailyMenu(Date menuDate, Integer catererId)
 	{
 		// TODO Auto-generated method stub
