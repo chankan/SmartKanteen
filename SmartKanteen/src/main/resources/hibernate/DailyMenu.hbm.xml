@@ -3,14 +3,24 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.mastek.topcoders.smartkanteen.bean.DailyMenu" table="DAILY_MENU" schema="PUBLIC" catalog="SMARTKANTEEN">
-        <id name="dailylMenuId" type="int">
-            <column name="daily_menu_id" />
-            <generator class="assigned" />
-        </id>
-       <property name="menuDate" type="date">
-            <column name="menu_date" length="8" />
-        </property>
-       <!--  <many-to-one name="menuItems" column="item" unique="true" class="com.mastek.topcoders.smartkanteen.bean.Menu"/> -->
-    </class>
+	<class name="com.mastek.topcoders.smartkanteen.bean.DailyMenu"
+		table="DAILY_MENU" schema="PUBLIC" catalog="SMARTKANTEEN">
+		<id name="dailyMenuId" type="int">
+			<column name="daily_menu_id" />
+			<generator class="native" />
+		</id>
+		
+		<property name="menuDate" type="date">
+			<column name="menu_date" length="8" />
+		</property>
+		
+		<property name="catererId" type="int">
+			<column name="caterer_id" length="8" />
+		</property>
+		
+		<set name="dailyMenuMapping" cascade="all" lazy="false">
+			<key column="daily_menu_id" />
+			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping" />
+		</set>
+	</class>
 </hibernate-mapping>

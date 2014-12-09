@@ -193,9 +193,10 @@ public class MenuServiceImpl implements MenuService
 		dao.deleteAllCaterers();
 	}
 
-	public DailyMenu getDailyMenu(Date menuDate, Integer catererId)
+	public List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		MenuDAO dao=new MenuDAO();
+		List<DailyMenu>  dailyMenuList= dao.getDailyMenu(menuDate, catererId);
+		return dailyMenuList;
 	}
 }

@@ -1,5 +1,6 @@
 package com.mastek.topcoders.smartkanteen.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -7,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
+import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
 
@@ -147,8 +149,6 @@ public class MenuDAO
 		return result;
 	}
 
-	
-	
 	public boolean updateCaterer(Caterer caterer)
 	{
 
@@ -163,7 +163,6 @@ public class MenuDAO
 		}
 		return false;
 	}
-	
 
 	public boolean deleteCaterer(Integer catererId)
 	{
@@ -179,7 +178,7 @@ public class MenuDAO
 		}
 		return false;
 	}
-	
+
 	public void deleteAllCaterers()
 	{
 		Session session = DatabaseUtil.getSession();
@@ -188,8 +187,22 @@ public class MenuDAO
 
 		session.createQuery("DELETE FROM Caterer").executeUpdate();
 		tx.commit();
-		
+
 		DatabaseUtil.closeSession(session);
+	}
+
+	public List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId)
+	{
+		Session session = DatabaseUtil.getSession();
+	
+		Query query = session.createQuery("FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
+		query.setParameter("catererId", catererId);
+		query.setParameter("menuDate", menuDate);
+
+		List<DailyMenu> dailyMenuList = (List<DailyMenu>) query.list();
+		DatabaseUtil.closeSession(session);
+		
+		return dailyMenuList;
 	}
 
 }

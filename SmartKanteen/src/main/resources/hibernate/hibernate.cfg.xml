@@ -15,5 +15,7 @@
 		<mapping resource="hibernate/Caterer.hbm.xml"/>
 		<mapping resource="hibernate/DailyMenu.hbm.xml"/>
 		<mapping resource="hibernate/MenuMaster.hbm.xml"/>
+		<mapping resource="hibernate/DailyMenuMapping.hbm.xml"/>
+		
     </session-factory>
 </hibernate-configuration>

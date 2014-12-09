@@ -1,10 +1,13 @@
 package com.mastek.topcoders.smartkanteen.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
+import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 
 public class Test
@@ -13,14 +16,24 @@ public class Test
 	{
 		try
 		{
-			testingMenuTable();
+			//testingMenuTable();
 
-			testingCatererTable();
+			//testingCatererTable();
+
+			testingDailyMenu();
 		}
 		catch (HibernateException e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static void testingDailyMenu()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+		Date date = new Date();
+		List<DailyMenu> dailyMenuList = service.getDailyMenu(date, 1);
+		System.out.println(dailyMenuList);
 	}
 
 	public static void testingCatererTable()
