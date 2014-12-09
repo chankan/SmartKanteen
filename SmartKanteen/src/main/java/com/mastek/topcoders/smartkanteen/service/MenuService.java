@@ -14,18 +14,32 @@ public interface MenuService
 
 	List<Menu> getMenuMasterByCaterer(Integer catererId);
 
+	Integer addItemInMenuMaster(Menu menuMaster);
+	
 	Integer addItemInMenuMaster(Menu menuMaster, Caterer caterer);
 
+	/* Added by @vaibhav
+	 * testing Post Operation on RS
+	 */
+	void addItemMenuMaster(String itemName, String description, BigDecimal price,
+			Integer prepTime,Integer category);
+	
 	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
 			Integer prepTime);
-
+	
 	void deleteItemFromMenuMaster(Integer itemId);
 
-	void deleteAllItems();
+	void deleteAllItemsFromMenuMaster();
 	
 	Caterer getCaterer(Integer catererId);
 	
 	List<Caterer> getCaterers();
+	
+	Integer addCaterer(Caterer caterer);
+	
+	Boolean updateCaterer(Integer catererId, String catererName);
+	
+	Boolean deleteCaterer(Integer catererId);
 	
 	DailyMenu getDailyMenu(Date menuDate, Integer catererId);
 

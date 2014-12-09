@@ -30,7 +30,7 @@ public class MenuDAO
 	{
 		Session session = DatabaseUtil.getSession();
 
-		Query query = session.createQuery("FROM Menu WHERE itemID= :itemId");
+		Query query = session.createQuery("FROM Menu WHERE itemId= :itemId");
 		query.setParameter("itemId", itemId);
 
 		List<Menu> menuMasterList = (List<Menu>) query.list();
@@ -70,7 +70,7 @@ public class MenuDAO
 		DatabaseUtil.closeSession(session);
 	}
 
-	public void deleteAllItems()
+	public void deleteAllItemsFromMenuMaster()
 	{
 		Session session = DatabaseUtil.getSession();
 
@@ -98,8 +98,16 @@ public class MenuDAO
 
 		Transaction tx = session.beginTransaction();
 
+		Integer menuId = (Integer) addItem(menuMaster);
+
+		String sql = "INSERT INTO CATERER_MENU_MAPPING VALUES (:menuId, :catererId)";
+		Query query = session.createSQLQuery(sql);
+		query.setParameter("catererId", caterer.getCatererId());
+		query.setParameter("menuId", menuId);
+
+		System.out.println("menuId" + menuId);
+		int result = query.executeUpdate();
 		session.update(menuMaster);
-		// session.add()
 		tx.commit();
 		DatabaseUtil.closeSession(session);
 	}
@@ -170,6 +178,18 @@ public class MenuDAO
 			return true;
 		}
 		return false;
+	}
+	
+	public void deleteAllCaterers()
+	{
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+
+		session.createQuery("DELETE FROM Caterer").executeUpdate();
+		tx.commit();
+		
+		DatabaseUtil.closeSession(session);
 	}
 
 }
