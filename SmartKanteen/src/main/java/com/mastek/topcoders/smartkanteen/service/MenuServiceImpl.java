@@ -88,20 +88,102 @@ public class MenuServiceImpl implements MenuService
 
 	public Caterer getCaterer(Integer catererId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		 MenuDAO dao=new MenuDAO();
+		  Caterer caterer = dao.getCaterer(catererId);
+		 return caterer;
 	}
 
 	public List<Caterer> getCaterers()
 	{
-		// TODO Auto-generated method stub
-		return null;
+	  MenuDAO  dao=new MenuDAO();
+	  List<Caterer> catererList=  dao.getCaterers();
+      return catererList;
+	}
+	
+	public  Integer addCaterer(Caterer caterer) {
+     MenuDAO dao=new MenuDAO();
+     Integer result = dao.addCaterer(caterer);
+	 return result;
+	}
+	
+	public  boolean updateCaterer(Integer catererId,String catererName) {
+    
+		boolean result=false;
+		
+		if(catererId==0 && catererId==null)
+		{
+			System.out.println("CatererId not found");
+		}
+		 MenuDAO dao=new MenuDAO();
+	     Caterer caterer = dao.getCaterer(catererId); 
+		 
+		if(caterer!=null)
+		{
+				if(catererName!=null)
+				{
+					caterer.setCatererName(catererName);
+				} 		
+		   result =  dao.updateCaterer(caterer);
+		}
+	return result;	
+	}
+	
+	public  boolean deleteCaterer(Integer catererId) {
+     
+		MenuDAO dao=new MenuDAO();
+        boolean result= dao.deleteCaterer(catererId);
+	    return result;
 	}
 
 	public DailyMenu getDailyMenu(Date menuDate, Integer catererId)
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/* Added by @vaibhav
+	 * testing Post Operation on RS
+	 */
+	@Override
+	public void addItemMenuMaster(String itemName, String description,
+			BigDecimal price, Integer prepTime,Integer category) {
+		// TODO Auto-generated method stub
+		MenuDAO dao = new MenuDAO();
+		//dao.addItemInMenuMaster(itemName,  description,
+			//	 price, prepTime,category);
+		
+		//MenuDAO dao = new MenuDAO();
+		
+		//Menu menuMaster = dao.getItem(itemId);
+		
+		Menu menuMaster =new Menu();
+		
+		if(itemName!=null)
+		{
+			menuMaster.setItemName(itemName);
+		}
+		
+		if(description!=null)
+		{
+			menuMaster.setDescription(description);
+		}
+		
+		if(price!=null)
+		{
+			menuMaster.setPrice(price);
+		}
+		
+		if(prepTime!=null)
+		{
+			menuMaster.setPrepTime(prepTime);
+		}
+		
+		if(category!=null)
+		{
+			//menuMaster.se(prepTime);
+		}
+		
+		dao.addItem(menuMaster);
 	}
 	
 	public static void main(String[] args)
@@ -112,10 +194,10 @@ public class MenuServiceImpl implements MenuService
 
 			System.out.println("Menu List");
 
-			service.deleteAllItems();
+			//service.deleteAllItems();
 			System.out.println(service.getMenuMaster());
 
-			Menu menuMaster = new Menu();
+			/*Menu menuMaster = new Menu();
 			menuMaster.setItemId(26);
 			menuMaster.setItemName("Thai Rice");
 			menuMaster.setDescription("Chinese preparation");
@@ -134,7 +216,7 @@ public class MenuServiceImpl implements MenuService
 			service.deleteItemFromMenuMaster(26);
 
 			System.out.println("After Deleting Item");
-			System.out.println(service.getMenuMaster());
+			System.out.println(service.getMenuMaster());*/
 
 			// System.out.println(service.getMenuMasterByCaterer(1));
 
@@ -144,4 +226,7 @@ public class MenuServiceImpl implements MenuService
 			e.printStackTrace();
 		}
 	}
+
+	
+	
 }

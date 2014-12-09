@@ -9,7 +9,7 @@
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.mastek.topcoders.smartkanteen.service</param-value>
+			<param-value>com.mastek.topcoders.smartkanteen.rest</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
