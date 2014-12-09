@@ -5,11 +5,11 @@
 <hibernate-mapping>
     <class name="com.mastek.topcoders.smartkanteen.bean.Menu" table="MENU_MASTER" schema="PUBLIC" catalog="SMARTKANTEEN">
         <id name="itemId" type="int">
-            <column name="ITEMID" />
-            <generator class="assigned" />
+            <column name="ITEM_ID" />
+            <generator class="native" />
         </id>
         <property name="itemName" type="string">
-            <column name="ITEMNAME" />
+            <column name="ITEM_NAME" />
         </property>
         <property name="description" type="string">
             <column name="DESCRIPTION" />
@@ -18,7 +18,7 @@
             <column name="PRICE" precision="10" />
         </property>
         <property name="prepTime" type="int">
-            <column name="PREPTIME" precision="3" scale="0" />
+            <column name="PREP_TIME" precision="3" scale="0" />
         </property>
     </class>
 </hibernate-mapping>

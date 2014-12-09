@@ -5,11 +5,11 @@
 <hibernate-mapping>
     <class name="com.mastek.topcoders.smartkanteen.bean.Caterer" table="CATERER" schema="PUBLIC" catalog="SMARTKANTEEN">
         <id name="catererId" type="int">
-            <column name="CATERERID" />
+            <column name="CATERER_ID" />
             <generator class="assigned" />
         </id>
         <property name="catererName" type="string">
-            <column name="CATERERNAME" />
+            <column name="CATERER_NAME" />
         </property>
     </class>
 </hibernate-mapping>
