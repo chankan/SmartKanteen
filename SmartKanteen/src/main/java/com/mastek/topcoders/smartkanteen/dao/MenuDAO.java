@@ -30,7 +30,7 @@ public class MenuDAO
 	{
 		Session session = DatabaseUtil.getSession();
 
-		Query query = session.createQuery("FROM Menu WHERE itemID= :itemId");
+		Query query = session.createQuery("FROM Menu WHERE itemId= :itemId");
 		query.setParameter("itemId", itemId);
 
 		List<Menu> menuMasterList = (List<Menu>) query.list();
