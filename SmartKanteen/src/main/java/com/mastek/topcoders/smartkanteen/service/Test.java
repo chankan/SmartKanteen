@@ -19,11 +19,14 @@ public class Test
 	{
 		try
 		{
+			
+			
+			testingGetMenuMasterByCaterer(1);
 			// testingMenuTable();
 
 			// testingCatererTable();
 
-			testingDailyMenu();
+			//testingDailyMenu();
 
 			/*	boolean result=  testingDeleteCaterer(2);
 			    if(result==true)
@@ -53,6 +56,14 @@ public class Test
 		}
 	}
 
+	public static List<Menu>  testingGetMenuMasterByCaterer(Integer catererId)
+	{
+		MenuServiceImpl service=new MenuServiceImpl();
+		List<Menu> menuList= service.getMenuMasterByCaterer(catererId);
+		System.out.println(menuList);
+		return menuList;
+	}
+	
 	public static List<Menu> testingGetCatererByName(String catererName)
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
@@ -67,6 +78,9 @@ public class Test
 		return result;
 	}
 
+	
+	
+	
 	public static void testingDailyMenu()
 	{
 		/*testGetDailyMenu();

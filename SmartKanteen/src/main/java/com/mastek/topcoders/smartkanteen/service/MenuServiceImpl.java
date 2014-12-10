@@ -21,7 +21,8 @@ public class MenuServiceImpl implements MenuService
 	public List<Menu> getMenuMasterByCaterer(Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
-		return dao.getMenuMaster(catererId);
+		List<Menu> menuList= dao.getMenuMaster(catererId);
+		return   menuList;
 	}
 
 	public List<Menu> getMenuByName(String itemName)

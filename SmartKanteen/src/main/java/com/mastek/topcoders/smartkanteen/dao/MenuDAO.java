@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
+import com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
@@ -29,7 +30,26 @@ public class MenuDAO
 
 	public List<Menu> getMenuMaster(Integer catererId)
 	{
-		return null;
+		Session session= DatabaseUtil.getSession();
+		Query query = session.createQuery("FROM Caterer WHERE catererId= :catererID");
+		query.setParameter("catererID",catererId);
+		List<Caterer> catererList = (List<Caterer>) query.list();
+		
+		List<Menu> menuList = null;
+		
+		if(catererList!=null && catererList.size()==1)
+		{
+			Caterer caterer = catererList.get(0);
+			
+			menuList = new ArrayList<Menu>();
+			
+			for(CatererMenuMapping catererMenuMapping : caterer.getCatererMenuMapping())
+			{
+				menuList.add(catererMenuMapping.getMenu());
+			}
+		}
+
+		return menuList;
 	}
 
 	public List<Menu> getMenuByName(String itemName)
