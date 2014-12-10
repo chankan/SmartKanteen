@@ -1,14 +1,18 @@
 package com.mastek.topcoders.smartkanteen.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
+import com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
 
@@ -26,6 +30,15 @@ public class MenuDAO
 	public List<Menu> getMenuMaster(Integer catererId)
 	{
 		return null;
+	}
+
+	public List<Menu> getMenuByName(String itemName)
+	{
+		Session session = DatabaseUtil.getSession();
+		Criteria criteria = session.createCriteria(Menu.class);
+		criteria.add(Restrictions.like("itemName", "%" + itemName + "%"));
+		List<Menu> menuList = criteria.list();
+		return menuList;
 	}
 
 	public Menu getItem(Integer itemId)
@@ -194,15 +207,159 @@ public class MenuDAO
 	public List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId)
 	{
 		Session session = DatabaseUtil.getSession();
-	
-		Query query = session.createQuery("FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
-		query.setParameter("catererId", catererId);
-		query.setParameter("menuDate", menuDate);
+
+		String sqlString = " FROM DailyMenu ";
+
+		if (menuDate != null || catererId != null)
+		{
+			sqlString = sqlString + " WHERE ";
+
+			if (menuDate != null && catererId != null)
+			{
+				sqlString = sqlString + " catererId= :catererId AND menuDate= :menuDate ";
+			}
+			else if (menuDate != null)
+			{
+				sqlString = sqlString + " menuDate= :menuDate ";
+			}
+			else if (catererId != null)
+			{
+				sqlString = sqlString + " catererId= :catererId ";
+			}
+		}
+
+		Query query = session.createQuery(sqlString);
+
+		if (menuDate != null)
+		{
+			query.setParameter("menuDate", menuDate);
+		}
+		if (catererId != null)
+		{
+			query.setParameter("catererId", catererId);
+		}
 
 		List<DailyMenu> dailyMenuList = (List<DailyMenu>) query.list();
 		DatabaseUtil.closeSession(session);
-		
+
+		for (DailyMenu dailyMenu : dailyMenuList)
+		{
+			List<Menu> menuList = new ArrayList<Menu>();
+
+			for (DailyMenuMapping dailyMenuMapping : dailyMenu.getDailyMenuMapping())
+			{
+				Menu menu = dailyMenuMapping.getMenu();
+				menuList.add(menu);
+			}
+
+			dailyMenu.setMenuList(menuList);
+		}
+
 		return dailyMenuList;
 	}
 
+	public void addDailyMenuItem(DailyMenu dailyMenu)
+	{
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+
+		Query insertDailyMenuQuery = session
+				.createSQLQuery("INSERT INTO DAILY_MENU (CATERER_ID, MENU_DATE) VALUES (:catererId, :menuDate)");
+		insertDailyMenuQuery.setParameter("catererId", dailyMenu.getCatererId());
+		insertDailyMenuQuery.setParameter("menuDate", dailyMenu.getMenuDate());
+
+		insertDailyMenuQuery.executeUpdate();
+
+		Query selectDailyMenuQuery = session.createQuery("SELECT MAX(dailyMenuId) FROM DailyMenu");
+
+		List<Integer> dailyMenuList = (List<Integer>) selectDailyMenuQuery.list();
+
+		Integer dailyMenuId = null;
+
+		if (dailyMenuList != null && dailyMenuList.size() == 1)
+		{
+			dailyMenuId = dailyMenuList.get(0);
+		}
+
+		if (dailyMenuId != null)
+		{
+			List<Menu> menuList = dailyMenu.getMenuList();
+
+			for (Menu menu : menuList)
+			{
+				DailyMenuMapping dailyMenuMapping = new DailyMenuMapping();
+				dailyMenuMapping.setMenu(menu);
+				dailyMenuMapping.setDailyMenuId(dailyMenuId);
+
+				session.save(dailyMenuMapping);
+			}
+		}
+
+		tx.commit();
+
+		DatabaseUtil.closeSession(session);
+	}
+
+	public void updateDailyMenu(DailyMenu dailyMenu)
+	{
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+
+		Integer dailyMenuId = dailyMenu.getDailyMenuId();
+
+		if (dailyMenuId != null)
+		{
+			Query query = session.createQuery("DELETE FROM DailyMenuMapping WHERE dailyMenuId = :dailyMenuId ");
+			query.setParameter("dailyMenuId", dailyMenuId);
+
+			query.executeUpdate();
+
+			List<Menu> menuList = dailyMenu.getMenuList();
+
+			for (Menu menu : menuList)
+			{
+				DailyMenuMapping dailyMenuMapping = new DailyMenuMapping();
+				dailyMenuMapping.setMenu(menu);
+				dailyMenuMapping.setDailyMenuId(dailyMenuId);
+
+				session.saveOrUpdate(dailyMenuMapping);
+			}
+		}
+
+		tx.commit();
+
+		DatabaseUtil.closeSession(session);
+
+	}
+
+	public void appendDailyMenu(DailyMenu dailyMenu)
+	{
+
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+
+		Integer dailyMenuId = dailyMenu.getDailyMenuId();
+
+		if (dailyMenuId != null)
+		{
+			List<Menu> menuList = dailyMenu.getMenuList();
+
+			for (Menu menu : menuList)
+			{
+				DailyMenuMapping dailyMenuMapping = new DailyMenuMapping();
+				dailyMenuMapping.setMenu(menu);
+				dailyMenuMapping.setDailyMenuId(dailyMenuId);
+
+				session.saveOrUpdate(dailyMenuMapping);
+			}
+		}
+
+		tx.commit();
+
+		DatabaseUtil.closeSession(session);
+
+	}
 }

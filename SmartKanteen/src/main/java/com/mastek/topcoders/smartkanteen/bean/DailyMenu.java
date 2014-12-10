@@ -3,6 +3,7 @@ package com.mastek.topcoders.smartkanteen.bean;
 // Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,6 +15,7 @@ public class DailyMenu implements java.io.Serializable
 	private int catererId;
 	private Date menuDate;
 	private Set<DailyMenuMapping> dailyMenuMapping;
+	private List<Menu> menuList;
 
 	public int getDailyMenuId()
 	{
@@ -55,10 +57,20 @@ public class DailyMenu implements java.io.Serializable
 		this.dailyMenuMapping = dailyMenuMapping;
 	}
 
+	public List<Menu> getMenuList()
+	{
+		return menuList;
+	}
+
+	public void setMenuList(List<Menu> menuList)
+	{
+		this.menuList = menuList;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "DailyMenu [dailyMenuId=" + dailyMenuId + ", catererId=" + catererId + ", menuDate=" + menuDate
-				+ ", dailyMenuMapping=" + dailyMenuMapping + "]";
+				+ ", dailyMenuMapping=" + dailyMenuMapping + ", menuList=" + menuList + "]";
 	}
 }

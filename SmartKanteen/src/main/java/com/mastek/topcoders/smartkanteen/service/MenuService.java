@@ -13,13 +13,15 @@ public interface MenuService
 	List<Menu> getMenuMaster();
 
 	List<Menu> getMenuMasterByCaterer(Integer catererId);
+	
+	List<Menu> getMenuByName(String itemName);
 
 	Integer addItemInMenuMaster(Menu menuMaster);
 
-	Integer addItemInMenuMaster(Menu menuMaster, Caterer caterer);
+	void addItemInMenuMaster(Menu menuMaster, Caterer caterer);
 
-	/* Added by @vaibhav
-	 * testing Post Operation on RS
+	/*
+	 * Added by @vaibhav testing Post Operation on RS
 	 */
 	void addItemMenuMaster(String itemName, String description, BigDecimal price, Integer prepTime, Integer category);
 
@@ -41,4 +43,11 @@ public interface MenuService
 
 	List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId);
 
+	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
+
+	void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList);
+	
+	void appendDailyMenu(Integer dailyMenuId, Menu menu);
+
+	void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
 }

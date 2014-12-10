@@ -1,6 +1,7 @@
 package com.mastek.topcoders.smartkanteen.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +17,9 @@ public class Test
 	{
 		try
 		{
-			//testingMenuTable();
+			// testingMenuTable();
 
-			//testingCatererTable();
+			// testingCatererTable();
 
 			testingDailyMenu();
 		}
@@ -30,6 +31,80 @@ public class Test
 
 	public static void testingDailyMenu()
 	{
+		/*testGetDailyMenu();
+
+		testaddDailyMenu();
+		System.out.println("After Adding");
+		displayDailyMenu();
+
+		testupdateDailyMenu();
+		System.out.println("After Updating");
+		displayDailyMenu();*/
+
+		testappendDailyMenu();
+		System.out.println("After Appending");
+		displayDailyMenu();
+		
+		testappendDailyMenu2();
+		System.out.println("After Appending");
+		displayDailyMenu();
+	}
+
+	private static void testupdateDailyMenu()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Menu menu = new Menu();
+		menu.setItemId(6);
+		List<Menu> menuList = new ArrayList<Menu>();
+		menuList.add(menu);
+		service.updateDailyMenu(1, menuList);
+	}
+
+	private static void testappendDailyMenu()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Menu menu = new Menu();
+		menu.setItemId(5);
+		List<Menu> menuList = new ArrayList<Menu>();
+		menuList.add(menu);
+		service.appendDailyMenu(1, menu);
+	}
+
+	
+	private static void testappendDailyMenu2()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Menu menu = new Menu();
+		menu.setItemId(4);
+		List<Menu> menuList = new ArrayList<Menu>();
+		menuList.add(menu);
+		service.appendDailyMenu(1, menuList);
+	}
+	
+	private static void displayDailyMenu()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		List<DailyMenu> dailyMenuList = service.getDailyMenu(null, null);
+		System.out.println(dailyMenuList);
+	}
+
+	private static void testaddDailyMenu()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Menu menu = new Menu();
+		menu.setItemId(8);
+		List<Menu> menuList = new ArrayList<Menu>();
+		menuList.add(menu);
+		service.addDailyMenu(2, new Date(), menuList);
+	}
+
+	private static void testGetDailyMenu()
+	{
 		MenuServiceImpl service = new MenuServiceImpl();
 		Date date = new Date();
 		List<DailyMenu> dailyMenuList = service.getDailyMenu(date, 1);
@@ -38,17 +113,18 @@ public class Test
 
 	public static void testingCatererTable()
 	{
+
 		/*testDeleteAllCaterers();
 		System.out.println("Initial DB");
 		displayCaterers();
 
 		testAddCaterer();
 		System.out.println("After Adding Caterer");
-		displayCaterers();
+		displayCaterers();*/
 
 		testUpdateCaterer();
 		System.out.println("After Updating Caterer");
-		displayCaterers();*/
+		displayCaterers();
 
 		System.out.println("After Getting Caterer by ID");
 		testgetCatererById();

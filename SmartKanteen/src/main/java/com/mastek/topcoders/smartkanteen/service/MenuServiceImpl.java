@@ -1,6 +1,7 @@
 package com.mastek.topcoders.smartkanteen.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,17 +24,23 @@ public class MenuServiceImpl implements MenuService
 		return dao.getMenuMaster(catererId);
 	}
 
+	public List<Menu> getMenuByName(String itemName)
+	{
+		MenuDAO dao = new MenuDAO();
+		List<Menu> menuList = dao.getMenuByName(itemName);
+		return menuList;
+	}
+
 	public Integer addItemInMenuMaster(Menu menuMaster)
 	{
 		MenuDAO dao = new MenuDAO();
 		return dao.addItem(menuMaster);
 	}
 
-	public Integer addItemInMenuMaster(Menu menuMaster, Caterer caterer)
+	public void addItemInMenuMaster(Menu menuMaster, Caterer caterer)
 	{
 		MenuDAO dao = new MenuDAO();
 		dao.addItemInMenuMaster(menuMaster, caterer);
-		return null;
 	}
 
 	/*
@@ -195,8 +202,56 @@ public class MenuServiceImpl implements MenuService
 
 	public List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId)
 	{
-		MenuDAO dao=new MenuDAO();
-		List<DailyMenu>  dailyMenuList= dao.getDailyMenu(menuDate, catererId);
+		MenuDAO dao = new MenuDAO();
+		List<DailyMenu> dailyMenuList = dao.getDailyMenu(menuDate, catererId);
 		return dailyMenuList;
+	}
+
+	public void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menuList)
+	{
+		MenuDAO dao = new MenuDAO();
+
+		DailyMenu dailyMenu = new DailyMenu();
+		dailyMenu.setCatererId(catererId);
+		dailyMenu.setMenuDate(menuDate);
+		dailyMenu.setMenuList(menuList);
+
+		dao.addDailyMenuItem(dailyMenu);
+	}
+
+	public void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList)
+	{
+		MenuDAO dao = new MenuDAO();
+
+		DailyMenu dailyMenu = new DailyMenu();
+		dailyMenu.setDailyMenuId(dailyMenuId);
+		dailyMenu.setMenuList(menuList);
+
+		dao.updateDailyMenu(dailyMenu);
+	}
+	
+	public void appendDailyMenu(Integer dailyMenuId, Menu menu)
+	{
+		MenuDAO dao = new MenuDAO();
+
+		DailyMenu dailyMenu = new DailyMenu();
+		dailyMenu.setDailyMenuId(dailyMenuId);
+
+		List<Menu> menuList = new ArrayList<Menu>();
+		menuList.add(menu);
+		dailyMenu.setMenuList(menuList);
+
+		dao.appendDailyMenu(dailyMenu);
+	}
+
+	public void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList)
+	{
+		MenuDAO dao = new MenuDAO();
+
+		DailyMenu dailyMenu = new DailyMenu();
+		dailyMenu.setDailyMenuId(dailyMenuId);
+		dailyMenu.setMenuList(menuList);
+
+		dao.appendDailyMenu(dailyMenu);
 	}
 }
