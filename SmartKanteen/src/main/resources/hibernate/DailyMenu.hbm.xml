@@ -17,8 +17,8 @@
 		<property name="catererId" type="int">
 			<column name="caterer_id" length="8" />
 		</property>
-		
-		<set name="dailyMenuMapping" cascade="all" lazy="false">
+  
+      	<set name="dailyMenuMapping" cascade="all" lazy="false">
 			<key column="daily_menu_id" />
 			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping" />
 		</set>

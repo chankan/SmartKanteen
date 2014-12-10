@@ -1,6 +1,8 @@
-package com.mastek.topcoders.smartkanteen.service;
+package   com.mastek.topcoders.smartkanteen.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -16,23 +18,74 @@ public class Test
 	{
 		try
 		{
+			
+			
 			//testingMenuTable();
 
 			//testingCatererTable();
 
-			testingDailyMenu();
+		 	//testingDailyMenu();
+		      
+		/*	boolean result=  testingDeleteCaterer(2);
+		    if(result==true)
+		    {
+		      System.out.println("deleted successfully...");	
+		    }
+		    else
+		    {
+		    	System.out.println("deleted successfully...");
+		    }*/
+			
+			List<Menu> menu= testingGetCatererByName("Pav Bhaji");
+		    if(menu !=null && menu.size()>0)
+		  {
+		      	
+			  System.out.println("Found..." +menu.size());
+		  }
+		  else 
+		  {
+			  System.out.println("Not Found..."); 
+		  }
+		  
 		}
 		catch (HibernateException e)
 		{
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public static List<Menu> testingGetCatererByName(String catererName)
+	{
+		MenuServiceImpl  service= new MenuServiceImpl();
+	    List<Menu> menuList= service.getMenuByName(catererName);
+	    return menuList;
+	}
+	
+	public static Boolean  testingDeleteCaterer(Integer catererId)
+	{
+		MenuServiceImpl service= new MenuServiceImpl();
+		boolean result=  service.deleteCaterer(catererId);
+	    return result;
+	}
 
 	public static void testingDailyMenu()
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
-		Date date = new Date();
-		List<DailyMenu> dailyMenuList = service.getDailyMenu(date, 1);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String dateInString = "9-12-2014 0:0:0";
+		Date date=null;
+		try
+		{
+			date = sdf.parse(dateInString);
+		}
+		catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<DailyMenu> dailyMenuList = service.getDailyMenu(date, 2);
+		
 		System.out.println(dailyMenuList);
 	}
 

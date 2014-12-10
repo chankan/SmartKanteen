@@ -195,8 +195,16 @@ public class MenuServiceImpl implements MenuService
 
 	public List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId)
 	{
-		MenuDAO dao=new MenuDAO();
-		List<DailyMenu>  dailyMenuList= dao.getDailyMenu(menuDate, catererId);
+		MenuDAO dao = new MenuDAO();
+		List<DailyMenu> dailyMenuList = dao.getDailyMenu(menuDate, catererId);
 		return dailyMenuList;
+	}
+
+	@Override
+	public List<Menu> getMenuByName(String itemName)
+	{
+		MenuDAO dao = new MenuDAO();
+		List<Menu> menuList = dao.getMenuByName(itemName);
+		return menuList;
 	}
 }

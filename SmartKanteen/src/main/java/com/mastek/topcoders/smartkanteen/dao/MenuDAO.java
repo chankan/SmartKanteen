@@ -3,9 +3,11 @@ package com.mastek.topcoders.smartkanteen.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
@@ -194,15 +196,24 @@ public class MenuDAO
 	public List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId)
 	{
 		Session session = DatabaseUtil.getSession();
-	
-		Query query = session.createQuery("FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
+
+		Query query = session.createQuery("FROM DailyMenu WHERE caterer_id= :catererId AND menuDate= :menuDate");
 		query.setParameter("catererId", catererId);
 		query.setParameter("menuDate", menuDate);
 
 		List<DailyMenu> dailyMenuList = (List<DailyMenu>) query.list();
 		DatabaseUtil.closeSession(session);
-		
+
 		return dailyMenuList;
+	}
+
+	public List<Menu> getMenuByName(String itemName)
+	{
+		Session session = DatabaseUtil.getSession();
+		Criteria criteria = session.createCriteria(Menu.class);
+		criteria.add(Restrictions.like("itemName", "%" + itemName + "%"));
+		List<Menu> menuList = criteria.list();
+		return menuList;
 	}
 
 }

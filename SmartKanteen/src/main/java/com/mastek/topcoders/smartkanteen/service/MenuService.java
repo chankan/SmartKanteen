@@ -41,4 +41,5 @@ public interface MenuService
 
 	List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId);
 
+	List<Menu> getMenuByName(String itemName);
 }
