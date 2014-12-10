@@ -11,6 +11,7 @@ import java.util.Set;
  */
 public class DailyMenu implements java.io.Serializable
 {
+
 	private int dailyMenuId;
 	private int catererId;
 	private Date menuDate;
