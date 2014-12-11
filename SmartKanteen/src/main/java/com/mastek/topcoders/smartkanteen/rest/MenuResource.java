@@ -49,12 +49,12 @@ public class MenuResource implements IMenuResource {
 	@GET
 	@Produces  ({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Override
-	public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
+	public List<Menu> getDailyMenu(@PathParam("date")DateParam menuDate,
 			@PathParam("catererId")Integer catererId) {
 		// TODO Auto-generated method stub
 		System.out.println("in dailymenu");
 		MenuService menuService = new MenuServiceImpl();
-		List<DailyMenu> dailymenu;
+		List<Menu> dailymenu;
 		Date date=menuDate.getDate();
 		dailymenu = menuService.getDailyMenu(date, catererId);
 		return dailymenu;
@@ -206,47 +206,51 @@ public class MenuResource implements IMenuResource {
 	 *Adding Caterer using Caterer Object
 	 */
 
-//	@POST
-//	@Produces  ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-//	@Override 
-//	public Integer addCaterer(Caterer caterer) {
-//		// TODO Auto-generated method stub
-//
-//		MenuService menuService = new MenuServiceImpl();
-//		menuService.addCaterer(caterer);
-//		return null;
-//	}
+	
+	@POST
+	@Produces  ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override 
+	public Integer addCaterer(Caterer caterer) {
+		// TODO Auto-generated method stub
 
-//	@Override
-//	public void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu) {
-//		// TODO Auto-generated method stub
-//		MenuService menuService=new MenuServiceImpl();
-//		menuService.addDailyMenu(catererId, menuDate, menu);
-//	}
-//
-//	@Override
-//	public void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
-//		// TODO Auto-generated method stub
-//		MenuService menuService=new MenuServiceImpl();
-//		menuService.updateDailyMenu(dailyMenuId, menuList);
-//
-//	}
-//
-//	@Override
-//	public void appendDailyMenu(Integer dailyMenuId, Menu menu) {
-//		// TODO Auto-generated method stub
-//		MenuService menuService=new MenuServiceImpl();
-//		menuService.appendDailyMenu(dailyMenuId, menu);
-//
-//	}
-//
-//	@Override
-//	public void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
-//		// TODO Auto-generated method stub
-//		MenuService menuService=new MenuServiceImpl();
-//		menuService.appendDailyMenu(dailyMenuId, menuList);
-//
-//	}
+		MenuService menuService = new MenuServiceImpl();
+		menuService.addCaterer(caterer);
+		return null;
+	}
+
+	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override
+	public void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu) {
+		// TODO Auto-generated method stub
+		MenuService menuService=new MenuServiceImpl();
+		menuService.addDailyMenu(catererId, menuDate, menu);
+	}
+
+	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override
+	public void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
+		// TODO Auto-generated method stub
+		MenuService menuService=new MenuServiceImpl();
+		menuService.updateDailyMenu(dailyMenuId, menuList);
+
+	}
+	
+	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override
+	public void appendDailyMenu(Integer dailyMenuId, Menu menu) {
+		// TODO Auto-generated method stub
+		MenuService menuService=new MenuServiceImpl();
+		menuService.appendDailyMenu(dailyMenuId, menu);
+
+	}
+	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override
+public void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
+		// TODO Auto-generated method stub
+		MenuService menuService=new MenuServiceImpl();
+		menuService.appendDailyMenu(dailyMenuId, menuList);
+
+	}
 
 
 	/*public static void main(String[] args) {

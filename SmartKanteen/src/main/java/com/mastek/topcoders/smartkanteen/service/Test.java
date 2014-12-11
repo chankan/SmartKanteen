@@ -139,8 +139,8 @@ public class Test
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
-		List<DailyMenu> dailyMenuList = service.getDailyMenu(null, null);
-		System.out.println(dailyMenuList);
+	//	List<DailyMenu> dailyMenuList = service.getDailyMenu(null, null);
+	//	System.out.println(dailyMenuList);
 	}
 
 	private static void testaddDailyMenu()
@@ -169,9 +169,9 @@ public class Test
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		List<DailyMenu> dailyMenuList = service.getDailyMenu(date, 2);
+//		List<DailyMenu> dailyMenuList = service.getDailyMenu(date, 2);
 
-		System.out.println(dailyMenuList);
+	//	System.out.println(dailyMenuList);
 	}
 
 	public static void testingCatererTable()

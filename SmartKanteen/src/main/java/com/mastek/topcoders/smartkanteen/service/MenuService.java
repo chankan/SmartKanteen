@@ -40,9 +40,10 @@ public interface MenuService
 	Boolean updateCaterer(Integer catererId, String catererName);
 
 	Boolean deleteCaterer(Integer catererId);
-
-	List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId);
-
+	//ORIGINAL-CODE
+	//List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId);
+	List<Menu> getDailyMenu(Date menuDate, Integer catererId);
+	
 	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
 
 	void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList);

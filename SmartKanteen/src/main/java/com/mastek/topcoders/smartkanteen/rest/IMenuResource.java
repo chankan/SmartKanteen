@@ -23,7 +23,7 @@ public interface IMenuResource {
 	
 	@GET
 	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	List<DailyMenu> getDailyMenu(DateParam menuDate, Integer catererId);
+	List<Menu> getDailyMenu(DateParam menuDate, Integer catererId);
 	
 	@GET
 	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -52,25 +52,25 @@ public interface IMenuResource {
 	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
 			Integer prepTime);
 
-//	@POST
-//	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//	Integer addCaterer(Caterer caterer);
-//	
-//	@POST
-//	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
-//	
-//	@POST
-//	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//	void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList);
-//	
-//	@POST
-//	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//	void appendDailyMenu(Integer dailyMenuId, Menu menu);
-//
-//	@POST
-//	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//	void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	Integer addCaterer(Caterer caterer);
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList);
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void appendDailyMenu(Integer dailyMenuId, Menu menu);
+
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
 	
 	
 	/*
