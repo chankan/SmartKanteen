@@ -1,20 +1,15 @@
 package com.mastek.topcoders.smartkanteen.rest;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.MatrixParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
@@ -37,15 +32,14 @@ public class MenuResource implements IMenuResource {
 	@GET
 	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Override
-	
-public List<Menu> getMenuMaster() {
+	public List<Menu> getMenuMaster() {
 		// TODO Auto-generated method stub
 		List<Menu> menu;
 		MenuService menuService= new MenuServiceImpl();
 		menu= menuService.getMenuMaster();
 		return menu;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#getDailyMenu(com.mastek.topcoders.smartkanteen.rest.DateParam, java.lang.Integer)
@@ -55,8 +49,7 @@ public List<Menu> getMenuMaster() {
 	@GET
 	@Produces  ({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Override
-	
-public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
+	public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 			@PathParam("catererId")Integer catererId) {
 		// TODO Auto-generated method stub
 		System.out.println("in dailymenu");
@@ -68,6 +61,12 @@ public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 	}
 
 
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#getMenuMasterByCaterer(java.lang.Integer)
+	 * Ftetching Menu by CatererId
+	 */
 	@Path("/menu/caterer/{catererId}")
 	@GET
 	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
@@ -80,7 +79,7 @@ public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 		return menu;
 	}
 
-	 /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#getCaterers()
 	 *
 	 *Fetching All caterers
@@ -102,14 +101,14 @@ public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 
 		return caterer;
 	}
-	
 
-	 /* (non-Javadoc)
+
+	/* (non-Javadoc)
 	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#getCaterer(java.lang.Integer)
 	 *
 	 *Fetching Caterer using CatererID
 	 */
-	
+
 	@Path("/caterer/{catererId}")
 	@GET
 	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
@@ -122,7 +121,7 @@ public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 		return caterer;
 	}
 
-	 /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#addItemInMenuMaster(com.mastek.topcoders.smartkanteen.bean.Menu)
 	 *
 	 *Adding Menu using MenuMaster object
@@ -137,12 +136,12 @@ public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 		menuService.addItemInMenuMaster(menuMaster);
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#addItemMenuMaster(java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.Integer, java.lang.Integer)
 	 *
 	 *Adding Menu using Form Fields
-	  */ 
+	 */ 
 
 	@Path("/add")
 	@POST
@@ -173,8 +172,8 @@ public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 		}
 	}
 
-	
-	 /* (non-Javadoc)
+
+	/* (non-Javadoc)
 	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#updateItemInMenuMaster(java.lang.Integer, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.Integer)
 	 *
 	 *Updating Menu in Menu Master table
@@ -200,25 +199,65 @@ public List<DailyMenu> getDailyMenu(@PathParam("date")DateParam menuDate,
 		menuService.updateItemInMenuMaster(itemId, itemName, description, price, prepTime);
 
 	}
-	
-	 /* (non-Javadoc)
+
+	/* (non-Javadoc)
 	 * @see com.mastek.topcoders.smartkanteen.rest.IMenuResource#addCaterer(com.mastek.topcoders.smartkanteen.bean.Caterer)
 	 *
 	 *Adding Caterer using Caterer Object
 	 */
 
-	@POST
-	@Produces  ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-	@Override 
-	public Integer addCaterer(Caterer caterer) {
-		// TODO Auto-generated method stub
+//	@POST
+//	@Produces  ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+//	@Override 
+//	public Integer addCaterer(Caterer caterer) {
+//		// TODO Auto-generated method stub
+//
+//		MenuService menuService = new MenuServiceImpl();
+//		menuService.addCaterer(caterer);
+//		return null;
+//	}
 
-		MenuService menuService = new MenuServiceImpl();
-		menuService.addCaterer(caterer);
-		return null;
-	}
+//	@Override
+//	public void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu) {
+//		// TODO Auto-generated method stub
+//		MenuService menuService=new MenuServiceImpl();
+//		menuService.addDailyMenu(catererId, menuDate, menu);
+//	}
+//
+//	@Override
+//	public void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
+//		// TODO Auto-generated method stub
+//		MenuService menuService=new MenuServiceImpl();
+//		menuService.updateDailyMenu(dailyMenuId, menuList);
+//
+//	}
+//
+//	@Override
+//	public void appendDailyMenu(Integer dailyMenuId, Menu menu) {
+//		// TODO Auto-generated method stub
+//		MenuService menuService=new MenuServiceImpl();
+//		menuService.appendDailyMenu(dailyMenuId, menu);
+//
+//	}
+//
+//	@Override
+//	public void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
+//		// TODO Auto-generated method stub
+//		MenuService menuService=new MenuServiceImpl();
+//		menuService.appendDailyMenu(dailyMenuId, menuList);
+//
+//	}
 
 
-	
+	/*public static void main(String[] args) {
+		MenuResource resource= new MenuResource();
+		Menu menu= new Menu();
+		menu.setItemName("testAdd");
+		menu.setDescription("testDesc");
+		menu.setPrepTime(10);
+		menu.setPrice(new BigDecimal(20.0));
+		
+		resource.addItemInMenuMaster(menu);
+	}*/
 
 }
