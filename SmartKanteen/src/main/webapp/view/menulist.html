@@ -1,0 +1,33 @@
+<div class="container">
+<!-- <div class="row"> -->
+<!-- 	<input type="text" ng-model="search" class="search-query" placeholder="Search"> -->
+<!-- </div> -->
+	<div class="row">
+		<div ng-repeat="menu in menudata.menu| filter:search | orderBy:'name'">
+			<div class="col-lg-3 col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-3">
+								<i class="huge glyphicon glyphicon-glass"></i>
+							</div>
+							<div class="col-xs-9 text-right">
+								<div class="larg"><b>{{menu.itemName}} </b></div>
+								<div>Rs.:{{menu.price}}</div>
+								<div>Prep Time: {{menu.prepTime}}</div>
+							</div>
+						</div>
+					</div>
+					<a href="#">
+						<div class="panel-footer">
+							<span class="pull-left">Order:</span> <span class="pull-right">
+								<i class="glyphicon glyphicon-shopping-cart"></i>
+							</span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

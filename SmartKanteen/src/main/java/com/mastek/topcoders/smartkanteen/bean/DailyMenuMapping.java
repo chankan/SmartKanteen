@@ -1,5 +1,8 @@
 package com.mastek.topcoders.smartkanteen.bean;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DailyMenuMapping
 {
 	private int dailyMenuMappingId;

@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 // Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1
 
 /**

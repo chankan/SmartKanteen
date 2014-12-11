@@ -1,0 +1,114 @@
+<!doctype html>
+<html ng-app="todoApp">
+
+<script
+	src="js/angular.js"></script>
+<script src="js/menu.js"></script>
+<link rel="stylesheet" href="css/menu.css">
+    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"
+        media="screen" />
+</head>
+<body>
+	<div ng-controller="MenuController">
+	<h2>Canteen Menu</h2>
+<!-- 		<span>{{remaining()}} of {{todos.length}} remaining</span> [ <a -->
+<!-- 			href="" ng-click="archive()">archive</a> ] -->
+<!-- 		<ul class="unstyled"> -->
+<!-- 			<li ng-repeat="menu in menus"> -->
+<!-- 				 <span class="done-{{menu.done}}">{{menu.ItemName}} ::: {{menu.Price}}</span> -->
+<!-- 			</li> -->
+<!-- 		</ul> -->
+<!-- 		<form ng-submit="addMenu()"> -->
+<!-- 			<input type="text" ng-model="todoText" size="30" placeholder="add new todo here"> -->
+<!-- 				 <input class="btn-primary" -->
+<!-- 				type="submit" value="add"> -->
+<!-- 		</form> -->
+		
+		<div class="container-fluid">
+<div class="row">
+
+	<div class="col-md-12 "> 
+				<table class="table table-bordered" style="width:100%">	
+				<thead class="">
+				  <tr >
+				  <th style="width:20%"> Id </th>
+				  <th style="width:20%"> Name </th>
+				  <th style="width:20%"> Description </th>
+				  <th style="width:20%"> Price </th>
+				  <th style="width:10%"> Preparation time </th>
+				  <th style="width:10%"> Remove</th>
+				  </tr>
+				</thead>
+				 <tbody id="">
+                 	<tr ng-repeat="menu in menus">
+                 		<td>{{menu.ItemID}}</td>
+                 		<td>{{menu.ItemName}}</td>
+                 		<td>{{menu.Description}}</td>
+                 		<td>{{menu.Price}}</td>
+                 		<td>{{menu.PrepTime}}</td>
+                 		<td><a href="" ng-click="remove($index)">remove</a></td>
+                 	</tr>
+				</tbody>			 				  
+				</table> 
+				</div>
+				</div>
+				</div>
+	
+<form role="form" ng-submit="addMenu()">
+
+		<div class="well form-group">
+		<div class="row">
+		<div class="col-md-6">
+			<h3 class="text-center">Add/Update Menu</h3>
+			<div class="row">
+				<div class="col-md-5">
+				 <label>Name</label>
+				</div>
+				<div class="col-md-7">
+				 <input type="text" ng-model="cMenu.ItemName" class="form-control" id ="name">
+				</div>
+			</div>
+							
+							
+			<div class="row margin-top-10">
+				<div class="col-md-5">
+				<label>Description</label>
+				</div>
+				<div class="col-md-7">
+					 <textarea rows="3" ng-model="cMenu.Description"  class="form-control"  cols="22" id ="desc"></textarea>
+				</div>
+			</div>
+							
+			<div class="row margin-top-10">
+				<div class="col-md-5">
+				 <label>Price</label>
+				</div>
+				<div class="col-md-7">
+				 <input type="text"  ng-model="cMenu.Price"  class="form-control" id="price">
+				</div>
+			</div>
+						
+			<div class="row margin-top-10">
+			
+				<div class="col-md-5">
+				 <label>Preparation Time</label>
+				</div>
+				<div class="col-md-7">
+				 <input type="text" class="form-control"  ng-model="cMenu.PrepTime" id="prepTime">
+				</div>
+			</div>
+			<div class="row margin-top-10">
+				<div class="col-md-12 text-center">
+					<button class="btn btn-danger margin-right-20">Cancel</button>
+					<button class="btn btn-primary" >Save</button>
+				</div>
+			</div>
+		</div>
+					<div class="col-md-6"></div>	
+		</div>
+		</div>		
+	</form>	
+				
+</div>
+				
+</body>

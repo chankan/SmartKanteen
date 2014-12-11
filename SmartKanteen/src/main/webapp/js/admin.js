@@ -2,7 +2,7 @@ angular.module('canteen', [ 'ngRoute','ngResource' ])
 .factory('Menus', ['$resource',function($resource) {
 //	var MenuRestful = $resource('rest/service');
 	var MenuService={
-		restService:$resource('rest/service'),
+		restService:$resource('rest/kanteen/menu'),
 		data:[],	
 		data1:[ 
          {ItemID: 1, ItemName: "Thali", Description: "Jain Thali",Price: 100,PrepTime: 15},
@@ -60,7 +60,7 @@ angular.module('canteen', [ 'ngRoute','ngResource' ])
 .config(function($routeProvider) {
 	$routeProvider.when('/', {
 		controller : 'ListCtrl',
-		templateUrl : 'canteenmenu.html'
+		templateUrl : 'view/menulist.html'
 	})
 	.when('/edit/:menuId', {
 		controller : 'EditCtrl',
@@ -74,16 +74,25 @@ angular.module('canteen', [ 'ngRoute','ngResource' ])
 		redirectTo : '/'
 	});
 }).controller('MenuCtrl', function($scope, Menus) {
-	$scope.menus = Menus.getAll();
-	$scope.remove = function(id) {
-		var result=Menus.remove(id);
-		if(result){
-			$location.path('/');
-		}
-	};
+	$scope.mainMenu = [ 
+	   {name : "Home",url : "#/"}, 
+	   {name : "Today's Menu",url : "#/edit"}, 
+	   {name : "My Order",url : "#/new"}, 
+	   ];
+	
+	$scope.loginMenu = [ 
+	                   {name : "UserName",url : "#/"}, 
+	                   {name : "Logout",url : "#/logout"}, 
+	                   ];
+//	$scope.remove = function(id) {
+//		var result=Menus.remove(id);
+//		if(result){
+//			$location.path('/');
+//		}
+//	};
 //	alert($scope.menus);
 }).controller('ListCtrl', function($scope, Menus,$resource,$http) {
-	$scope.menudata =$resource('rest/service').get();
+	$scope.menudata =$resource('rest/kanteen/menu').get();
 //	$scope.menus =[{itemID: 1, itemName: "Thali", description: "Jain Thali",price: 100,prepTime: 15},];
 //	  
 //	Menus.getAll().success(function(data, status, headers, config) {

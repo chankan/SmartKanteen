@@ -1,42 +1,142 @@
 package com.mastek.topcoders.smartkanteen.rest;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
+import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
-import com.mastek.topcoders.smartkanteen.bean.Menu_old;
-
+import com.mastek.topcoders.smartkanteen.bean.Menu;
 
 
 public interface IMenuResource {
-	@GET
-	@Produces ("application/xml")
-	public  List<Menu> getMenuMaster ();
 	
-	@Path("/caterer/{catererId}")
 	@GET
-	@Produces ("application/xml")
-	public List<Menu> getMenuMasterByCaterer (@PathParam("catererId") Integer catererId);
+	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	List<Menu> getMenuMaster ();
 	
-	@Path("/demo")
 	@GET
-	@Produces("application/xml")
-	public ArrayList<Menu_old> getMenuList();
+	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	List<DailyMenu> getDailyMenu(DateParam menuDate, Integer catererId);
+	
+	@GET
+	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	List<Menu> getMenuMasterByCaterer(Integer catererId);
+	
+	@GET
+	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	List<Caterer> getCaterers();
+	
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	Caterer getCaterer(Integer catererId);
 	
 	@POST
-	@Produces("application/xml")
-	public void addItemMenuMaster(String itemName, String description,
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	Integer addItemInMenuMaster(Menu menuMaster);
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void addItemMenuMaster(String itemName, String description,
 			BigDecimal price, Integer prepTime,Integer category);
 	
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
+			Integer prepTime);
 
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	Integer addCaterer(Caterer caterer);
+	
+	
+	/*
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@GET
+	
+	
+
+	
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	Integer addItemInMenuMaster(Menu menuMaster, Caterer caterer);
+
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	void deleteItemFromMenuMaster(Integer itemId);
+
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	void deleteAllItemsFromMenuMaster();
+	
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	Caterer getCaterer(Integer catererId);
+	
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	List<Caterer> getCaterers();
+	
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	Integer addCaterer(Caterer caterer);
+	
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	Boolean updateCaterer(Integer catererId, String catererName);
+	
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	Boolean deleteCaterer(Integer catererId);
+	
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	DailyMenu getDailyMenu(Date menuDate, Integer catererId);
+
+	
+*/	
+	
 }
