@@ -166,7 +166,7 @@ public class MenuResource implements IMenuResource {
 			else
 			{
 				MenuService menuService= new MenuServiceImpl();
-				menuService.addItemMenuMaster(itemName, description, price, prepTime, category);
+				//menuService.addItemMenuMaster(itemName, description, price, prepTime, category);
 			}
 
 		}
@@ -231,7 +231,7 @@ public class MenuResource implements IMenuResource {
 	public void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
 		// TODO Auto-generated method stub
 		MenuService menuService=new MenuServiceImpl();
-		menuService.updateDailyMenu(dailyMenuId, menuList);
+		menuService.updateDailyMenuItems(dailyMenuId, menuList);
 
 	}
 	
@@ -240,7 +240,7 @@ public class MenuResource implements IMenuResource {
 	public void appendDailyMenu(Integer dailyMenuId, Menu menu) {
 		// TODO Auto-generated method stub
 		MenuService menuService=new MenuServiceImpl();
-		menuService.appendDailyMenu(dailyMenuId, menu);
+		menuService.appendDailyMenuItems(dailyMenuId, menu);
 
 	}
 	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
@@ -248,7 +248,7 @@ public class MenuResource implements IMenuResource {
 public void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
 		// TODO Auto-generated method stub
 		MenuService menuService=new MenuServiceImpl();
-		menuService.appendDailyMenu(dailyMenuId, menuList);
+		menuService.appendDailyMenuItems(dailyMenuId, menuList);
 
 	}
 

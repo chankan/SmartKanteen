@@ -20,16 +20,11 @@ public interface MenuService
 
 	void addItemInMenuMaster(Menu menuMaster, Caterer caterer);
 
-	/*
-	 * Added by @vaibhav testing Post Operation on RS
-	 */
-	void addItemMenuMaster(String itemName, String description, BigDecimal price, Integer prepTime, Integer category);
-
+	void updateItemInMenuMaster(Menu menu);
+	
 	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price, Integer prepTime);
 
 	void deleteItemFromMenuMaster(Integer itemId);
-
-	void deleteAllItemsFromMenuMaster();
 
 	Caterer getCaterer(Integer catererId);
 
@@ -40,15 +35,18 @@ public interface MenuService
 	Boolean updateCaterer(Integer catererId, String catererName);
 
 	Boolean deleteCaterer(Integer catererId);
-	//ORIGINAL-CODE
-	//List<DailyMenu> getDailyMenu(Date menuDate, Integer catererId);
+
 	List<Menu> getDailyMenu(Date menuDate, Integer catererId);
-	
+
 	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
 
-	void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList);
+	void deleteDailyMenu(Integer dailyMenuId, List<Menu> menuList);
 	
-	void appendDailyMenu(Integer dailyMenuId, Menu menu);
+	void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
+	
+	void appendDailyMenuItems(Integer dailyMenuId, Menu menu);
 
-	void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
+	void appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
+	
+	void removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
 }

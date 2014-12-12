@@ -11,9 +11,14 @@
         <property name="catererName" type="java.lang.String">
             <column name="caterer_name" />
         </property>
-        <set name="catererMenuMapping" cascade="all">
+        <set name="catererMenuMapping" cascade="all" inverse="true" >
          <key column="caterer_id"/>
-         <one-to-many class="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping"/>
+         <one-to-many class="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping"  />
+         </set>
+         
+          <set name="menuList" cascade="all" inverse="true" >
+         <key column="caterer_id"/>
+         <one-to-many class="com.mastek.topcoders.smartkanteen.bean.DailyMenu"/>
          </set>
     </class>
 </hibernate-mapping>
