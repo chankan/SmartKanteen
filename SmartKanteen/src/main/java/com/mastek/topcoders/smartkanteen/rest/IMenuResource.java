@@ -1,17 +1,15 @@
 package com.mastek.topcoders.smartkanteen.rest;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
-import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
-import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 
 
@@ -38,14 +36,10 @@ public interface IMenuResource {
 	Caterer getCaterer(Integer catererId);
 	
 	@POST
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	Integer addItemInMenuMaster(Menu menuMaster);
 	
-	@POST
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	void addItemMenuMaster(String itemName, String description,
-			BigDecimal price, Integer prepTime,Integer category);
-	
+		
 	
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -56,7 +50,12 @@ public interface IMenuResource {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	Integer addCaterer(Caterer caterer);
 	
-	@POST
+	@GET
+	@Produces({MediaType.TEXT_PLAIN,MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	Response deleteCaterer(Integer catererId);
+	
+	
+	/*@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
 	
@@ -71,7 +70,7 @@ public interface IMenuResource {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
-	
+	*/
 	
 	/*
 	
