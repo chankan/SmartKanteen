@@ -11,7 +11,7 @@
         <property name="catererId" type="int">
          <column name="caterer_id" />
         </property>
-        <many-to-one name="menu" column="item_id" unique="true"
+        <many-to-one name="menu" column="item_id" unique="true" lazy="false"
 			class="com.mastek.topcoders.smartkanteen.bean.Menu" not-null="true" />
     </class>
 </hibernate-mapping>
