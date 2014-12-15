@@ -21,8 +21,8 @@ public class MenuServiceImpl implements MenuService
 	public List<Menu> getMenuMasterByCaterer(Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
-		List<Menu> menuList= dao.getMenuMaster(catererId);
-		return   menuList;
+		List<Menu> menuList = dao.getMenuMaster(catererId);
+		return menuList;
 	}
 
 	public List<Menu> getMenuByName(String itemName)
@@ -43,7 +43,13 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 		dao.addItemInMenuMaster(menuMaster, caterer);
 	}
-	
+
+	public void updateItemInMenuMaster(Menu menu)
+	{
+		MenuDAO dao = new MenuDAO();
+		dao.updateItem(menu);
+	}
+
 	public void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
 			Integer prepTime)
 	{
@@ -115,13 +121,13 @@ public class MenuServiceImpl implements MenuService
 
 	public Boolean updateCaterer(Integer catererId, String catererName)
 	{
-
 		boolean result = false;
 
 		if (catererId == 0 || catererId == null)
 		{
 			System.out.println("CatererId not found");
 		}
+
 		MenuDAO dao = new MenuDAO();
 		Caterer caterer = dao.getCaterer(catererId);
 
@@ -143,12 +149,6 @@ public class MenuServiceImpl implements MenuService
 		return result;
 	}
 
-	public void deleteAllCaterers()
-	{
-		MenuDAO dao = new MenuDAO();
-		dao.deleteAllCaterers();
-	}
-
 	public List<Menu> getDailyMenu(Date menuDate, Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -168,11 +168,12 @@ public class MenuServiceImpl implements MenuService
 		dao.addDailyMenuItem(dailyMenu);
 	}
 
-	public void deleteDailyMenu(Integer dailyMenuId, List<Menu> menuList)
+	public void deleteDailyMenu(Integer dailyMenuId)
 	{
-		
+		MenuDAO dao = new MenuDAO();
+		dao.deleteDailyMenu(dailyMenuId);
 	}
-	
+
 	public void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -183,7 +184,7 @@ public class MenuServiceImpl implements MenuService
 
 		dao.updateDailyMenu(dailyMenu);
 	}
-	
+
 	public void appendDailyMenuItems(Integer dailyMenuId, Menu menu)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -209,25 +210,9 @@ public class MenuServiceImpl implements MenuService
 		dao.appendDailyMenu(dailyMenu);
 	}
 
-	@Override
-	public void updateItemInMenuMaster(Menu menu)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
-		
+		MenuDAO dao = new MenuDAO();
+		dao.removeDailyMenuItems(dailyMenuId, menuList);
 	}
-	
-	public  void removeDailyMenuItem(Integer dailyMenuItemId)
-	{
-		MenuDAO dao= new MenuDAO();
-	    dao.removeDailyMenuItem(dailyMenuItemId);
-        
-	}
-	
-	
 }

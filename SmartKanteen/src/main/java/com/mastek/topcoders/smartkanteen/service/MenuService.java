@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
-import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 
 public interface MenuService
@@ -13,7 +12,7 @@ public interface MenuService
 	List<Menu> getMenuMaster();
 
 	List<Menu> getMenuMasterByCaterer(Integer catererId);
-	
+
 	List<Menu> getMenuByName(String itemName);
 
 	Integer addItemInMenuMaster(Menu menuMaster);
@@ -21,7 +20,7 @@ public interface MenuService
 	void addItemInMenuMaster(Menu menuMaster, Caterer caterer);
 
 	void updateItemInMenuMaster(Menu menu);
-	
+
 	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price, Integer prepTime);
 
 	void deleteItemFromMenuMaster(Integer itemId);
@@ -40,13 +39,13 @@ public interface MenuService
 
 	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
 
-	void deleteDailyMenu(Integer dailyMenuId, List<Menu> menuList);
-	
+	void deleteDailyMenu(Integer dailyMenuId);
+
 	void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
-	
+
 	void appendDailyMenuItems(Integer dailyMenuId, Menu menu);
 
 	void appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
-	
+
 	void removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
 }
