@@ -19,40 +19,40 @@ public class Test
 	{
 		try
 		{
+			
+			testingRemoveDailyMenuItem(1);
 			//testupdateDailyMenu();
-		  //testingCatererTable();
-			
+			//testingCatererTable();
+
 			//testAddMenuWithCaterer();
-			
+
 			//testingGetMenuMasterByCaterer(1);
 			// testingMenuTable();
 
 			// testingCatererTable();
 
-			displayDailyMenu();
+			//displayDailyMenu();
 
-				/*boolean result=  testingDeleteCaterer(2);
-			    if(result==true)
-			    {
-			      System.out.println("deleted successfully...");	
-			    }
-			    else
-			    {
-			    	System.out.println("deleted successfully...");
-			    }*/
-				
-			
-			
-				/*List<Menu> menu= testingGetCatererByName("Pav Bhaji");
-			    if(menu !=null && menu.size()>0)
-			  {
-			      	
-				  System.out.println("Found..." +menu.size());
-			  }
-			  else 
-			  {
-				  System.out.println("Not Found..."); 
-			  }*/
+			/*boolean result=  testingDeleteCaterer(2);
+			if(result==true)
+			{
+			  System.out.println("deleted successfully...");	
+			}
+			else
+			{
+				System.out.println("deleted successfully...");
+			}*/
+
+			/*List<Menu> menu= testingGetCatererByName("Pav Bhaji");
+			if(menu !=null && menu.size()>0)
+			{
+			  	
+			  System.out.println("Found..." +menu.size());
+			}
+			else 
+			{
+			  System.out.println("Not Found..."); 
+			}*/
 
 		}
 		catch (HibernateException e)
@@ -61,14 +61,20 @@ public class Test
 		}
 	}
 
-	public static List<Menu>  testingGetMenuMasterByCaterer(Integer catererId)
+	public static void testingRemoveDailyMenuItem(Integer dailyMenuItemId)
 	{
-		MenuServiceImpl service=new MenuServiceImpl();
-		List<Menu> menuList= service.getMenuMasterByCaterer(catererId);
+     MenuServiceImpl  service= new MenuServiceImpl();
+     service.removeDailyMenuItem(dailyMenuItemId);
+	}
+
+	public static List<Menu> testingGetMenuMasterByCaterer(Integer catererId)
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+		List<Menu> menuList = service.getMenuMasterByCaterer(catererId);
 		System.out.println(menuList);
 		return menuList;
 	}
-	
+
 	public static List<Menu> testingGetCatererByName(String catererName)
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
@@ -83,9 +89,6 @@ public class Test
 		return result;
 	}
 
-	
-	
-	
 	public static void testingDailyMenu()
 	{
 		/*testGetDailyMenu();
@@ -110,7 +113,7 @@ public class Test
 	private static void testupdateDailyMenu()
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
-        
+
 		Menu menu = new Menu();
 		menu.setItemId(3);
 		menu.setPrepTime(10);
@@ -122,12 +125,11 @@ public class Test
 	private static void testappendDailyMenu()
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
-
-		Menu menu = new Menu();
+        Menu menu = new Menu();
 		menu.setItemId(5);
 		List<Menu> menuList = new ArrayList<Menu>();
 		menuList.add(menu);
-		service.appendDailyMenuItems(1 , menu);
+		service.appendDailyMenuItems(1, menu);
 	}
 
 	private static void testappendDailyMenu2()

@@ -16,6 +16,7 @@ import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class MenuDAO
 {
@@ -389,4 +390,16 @@ public class MenuDAO
 		DatabaseUtil.closeSession(session);
 
 	}
+	
+	public void removeDailyMenuItem(int dailyMenuItemId)
+	{
+	  Session session= DatabaseUtil.getSession();
+	  Transaction tx= session.beginTransaction();
+	  DailyMenu dailyMenu=(DailyMenu) session.load(DailyMenu.class,dailyMenuItemId);	
+	  System.out.println(dailyMenu);
+	  session.delete(dailyMenu);
+	  tx.commit();
+	  session.close();
+	}
+	
 }

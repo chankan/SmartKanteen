@@ -219,7 +219,15 @@ public class MenuServiceImpl implements MenuService
 	@Override
 	public void removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
-		// TODO Auto-generated method stub
 		
 	}
+	
+	public  void removeDailyMenuItem(Integer dailyMenuItemId)
+	{
+		MenuDAO dao= new MenuDAO();
+	    dao.removeDailyMenuItem(dailyMenuItemId);
+        
+	}
+	
+	
 }
