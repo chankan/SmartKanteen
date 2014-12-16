@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 import org.hibernate.Criteria;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-
-import sun.org.mozilla.javascript.internal.ast.ThrowStatement;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping;
@@ -26,7 +23,7 @@ public class MenuDAO
 	public List<Menu> getMenuMaster()
 	{
 		Session session = DatabaseUtil.getSession();
-		List<Menu> menuMasterList = (List<Menu>) session.createQuery(" FROM Menu ").list();
+		List<Menu> menuMasterList = session.createQuery(" FROM Menu ").list();
 		DatabaseUtil.closeSession(session);
 
 		return menuMasterList;
@@ -37,7 +34,7 @@ public class MenuDAO
 		Session session = DatabaseUtil.getSession();
 		Query query = session.createQuery("FROM Caterer WHERE catererId= :catererID");
 		query.setParameter("catererID", catererId);
-		List<Caterer> catererList = (List<Caterer>) query.list();
+		List<Caterer> catererList = query.list();
 
 		List<Menu> menuList = null;
 
@@ -91,7 +88,7 @@ public class MenuDAO
 		Transaction tx = session.beginTransaction();
 		try
 		{
-			Integer menuId = (Integer) addItem(menuMaster);
+			Integer menuId = addItem(menuMaster);
 
 			String sql = "INSERT INTO CATERER_MENU_MAPPING VALUES (:menuId, :catererId)";
 			Query query = session.createSQLQuery(sql);
@@ -117,7 +114,7 @@ public class MenuDAO
 		Query query = session.createQuery("FROM Menu WHERE itemId= :itemId");
 		query.setParameter("itemId", itemId);
 
-		List<Menu> menuMasterList = (List<Menu>) query.list();
+		List<Menu> menuMasterList = query.list();
 		DatabaseUtil.closeSession(session);
 
 		if (menuMasterList != null && menuMasterList.size() == 1)
@@ -145,12 +142,12 @@ public class MenuDAO
 		}
 	}
 
-	public Boolean deleteItem(Integer itemId) 
+	public Boolean deleteItem(Integer itemId)
 	{
-		boolean result=true;
+		boolean result = true;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
-        
+
 		try
 		{
 			Menu menuMaster = new Menu();
@@ -161,15 +158,11 @@ public class MenuDAO
 		}
 		catch (Exception e)
 		{
-            /*if(e instanceof ObjectNotFoundException)
-            {
-            	throw new ObjectNotFoundException("Items is not Found...");
-            }*/
-			result=false;  
-            tx.rollback();
+			result = false;
+			tx.rollback();
 		}
 		DatabaseUtil.closeSession(session);
-	    return result; 
+		return result;
 	}
 
 	public Caterer getCaterer(Integer catererId)
@@ -216,7 +209,7 @@ public class MenuDAO
 
 	public boolean updateCaterer(Caterer caterer)
 	{
-         boolean result=false;
+		boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		if (caterer != null)
 		{
@@ -231,14 +224,14 @@ public class MenuDAO
 				tx.rollback();
 			}
 			DatabaseUtil.closeSession(session);
-			result=true;
+			result = true;
 		}
 		return result;
 	}
 
 	public boolean deleteCaterer(Integer catererId)
 	{
-		boolean result=false; 
+		boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		Caterer caterer = (Caterer) session.load(Caterer.class, catererId);
 		if (caterer != null)
@@ -249,12 +242,17 @@ public class MenuDAO
 				session.delete(caterer);
 				tx.commit();
 			}
+			catch (ObjectNotFoundException hib)
+			{
+				System.out.println("Caterer does not exist...");
+				tx.rollback();
+			}
 			catch (Exception e)
 			{
 				tx.rollback();
 			}
 			DatabaseUtil.closeSession(session);
-		    result=true;
+			result = true;
 		}
 		return result;
 	}
@@ -294,7 +292,7 @@ public class MenuDAO
 			query.setParameter("catererId", catererId);
 		}
 
-		List<DailyMenu> dailyMenuList = (List<DailyMenu>) query.list();
+		List<DailyMenu> dailyMenuList = query.list();
 		DatabaseUtil.closeSession(session);
 		Menu menu;
 		List<Menu> menuList = null;
@@ -331,7 +329,7 @@ public class MenuDAO
 
 			Query selectDailyMenuQuery = session.createQuery("SELECT MAX(dailyMenuId) FROM DailyMenu");
 
-			List<Integer> dailyMenuList = (List<Integer>) selectDailyMenuQuery.list();
+			List<Integer> dailyMenuList = selectDailyMenuQuery.list();
 
 			Integer dailyMenuId = null;
 
@@ -434,43 +432,47 @@ public class MenuDAO
 		DatabaseUtil.closeSession(session);
 	}
 
-	public   Boolean  deleteDailyMenu(Integer dailyMenuId)
+	public Boolean deleteDailyMenu(Integer dailyMenuId)
 	{
-		boolean result=false;
+		boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
 		try
 		{
 			DailyMenu dailyMenu = (DailyMenu) session.load(DailyMenu.class, dailyMenuId);
-			if(dailyMenu !=null)
+			if (dailyMenu != null)
 			{
-			    session.delete(dailyMenu);
-			    tx.commit();
-			    result=true;
+				session.delete(dailyMenu);
+				tx.commit();
+				result = true;
 			}
+		}
+		catch (ObjectNotFoundException hib)
+		{
+			System.out.println("Item does not exist...");
+			tx.rollback();
 		}
 		catch (Exception e)
 		{
+			result = false;
 			tx.rollback();
 		}
 		DatabaseUtil.closeSession(session);
-	    return result; 
+		return result;
 	}
 
-	
-	
-	public Boolean  removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
+	public Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
-		boolean result=false;
-		Session session=null;
-		Transaction tx=null;
+		boolean result = false;
+		Session session = null;
+		Transaction tx = null;
 		if (menuList != null && menuList.size() >= 1)
 		{
-			 session = DatabaseUtil.getSession();
-			 tx = session.beginTransaction();
 
 			try
 			{
+				session = DatabaseUtil.getSession();
+				tx = session.beginTransaction();
 				String itemIds = "";
 				for (Menu menu : menuList)
 				{
@@ -490,15 +492,15 @@ public class MenuDAO
 				query.executeUpdate();
 
 				tx.commit();
-			   
+
 			}
 			catch (Exception e)
 			{
 				tx.rollback();
-			} 
-	     result=true;
+			}
+			result = true;
 		}
 		DatabaseUtil.closeSession(session);
-	    return result; 
+		return result;
 	}
 }

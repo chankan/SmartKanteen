@@ -5,22 +5,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.dao.MenuDAO;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class MenuServiceImpl implements MenuService
 {
+	@Override
 	public List<Menu> getMenuMaster()
 	{
 		MenuDAO dao = new MenuDAO();
 		return dao.getMenuMaster();
 	}
 
+	@Override
 	public List<Menu> getMenuMasterByCaterer(Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -28,6 +27,7 @@ public class MenuServiceImpl implements MenuService
 		return menuList;
 	}
 
+	@Override
 	public List<Menu> getMenuByName(String itemName)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -35,24 +35,28 @@ public class MenuServiceImpl implements MenuService
 		return menuList;
 	}
 
+	@Override
 	public Integer addItemInMenuMaster(Menu menuMaster)
 	{
 		MenuDAO dao = new MenuDAO();
 		return dao.addItem(menuMaster);
 	}
 
+	@Override
 	public void addItemInMenuMaster(Menu menuMaster, Caterer caterer)
 	{
 		MenuDAO dao = new MenuDAO();
 		dao.addItemInMenuMaster(menuMaster, caterer);
 	}
 
+	@Override
 	public void updateItemInMenuMaster(Menu menu)
 	{
 		MenuDAO dao = new MenuDAO();
 		dao.updateItem(menu);
 	}
 
+	@Override
 	public void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
 			Integer prepTime)
 	{
@@ -95,13 +99,15 @@ public class MenuServiceImpl implements MenuService
 		}
 	}
 
-	public Boolean deleteItemFromMenuMaster(Integer itemId) 
+	@Override
+	public Boolean deleteItemFromMenuMaster(Integer itemId)
 	{
 		MenuDAO dao = new MenuDAO();
 		boolean result = dao.deleteItem(itemId);
-	    return  result;
+		return result;
 	}
 
+	@Override
 	public Caterer getCaterer(Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -109,6 +115,7 @@ public class MenuServiceImpl implements MenuService
 		return caterer;
 	}
 
+	@Override
 	public List<Caterer> getCaterers()
 	{
 		MenuDAO dao = new MenuDAO();
@@ -116,6 +123,7 @@ public class MenuServiceImpl implements MenuService
 		return catererList;
 	}
 
+	@Override
 	public Integer addCaterer(Caterer caterer)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -123,6 +131,7 @@ public class MenuServiceImpl implements MenuService
 		return result;
 	}
 
+	@Override
 	public Boolean updateCaterer(Integer catererId, String catererName)
 	{
 		boolean result = false;
@@ -146,6 +155,7 @@ public class MenuServiceImpl implements MenuService
 		return result;
 	}
 
+	@Override
 	public Boolean deleteCaterer(Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -153,6 +163,7 @@ public class MenuServiceImpl implements MenuService
 		return result;
 	}
 
+	@Override
 	public List<Menu> getDailyMenu(Date menuDate, Integer catererId)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -160,6 +171,7 @@ public class MenuServiceImpl implements MenuService
 		return menuList;
 	}
 
+	@Override
 	public void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menuList)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -172,13 +184,15 @@ public class MenuServiceImpl implements MenuService
 		dao.addDailyMenuItem(dailyMenu);
 	}
 
+	@Override
 	public Boolean deleteDailyMenu(Integer dailyMenuId)
 	{
 		MenuDAO dao = new MenuDAO();
-		boolean result=  dao.deleteDailyMenu(dailyMenuId);
-	    return result;
+		boolean result = dao.deleteDailyMenu(dailyMenuId);
+		return result;
 	}
 
+	@Override
 	public void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -190,6 +204,7 @@ public class MenuServiceImpl implements MenuService
 		dao.updateDailyMenu(dailyMenu);
 	}
 
+	@Override
 	public void appendDailyMenuItems(Integer dailyMenuId, Menu menu)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -204,6 +219,7 @@ public class MenuServiceImpl implements MenuService
 		dao.appendDailyMenu(dailyMenu);
 	}
 
+	@Override
 	public void appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
 		MenuDAO dao = new MenuDAO();
@@ -215,10 +231,11 @@ public class MenuServiceImpl implements MenuService
 		dao.appendDailyMenu(dailyMenu);
 	}
 
+	@Override
 	public Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
 		MenuDAO dao = new MenuDAO();
-		boolean  result=dao.removeDailyMenuItems(dailyMenuId, menuList);
-	    return result;
+		boolean result = dao.removeDailyMenuItems(dailyMenuId, menuList);
+		return result;
 	}
 }
