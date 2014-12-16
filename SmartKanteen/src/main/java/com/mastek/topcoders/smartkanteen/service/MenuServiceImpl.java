@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.dao.MenuDAO;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class MenuServiceImpl implements MenuService
 {
@@ -92,10 +95,11 @@ public class MenuServiceImpl implements MenuService
 		}
 	}
 
-	public void deleteItemFromMenuMaster(Integer itemId)
+	public Boolean deleteItemFromMenuMaster(Integer itemId) 
 	{
 		MenuDAO dao = new MenuDAO();
-		dao.deleteItem(itemId);
+		boolean result = dao.deleteItem(itemId);
+	    return  result;
 	}
 
 	public Caterer getCaterer(Integer catererId)
@@ -168,10 +172,11 @@ public class MenuServiceImpl implements MenuService
 		dao.addDailyMenuItem(dailyMenu);
 	}
 
-	public void deleteDailyMenu(Integer dailyMenuId)
+	public Boolean deleteDailyMenu(Integer dailyMenuId)
 	{
 		MenuDAO dao = new MenuDAO();
-		dao.deleteDailyMenu(dailyMenuId);
+		boolean result=  dao.deleteDailyMenu(dailyMenuId);
+	    return result;
 	}
 
 	public void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
@@ -210,9 +215,10 @@ public class MenuServiceImpl implements MenuService
 		dao.appendDailyMenu(dailyMenu);
 	}
 
-	public void removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
+	public Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{
 		MenuDAO dao = new MenuDAO();
-		dao.removeDailyMenuItems(dailyMenuId, menuList);
+		boolean  result=dao.removeDailyMenuItems(dailyMenuId, menuList);
+	    return result;
 	}
 }

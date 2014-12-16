@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 
@@ -23,7 +25,7 @@ public interface MenuService
 
 	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price, Integer prepTime);
 
-	void deleteItemFromMenuMaster(Integer itemId);
+	Boolean deleteItemFromMenuMaster(Integer itemId); 
 
 	Caterer getCaterer(Integer catererId);
 
@@ -39,7 +41,7 @@ public interface MenuService
 
 	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
 
-	void deleteDailyMenu(Integer dailyMenuId);
+	Boolean deleteDailyMenu(Integer dailyMenuId);
 
 	void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
 
@@ -47,5 +49,5 @@ public interface MenuService
 
 	void appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
 
-	void removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
+	Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
 }

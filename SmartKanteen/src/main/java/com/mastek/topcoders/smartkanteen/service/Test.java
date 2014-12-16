@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 import org.hibernate.HibernateException;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
@@ -18,11 +20,20 @@ public class Test
 	{
 		try
 		{
-			testingMenuTable();
+			/*testingMenuTable();
 
 			testingCatererTable();
 
-			testingDailyMenuTable();
+			testingDailyMenuTable();*/
+		 boolean result=	testDeleteDailyMenu();
+		 if(result==true)
+		 {
+			 System.out.println("Deleted Successfully");
+		 }
+		 else
+		 {
+			 System.out.println("Deletion UnSuccessfully");
+		 }
 		}
 		catch (HibernateException e)
 		{
@@ -147,11 +158,14 @@ public class Test
 		service.updateItemInMenuMaster(menu);
 	}
 
-	public static void testDeleteItems()
+	public static Boolean testDeleteItems()
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
-		service.deleteItemFromMenuMaster(1);
-		service.deleteItemFromMenuMaster(3);
+		boolean result=true;
+		result=service.deleteItemFromMenuMaster(1);
+		return result; 
+		
+		//service.deleteItemFromMenuMaster(3);
 	}
 
 	public static void testGetMenuByName()
@@ -312,7 +326,7 @@ public class Test
 		service.appendDailyMenuItems(1, menuList);
 	}
 
-	public static void testRemoveDailyMenuItems()
+	public static Boolean testRemoveDailyMenuItems()
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -321,7 +335,8 @@ public class Test
 		menu.setItemId(5);
 		menuList.add(menu);
 
-		service.removeDailyMenuItems(1, menuList);
+		boolean result= service.removeDailyMenuItems(1, menuList);
+	   return result;
 	}
 
 	public static void testGetDailyMenu()
@@ -343,9 +358,10 @@ public class Test
 		System.out.println(menuList);
 	}
 
-	public static void testDeleteDailyMenu()
+	public static Boolean testDeleteDailyMenu()
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
-		service.deleteDailyMenu(1);
+		boolean result=  service.deleteDailyMenu(5);
+	    return result;
 	}
 }
