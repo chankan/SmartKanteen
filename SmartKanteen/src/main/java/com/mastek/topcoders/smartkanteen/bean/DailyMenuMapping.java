@@ -5,16 +5,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DailyMenuMapping
 {
-	private int dailyMenuMappingId;
+	private Integer dailyMenuMappingId;
 	private Menu menu;
-	private int dailyMenuId;
+	private Integer dailyMenuId;
 
-	public int getDailyMenuMappingId()
+	public Integer getDailyMenuMappingId()
 	{
 		return dailyMenuMappingId;
 	}
 
-	public void setDailyMenuMappingId(int dailyMenuMappingId)
+	public void setDailyMenuMappingId(Integer dailyMenuMappingId)
 	{
 		this.dailyMenuMappingId = dailyMenuMappingId;
 	}
@@ -29,12 +29,12 @@ public class DailyMenuMapping
 		this.menu = menu;
 	}
 
-	public int getDailyMenuId()
+	public Integer getDailyMenuId()
 	{
 		return dailyMenuId;
 	}
 
-	public void setDailyMenuId(int dailyMenuId)
+	public void setDailyMenuId(Integer dailyMenuId)
 	{
 		this.dailyMenuId = dailyMenuId;
 	}
@@ -42,7 +42,7 @@ public class DailyMenuMapping
 	@Override
 	public String toString()
 	{
-		return "DailyMenuMapping [menu=" + menu + ", dailyMenuId=" + dailyMenuId + "]";
+		return "DailyMenuMapping [dailyMenuMappingId=" + dailyMenuMappingId + ", menu=" + menu + ", dailyMenuId="
+				+ dailyMenuId + "]";
 	}
-
 }

@@ -1,4 +1,5 @@
 package com.mastek.topcoders.smartkanteen.bean;
+
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,28 +12,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Caterer implements java.io.Serializable
 {
-
-	private int catererId;
+	private Integer catererId;
 	private String catererName;
 	private Set<CatererMenuMapping> catererMenuMapping;
 	private Set<DailyMenu> menuList;
-	
-	public Set<CatererMenuMapping> getCatererMenuMapping()
-	{
-		return catererMenuMapping;
-	}
 
-	public void setCatererMenuMapping(Set<CatererMenuMapping> catererMenuMapping)
-	{
-		this.catererMenuMapping = catererMenuMapping;
-	}
-
-	public int getCatererId()
+	public Integer getCatererId()
 	{
 		return catererId;
 	}
 
-	public void setCatererId(int catererId)
+	public void setCatererId(Integer catererId)
 	{
 		this.catererId = catererId;
 	}
@@ -45,6 +35,16 @@ public class Caterer implements java.io.Serializable
 	public void setCatererName(String catererName)
 	{
 		this.catererName = catererName;
+	}
+
+	public Set<CatererMenuMapping> getCatererMenuMapping()
+	{
+		return catererMenuMapping;
+	}
+
+	public void setCatererMenuMapping(Set<CatererMenuMapping> catererMenuMapping)
+	{
+		this.catererMenuMapping = catererMenuMapping;
 	}
 
 	public Set<DailyMenu> getMenuList()

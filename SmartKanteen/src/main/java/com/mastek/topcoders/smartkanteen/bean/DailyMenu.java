@@ -14,29 +14,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DailyMenu implements java.io.Serializable
 {
-
-	private int dailyMenuId;
-	private int catererId;
+	private Integer dailyMenuId;
+	private Integer catererId;
 	private Date menuDate;
 	private Set<DailyMenuMapping> dailyMenuMapping;
 	private List<Menu> menuList;
 
-	public int getDailyMenuId()
+	public Integer getDailyMenuId()
 	{
 		return dailyMenuId;
 	}
 
-	public void setDailyMenuId(int dailyMenuId)
+	public void setDailyMenuId(Integer dailyMenuId)
 	{
 		this.dailyMenuId = dailyMenuId;
 	}
 
-	public int getCatererId()
+	public Integer getCatererId()
 	{
 		return catererId;
 	}
 
-	public void setCatererId(int catererId)
+	public void setCatererId(Integer catererId)
 	{
 		this.catererId = catererId;
 	}

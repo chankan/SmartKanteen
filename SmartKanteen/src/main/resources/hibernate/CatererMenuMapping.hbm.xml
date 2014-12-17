@@ -3,16 +3,17 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 10, 2014 12:24:17 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping" table="CATERER_MENU_MAPPING">
-        <id name="caterer_menu_mapping_id" type="int">
-            <column name="CATERER_MENU_MAPPING_ID" />
-            <generator class="native" />
-        </id>
-        <property name="catererId" type="int">
-         <column name="caterer_id" />
-        </property>
-        <many-to-one name="menu" column="item_id" unique="true" lazy="false"
-			class="com.mastek.topcoders.smartkanteen.bean.Menu" not-null="true" />
-    </class>
+	<class name="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping" table="CATERER_MENU_MAPPING">
+		<id name="catererMenuMappingId" type="java.lang.Integer">
+			<column name="CATERER_MENU_MAPPING_ID" />
+			<generator class="identity" />
+		</id>
+		<property name="catererId" type="java.lang.Integer">
+			<column name="CATERER_ID" />
+		</property>
+		<many-to-one name="menu" column="ITEM_ID" unique="true"
+			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.Menu"
+			not-null="true" />
+	</class>
 </hibernate-mapping>
 
