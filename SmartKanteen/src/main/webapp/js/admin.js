@@ -2,9 +2,9 @@ angular.module('canteen', [ 'ngRoute','ngResource' ])
 .factory('Menus', ['$resource',function($resource) {
 //	var MenuRestful = $resource('rest/service');
 	var MenuService={
-			restService:$resource('rest/kanteen/menu'),
+			restService:$resource('rest/kanteen/menu'), 
 			data:[],	
-			data1:[ 
+			data1:[  
 			       {ItemID: 1, ItemName: "Thali", Description: "Jain Thali",Price: 100,PrepTime: 15},
 			       {ItemID: 2, ItemName: "Biryani", Description: "Kashmiri Biryani",Price: 50,PrepTime: 30},
 			       {ItemID: 3, ItemName: "Curd Rice", Description: "Special Curd Rice",Price: 35,PrepTime: 20},
