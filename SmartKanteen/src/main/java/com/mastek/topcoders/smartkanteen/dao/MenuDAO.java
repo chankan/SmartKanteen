@@ -90,7 +90,7 @@ public class MenuDAO
 		{
 			Integer menuId = addItem(menuMaster);
 
-			String sql = "INSERT INTO CATERER_MENU_MAPPING VALUES (:menuId, :catererId)";
+			String sql = "INSERT INTO CATERER_MENU_MAPPING(ITEM_ID,CATERER_ID) VALUES (:menuId, :catererId)";
 			Query query = session.createSQLQuery(sql);
 			query.setParameter("catererId", caterer.getCatererId());
 			query.setParameter("menuId", menuId);

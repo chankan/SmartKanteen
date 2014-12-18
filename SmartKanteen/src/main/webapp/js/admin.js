@@ -11,7 +11,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 					Description : "Jain Thali",
 					Price : 100,
 					PrepTime : 15
-				}, {
+				}, { 
 					ItemID : 2,
 					ItemName : "Biryani",
 					Description : "Kashmiri Biryani",
@@ -126,7 +126,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	// };
 	// alert($scope.menus);
 }).controller('ListCtrl', function($scope, Menus, $resource, $http) {
-	$scope.menudata = $resource('rest/kanteen/menu').get();
+	$scope.menudata = $resource('rest/service/caterer/1/menu').get();
 	// $scope.menus =[{itemID: 1, itemName: "Thali", description: "Jain
 	// Thali",price: 100,prepTime: 15},];
 
@@ -160,8 +160,58 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 .controller(
 		'DailyMenuCtrl',
 		function($scope, Menus, $resource, $http) {
-			$scope.menudata = $resource(
-					'rest/kanteen/menu/caterer/1/date/2014-12-10').get();
+			//$scope.menudata = $resource('rest/service/caterer/1/menu/date/2014-12-10').get();
+			$scope.status="Started";
+
+//			
+//			$scope.add=function(){
+//				var cMenu=[{ itemName: "Thali101", description: "Jain Thali",price: 100,prepTime: 15},{ itemName: "Thali102", description: "Jain Thali",price: 100,prepTime: 15}];
+//				$resource('rest/service/caterer/1/menu/').save(cMenu);
+//				$scope.status=cMenu;
+//			};
+//			
+//			$scope.update=function(){
+//				var cMenu={ itemId:15,itemName: "jamun", description: "second description",price: 100,prepTime: 15};
+//				$resource('rest/service/caterer/1/menu/').save(cMenu);
+//				$scope.status=cMenu;
+//			};
+			
+//			$scope.add=function(){
+//				var cMenu={catererName:"MDP"};
+//				$resource('rest/service/caterer/').save(cMenu);
+//				$scope.status=cMenu;
+//			};
+//			
+//			$scope.update=function(){
+//				//var cMenu={catererName:"Royal Foodie"};
+//				$resource('rest/service/caterer/1').save();
+//				$scope.status=cMenu;
+//			};
+			
+			$scope.add=function(){
+				var cMenu=[{itemId : 1}, {itemId : 2}, {itemId : 3}, {itemId : 4}];
+				$resource('rest/service/caterer/10/menu/date/2014-12-18').save(cMenu);
+				$scope.status=cMenu;
+			};
+			
+//			$scope.update=function(){
+//				//var cMenu={catererName:"Royal Foodie"};
+//				$resource('rest/service/caterer/1').save();
+//				$scope.status=cMenu;
+//			};
+			
+			
+			
+//			
+			$scope.remove=function(){
+				var itemId=2;
+				$resource('').delete(cMenu);
+				$scope.status=cMenu;
+			};
+			
+			//$scope.status="ended";
+//			$scope.menudata = $resource(
+//					'rest/kanteen/menu/caterer/1/date/2014-12-10').get();
 			// $scope.menus =[{itemID: 1, itemName: "Thali", description: "Jain
 			// Thali",price: 100,prepTime: 15},];
 
@@ -183,12 +233,12 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 			// $scope.menus=[{ItemID: 2, ItemName: "Thali", Description: "Jain
 			// Thali",Price: 100,PrepTime: 15},];
 			// });
-			$scope.remove = function(id) {
-				var result = Menus.remove(id);
-				if (result) {
-					$location.path('/');
-				}
-			};
+//			$scope.remove = function(id) {
+//				var result = Menus.remove(id);
+//				if (result) {
+//					$location.path('/');
+//				}
+//			};
 			// alert($scope.menus);
 		})
 
