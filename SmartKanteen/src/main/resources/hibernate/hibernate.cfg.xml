@@ -13,9 +13,11 @@
 		
 		<!-- Mapping Resources -->
 		<mapping resource="hibernate/Caterer.hbm.xml"/>
-		<mapping resource="hibernate/DailyMenu.hbm.xml"/>
-		<mapping resource="hibernate/MenuMaster.hbm.xml"/>
-		<mapping resource="hibernate/DailyMenuMapping.hbm.xml"/>
 		<mapping resource="hibernate/CatererMenuMapping.hbm.xml"/>
+		<mapping resource="hibernate/DailyMenu.hbm.xml"/>
+		<mapping resource="hibernate/DailyMenuMapping.hbm.xml"/>
+		<mapping resource="hibernate/MenuMaster.hbm.xml"/>
+		<mapping resource="hibernate/MenuTagsMapping.hbm.xml"/>
+		<mapping resource="hibernate/Tags.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
