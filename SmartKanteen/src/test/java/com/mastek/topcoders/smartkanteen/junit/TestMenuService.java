@@ -34,7 +34,7 @@ public class TestMenuService
 	public void testGetMenuItem()
 	{
 	  Session session=  DatabaseUtil.getSession();  
-	  Menu  menu1=(Menu)session.get(Menu.class,11);
+	  Menu  menu1=(Menu)session.get(Menu.class,12);
 	  Menu  menu2=new Menu();
 	  menu2.setItemId(11);
 	  menu2.setItemName("Thali");
