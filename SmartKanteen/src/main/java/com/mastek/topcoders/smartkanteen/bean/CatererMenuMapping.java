@@ -1,25 +1,19 @@
 package com.mastek.topcoders.smartkanteen.bean;
 
-
 public class CatererMenuMapping
 {
-	private int caterer_menu_mapping_id;
+	private Integer catererMenuMappingId;
 	private Menu menu;
-	private int catererId;
+	private Integer catererId;
 
-	public CatererMenuMapping()
+	public Integer getCatererMenuMappingId()
 	{
-		// TODO Auto-generated constructor stub
+		return catererMenuMappingId;
 	}
 
-	public int getCaterer_menu_mapping_id()
+	public void setCatererMenuMappingId(Integer catererMenuMappingId)
 	{
-		return caterer_menu_mapping_id;
-	}
-
-	public void setCaterer_menu_mapping_id(int caterer_menu_mapping_id)
-	{
-		this.caterer_menu_mapping_id = caterer_menu_mapping_id;
+		this.catererMenuMappingId = catererMenuMappingId;
 	}
 
 	public Menu getMenu()
@@ -32,12 +26,12 @@ public class CatererMenuMapping
 		this.menu = menu;
 	}
 
-	public int getCatererId()
+	public Integer getCatererId()
 	{
 		return catererId;
 	}
 
-	public void setCatererId(int catererId)
+	public void setCatererId(Integer catererId)
 	{
 		this.catererId = catererId;
 	}
@@ -45,8 +39,7 @@ public class CatererMenuMapping
 	@Override
 	public String toString()
 	{
-		return "CatererMenuMapping [caterer_menu_mapping_id=" + caterer_menu_mapping_id + ", menu=" + menu
-				+ ", catererId=" + catererId + "]";
+		return "CatererMenuMapping [catererMenuMappingId=" + catererMenuMappingId + ", menu=" + menu + ", catererId="
+				+ catererId + "]";
 	}
-
 }

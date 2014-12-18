@@ -3,19 +3,15 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 9, 2014 9:26:02 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-	<class name="com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping"
-		table="DAILY_MENU_MAPPING">
-
-		<id name="dailyMenuMappingId" type="int">
-			<column name="daily_Menu_Mapping_Id" />
-			<generator class="native"></generator>
+	<class name="com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping" table="DAILY_MENU_MAPPING">
+		<id name="dailyMenuMappingId" type="java.lang.Integer">
+			<column name="DAILY_MENU_MAPPING_ID" />
+			<generator class="identity" />
 		</id>
-
-		<property name="dailyMenuId" type="int">
+		<property name="dailyMenuId" type="java.lang.Integer">
 			<column name="DAILY_MENU_ID" />
 		</property>
-
-		<many-to-one name="menu" column="item_id" unique="true"
+		<many-to-one name="menu" column="ITEM_ID" unique="true"
 			class="com.mastek.topcoders.smartkanteen.bean.Menu" not-null="true"
 			lazy="false" />
 	</class>

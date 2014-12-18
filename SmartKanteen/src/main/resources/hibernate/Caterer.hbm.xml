@@ -3,22 +3,21 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 8, 2014 9:27:05 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.mastek.topcoders.smartkanteen.bean.Caterer" table="Caterer">
-        <id name="catererId" type="int">
-            <column name="caterer_id" />
-            <generator class="native" />
-        </id>
-        <property name="catererName" type="java.lang.String">
-            <column name="caterer_name" />
-        </property>
-        <set name="catererMenuMapping" cascade="all" inverse="true" >
-         <key column="caterer_id"/>
-         <one-to-many class="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping"  />
-         </set>
-         
-          <set name="menuList" cascade="all" inverse="true" >
-         <key column="caterer_id"/>
-         <one-to-many class="com.mastek.topcoders.smartkanteen.bean.DailyMenu"/>
-         </set>
-    </class>
+	<class name="com.mastek.topcoders.smartkanteen.bean.Caterer" table="CATERER">
+		<id name="catererId" type="java.lang.Integer">
+			<column name="CATERER_ID" />
+			<generator class="identity" />
+		</id>
+		<property name="catererName" type="java.lang.String">
+			<column name="CATERER_NAME" length="50" not-null="true" />
+		</property>
+		<set name="catererMenuMapping" cascade="all" inverse="true" lazy="false">
+			<key column="CATERER_ID" />
+			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping" />
+		</set>
+		<set name="menuList" cascade="all" inverse="true" lazy="false">
+			<key column="CATERER_ID" />
+			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.DailyMenu" />
+		</set>
+	</class>
 </hibernate-mapping>
