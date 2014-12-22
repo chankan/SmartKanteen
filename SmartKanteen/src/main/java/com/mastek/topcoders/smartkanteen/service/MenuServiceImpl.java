@@ -8,6 +8,8 @@ import java.util.List;
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
+import com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping;
+import com.mastek.topcoders.smartkanteen.bean.Tag;
 import com.mastek.topcoders.smartkanteen.dao.MenuDAO;
 
 public class MenuServiceImpl implements MenuService
@@ -43,9 +45,38 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
+	public Integer addItemInMenuMaster(Menu menu, String tags)
+	{
+		MenuDAO dao = new MenuDAO();
+
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenu(menu);
+		menuTagsMapping.setTags(tags);
+
+		menu.setMenuTagsMapping(menuTagsMapping);
+
+		System.out.println(menu);
+		return dao.addItem(menu);
+	}
+
+	@Override
 	public void addItemInMenuMaster(Menu menuMaster, Caterer caterer)
 	{
 		MenuDAO dao = new MenuDAO();
+		dao.addItemInMenuMaster(menuMaster, caterer);
+	}
+
+	@Override
+	public void addItemInMenuMaster(Menu menuMaster, Caterer caterer, String tags)
+	{
+		MenuDAO dao = new MenuDAO();
+
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenu(menuMaster);
+		menuTagsMapping.setTags(tags);
+
+		menuMaster.setMenuTagsMapping(menuTagsMapping);
+
 		dao.addItemInMenuMaster(menuMaster, caterer);
 	}
 
@@ -54,6 +85,20 @@ public class MenuServiceImpl implements MenuService
 	{
 		MenuDAO dao = new MenuDAO();
 		dao.updateItem(menu);
+	}
+
+	@Override
+	public void updateItemInMenuMaster(Menu menuMaster, String tags)
+	{
+		MenuDAO dao = new MenuDAO();
+
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenu(menuMaster);
+		menuTagsMapping.setTags(tags);
+
+		menuMaster.setMenuTagsMapping(menuTagsMapping);
+
+		dao.updateItem(menuMaster);
 	}
 
 	@Override
@@ -105,6 +150,38 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 		boolean result = dao.deleteItem(itemId);
 		return result;
+	}
+
+	@Override
+	public void addMenuTags(Menu menu, String tags)
+	{
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenu(menu);
+		menuTagsMapping.setTags(tags);
+
+		MenuDAO dao = new MenuDAO();
+		dao.addMenuTags(menuTagsMapping);
+	};
+
+	@Override
+	public void updateMenuTags(Menu menu, String tags)
+	{
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenu(menu);
+		menuTagsMapping.setTags(tags);
+
+		MenuDAO dao = new MenuDAO();
+		dao.updateMenuTags(menuTagsMapping);
+	}
+
+	@Override
+	public void deleteMenuTags(Menu menu)
+	{
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenu(menu);
+
+		MenuDAO dao = new MenuDAO();
+		dao.deleteMenuTags(menuTagsMapping);
 	}
 
 	@Override
@@ -237,5 +314,56 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 		boolean result = dao.removeDailyMenuItems(dailyMenuId, menuList);
 		return result;
+	}
+
+	@Override
+	public List<Tag> getTags()
+	{
+		MenuDAO dao = new MenuDAO();
+		List<Tag> tags = dao.getTags();
+		return tags;
+	}
+
+	@Override
+	public Tag getTag(Integer tagId)
+	{
+		MenuDAO dao = new MenuDAO();
+		Tag tag = dao.getTagById(tagId);
+		return tag;
+	}
+
+	@Override
+	public void addTag(Tag tag)
+	{
+		MenuDAO dao = new MenuDAO();
+		dao.addTag(tag);
+	}
+
+	@Override
+	public void updateTag(Tag tag)
+	{
+		if (tag.getTagId() == 0 || tag.getTagId() == null)
+		{
+			System.out.println("Tag not found");
+		}
+
+		MenuDAO dao = new MenuDAO();
+		Tag tagDB = dao.getTagById(tag.getTagId());
+
+		if (tagDB != null)
+		{
+			if (tag.getTagName() != null)
+			{
+				tagDB.setTagName(tag.getTagName());
+			}
+			dao.updateTag(tagDB);
+		}
+	}
+
+	@Override
+	public void deleteTag(Tag tag)
+	{
+		MenuDAO dao = new MenuDAO();
+		dao.deleteTag(tag);
 	}
 }

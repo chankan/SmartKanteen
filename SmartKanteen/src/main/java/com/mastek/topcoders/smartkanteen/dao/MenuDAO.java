@@ -2,9 +2,12 @@ package com.mastek.topcoders.smartkanteen.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,6 +19,8 @@ import com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
+import com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping;
+import com.mastek.topcoders.smartkanteen.bean.Tag;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
 
 public class MenuDAO
@@ -70,10 +75,15 @@ public class MenuDAO
 		try
 		{
 			result = (Integer) session.save(menuMaster);
+
+			menuMaster.getMenuTagsMapping().setMenu(menuMaster);
+
+			result = (Integer) session.save(menuMaster.getMenuTagsMapping());
 			tx.commit();
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
 		}
 		DatabaseUtil.closeSession(session);
@@ -86,23 +96,27 @@ public class MenuDAO
 		Session session = DatabaseUtil.getSession();
 
 		Transaction tx = session.beginTransaction();
-		try
-		{
-			Integer menuId = addItem(menuMaster);
 
-			String sql = "INSERT INTO CATERER_MENU_MAPPING(ITEM_ID,CATERER_ID) VALUES (:menuId, :catererId)";
-			Query query = session.createSQLQuery(sql);
-			query.setParameter("catererId", caterer.getCatererId());
-			query.setParameter("menuId", menuId);
-
-			System.out.println("menuId" + menuId);
-			int result = query.executeUpdate();
-			session.update(menuMaster);
-			tx.commit();
-		}
-		catch (Exception e)
+		if (menuMaster != null && caterer != null)
 		{
-			tx.rollback();
+			try
+			{
+				Integer itemId = addItem(menuMaster);
+
+				System.out.println(menuMaster);
+				menuMaster.setItemId(itemId);
+
+				CatererMenuMapping catererMenuMapping = new CatererMenuMapping();
+				catererMenuMapping.setCatererId(caterer.getCatererId());
+				catererMenuMapping.setMenu(menuMaster);
+
+				session.save(catererMenuMapping);
+				tx.commit();
+			}
+			catch (Exception e)
+			{
+				tx.rollback();
+			}
 		}
 		DatabaseUtil.closeSession(session);
 	}
@@ -132,7 +146,43 @@ public class MenuDAO
 		Transaction tx = session.beginTransaction();
 		try
 		{
+			MenuTagsMapping menuTagsMapping = menuMaster.getMenuTagsMapping();
+
 			session.update(menuMaster);
+
+			if (menuTagsMapping != null)
+			{
+				Criteria criteria = session.createCriteria(MenuTagsMapping.class);
+				criteria.add(Restrictions.eq("menu", menuMaster));
+
+				List<MenuTagsMapping> menuTagsMappingList = criteria.list();
+
+				if (menuTagsMappingList != null && menuTagsMappingList.size() == 1)
+				{
+					MenuTagsMapping menuTagsMappingDB = menuTagsMappingList.get(0);
+
+					String tags = menuTagsMappingDB.getTags();
+
+					if (!tags.equalsIgnoreCase(""))
+					{
+						tags = tags + "," + menuMaster.getMenuTagsMapping().getTags();
+					}
+					else
+					{
+						tags = menuMaster.getMenuTagsMapping().getTags();
+					}
+
+					menuTagsMappingDB.setTags(tags);
+
+					session.update(menuTagsMappingDB);
+				}
+				else if (menuTagsMappingList == null || menuTagsMappingList.size() == 0)
+				{
+					menuTagsMapping.setMenu(menuMaster);
+					session.saveOrUpdate(menuTagsMapping);
+				}
+			}
+
 			tx.commit();
 			DatabaseUtil.closeSession(session);
 		}
@@ -152,6 +202,20 @@ public class MenuDAO
 		{
 			Menu menuMaster = new Menu();
 			menuMaster.setItemId(itemId);
+
+			MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+			menuTagsMapping.setMenu(menuMaster);
+
+			Criteria criteria = session.createCriteria(MenuTagsMapping.class);
+			criteria.add(Restrictions.eq("menu", menuMaster));
+
+			List<MenuTagsMapping> menuTagsMappingList = criteria.list();
+
+			if (menuTagsMappingList != null && menuTagsMappingList.size() == 1)
+			{
+				MenuTagsMapping menuTagsMappingDB = menuTagsMappingList.get(0);
+				session.delete(menuTagsMappingDB);
+			}
 
 			session.delete(menuMaster);
 			tx.commit();
@@ -401,7 +465,6 @@ public class MenuDAO
 
 	public void appendDailyMenu(DailyMenu dailyMenu)
 	{
-
 		Session session = DatabaseUtil.getSession();
 
 		Transaction tx = session.beginTransaction();
@@ -483,11 +546,12 @@ public class MenuDAO
 				{
 					itemIds = itemIds.substring(1);
 				}
-
+				System.out.println(dailyMenuId);
+				System.out.println(itemIds);
 				Query query = session
-						.createSQLQuery(" DELETE FROM DAILY_MENU_MAPPING WHERE DAILY_MENU_ID = :dailyMenuId AND ITEM_ID IN (:itemIds)");
+						.createSQLQuery(" DELETE FROM DAILY_MENU_MAPPING WHERE DAILY_MENU_ID = :dailyMenuId AND ITEM_ID IN ("
+								+ itemIds + ")");
 				query.setParameter("dailyMenuId", dailyMenuId);
-				query.setParameter("itemIds", itemIds);
 
 				query.executeUpdate();
 
@@ -502,5 +566,295 @@ public class MenuDAO
 		}
 		DatabaseUtil.closeSession(session);
 		return result;
+	}
+
+	public List<Tag> getTags()
+	{
+		Session session = DatabaseUtil.getSession();
+		List<Tag> tagList = session.createQuery(" FROM Tag ").list();
+		DatabaseUtil.closeSession(session);
+
+		return tagList;
+	}
+
+	public Tag getTagById(Integer tagId)
+	{
+		Session session = DatabaseUtil.getSession();
+
+		Query query = session.createQuery("FROM Tag WHERE tagId= :tagId");
+		query.setParameter("tagId", tagId);
+
+		List<Tag> tagList = query.list();
+		DatabaseUtil.closeSession(session);
+
+		if (tagList != null && tagList.size() == 1)
+		{
+			return tagList.get(0);
+		}
+
+		return null;
+	}
+
+	public Integer addTag(Tag tag)
+	{
+		Integer result = 0;
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		try
+		{
+			result = (Integer) session.save(tag);
+			tx.commit();
+		}
+		catch (Exception e)
+		{
+			tx.rollback();
+		}
+		DatabaseUtil.closeSession(session);
+
+		return result;
+	}
+
+	public void updateTag(Tag tag)
+	{
+		Session session = DatabaseUtil.getSession();
+		if (tag != null)
+		{
+			Transaction tx = session.beginTransaction();
+			try
+			{
+				session.update(tag);
+				tx.commit();
+			}
+			catch (Exception e)
+			{
+				tx.rollback();
+			}
+			DatabaseUtil.closeSession(session);
+		}
+	}
+
+	public void deleteTag(Tag tag)
+	{
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = session.beginTransaction();
+
+		try
+		{
+			Tag tagDB = (Tag) session.load(Tag.class, tag.getTagId());
+			if (tagDB != null)
+			{
+				Criteria criteria = session.createCriteria(MenuTagsMapping.class);
+				criteria.add(Restrictions.like("tags", "%" + tag.getTagId() + "%"));
+				List<MenuTagsMapping> menuTagsMappingList = criteria.list();
+
+				List<MenuTagsMapping> updateMenuTagsMappings = new ArrayList<MenuTagsMapping>();
+				List<MenuTagsMapping> deleteMenuTagsMappings = new ArrayList<MenuTagsMapping>();
+
+				for (MenuTagsMapping menuTagsMapping : menuTagsMappingList)
+				{
+					String tags = menuTagsMapping.getTags();
+					String[] tagArr = tags.split(",");
+					boolean isPresent = false;
+
+					for (String tagStr : tagArr)
+					{
+						Integer tagId = Integer.parseInt(tagStr.trim());
+
+						if (tagId == tag.getTagId())
+						{
+							isPresent = true;
+							break;
+						}
+					}
+
+					if (isPresent)
+					{
+						String updatedTagStr = "";
+
+						for (String tagStr : tagArr)
+						{
+							Integer tagId = Integer.parseInt(tagStr.trim());
+
+							if (tagId != tag.getTagId())
+							{
+								updatedTagStr = updatedTagStr + "," + tagId;
+							}
+						}
+
+						if (updatedTagStr.trim().length() > 0)
+						{
+							updatedTagStr = updatedTagStr.substring(1);
+
+							menuTagsMapping.setTags(updatedTagStr);
+							updateMenuTagsMappings.add(menuTagsMapping);
+						}
+						else
+						{
+							deleteMenuTagsMappings.add(menuTagsMapping);
+						}
+					}
+				}
+
+				for (MenuTagsMapping menuTagsMapping : updateMenuTagsMappings)
+				{
+					session.update(menuTagsMapping);
+				}
+
+				for (MenuTagsMapping menuTagsMapping : deleteMenuTagsMappings)
+				{
+					session.delete(menuTagsMapping);
+				}
+
+				session.delete(tagDB);
+				tx.commit();
+			}
+		}
+		catch (Exception e)
+		{
+			tx.rollback();
+			e.printStackTrace();
+		}
+
+		DatabaseUtil.closeSession(session);
+	}
+
+	public void addMenuTags(MenuTagsMapping menuTagsMapping)
+	{
+		Menu menu = menuTagsMapping.getMenu();
+
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+
+		try
+		{
+			Menu menuDB = (Menu) session.load(Menu.class, menu.getItemId());
+
+			if (menuDB != null)
+			{
+				Criteria criteria = session.createCriteria(MenuTagsMapping.class);
+				criteria.add(Restrictions.eq("menu", menuDB));
+
+				List<MenuTagsMapping> menuTagsMappingList = criteria.list();
+
+				if (menuTagsMappingList != null && menuTagsMappingList.size() == 1)
+				{
+					MenuTagsMapping menuTagsMappingDB = menuTagsMappingList.get(0);
+
+					String tags = menuTagsMappingDB.getTags();
+
+					if (!tags.equalsIgnoreCase(""))
+					{
+						tags = tags + "," + menuTagsMapping.getTags();
+					}
+					else
+					{
+						tags = menuTagsMapping.getTags();
+					}
+
+					menuTagsMappingDB.setTags(tags);
+
+					session.update(menuTagsMappingDB);
+				}
+				else if (menuTagsMappingList == null || menuTagsMappingList.size() == 0)
+				{
+					session.saveOrUpdate(menuTagsMapping);
+				}
+			}
+			else
+			{
+				System.out.println("Menu Item not found!!");
+			}
+
+			tx.commit();
+		}
+		catch (HibernateException he)
+		{
+			tx.rollback();
+		}
+
+		DatabaseUtil.closeSession(session);
+	}
+
+	public void updateMenuTags(MenuTagsMapping menuTagsMapping)
+	{
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+
+		try
+		{
+			MenuTagsMapping menuTagsMappingDB = (MenuTagsMapping) session.get(MenuTagsMapping.class, menuTagsMapping);
+
+			String tagsDB = menuTagsMappingDB.getTags();
+			String[] tagArrDB = tagsDB.split(",");
+
+			Set<Integer> tagIds = new HashSet<Integer>();
+
+			for (String tagStrDB : tagArrDB)
+			{
+				Integer tagId = Integer.parseInt(tagStrDB.trim());
+
+				tagIds.add(tagId);
+			}
+
+			String tags = menuTagsMapping.getTags();
+			String[] tagArr = tags.split(",");
+
+			for (String tagStr : tagArr)
+			{
+				Integer tagId = Integer.parseInt(tagStr.trim());
+
+				tagIds.add(tagId);
+			}
+
+			String updatedTagStr = "";
+
+			for (Integer tagId : tagIds)
+			{
+				updatedTagStr = updatedTagStr + "," + tagId;
+			}
+
+			if (updatedTagStr.trim().length() > 0)
+			{
+				updatedTagStr = updatedTagStr.substring(1);
+			}
+
+			menuTagsMappingDB.setTags(updatedTagStr);
+
+			session.update(menuTagsMappingDB);
+			tx.commit();
+		}
+		catch (HibernateException he)
+		{
+			tx.rollback();
+		}
+
+		DatabaseUtil.closeSession(session);
+	}
+
+	public void deleteMenuTags(MenuTagsMapping menuTagsMapping)
+	{
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+
+		try
+		{
+			MenuTagsMapping menuTagsMappingDB = (MenuTagsMapping) session.get(MenuTagsMapping.class, menuTagsMapping);
+
+			if (menuTagsMappingDB != null)
+			{
+				session.delete(menuTagsMappingDB);
+			}
+
+			tx.commit();
+		}
+		catch (HibernateException he)
+		{
+			tx.rollback();
+		}
+
+		DatabaseUtil.closeSession(session);
 	}
 }
