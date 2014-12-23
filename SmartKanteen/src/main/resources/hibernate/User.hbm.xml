@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 19, 2014 7:06:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.mastek.topcoders.smartkanteen.bean.User" table="USER" >
+        <id name="userId" type="big_decimal">
+            <column name="USER_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="loginId" type="string">
+            <column name="LOGIN_ID" length="50" unique="true" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="FIRST_NAME" length="30" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="LAST_NAME" length="30" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="PASSWORD" length="30" not-null="true" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="EMAIL_ID" length="30" not-null="true" unique="true" />
+        </property>
+    </class>
+</hibernate-mapping>
