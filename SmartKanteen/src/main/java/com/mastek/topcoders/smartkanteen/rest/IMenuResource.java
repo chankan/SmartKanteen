@@ -28,33 +28,16 @@ public interface IMenuResource {
 		
 
 	/*Methods related to Master Menu*/
-
-	//List<Menu> getMenuMaster ();
-		
+			
 	List<Menu> getMenuMasterByCaterer(Integer catererId);
 	
-	//List<Menu> getMenuByName(String itemName);
-	
-	//Integer addItemInMenuMaster(Menu menuMaster);
-		
 	Response addUpdateItemInMenuMaster(Menu menuMaster, int catererId);
 		
-	//void updateItemInMenuMaster(Menu menu);
-		
-	//void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
-	//		Integer prepTime);
-	
 	Response deleteItemFromMenuMaster(Integer itemId);
 	
 	/*Methods Ends*/
 	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	/*Methods related to DailyMenu*/
 	
@@ -64,12 +47,8 @@ public interface IMenuResource {
 	
 	void updateDailyMenu(List<Menu> menuList,Integer catererId, DateParam menuDate);
 	
-	//void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
-	
-	//Response deleteDailyMenu(Integer dailyMenuId);
 	Response deleteDailyMenu(Integer catererId, DateParam menuDate);
-	//Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
-	
+
 	/*Method Ends*/
 
 }
