@@ -4,44 +4,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 			var MenuService = {
 				restService : $resource('rest/kanteen/menu'),
 				data : [],
-				data1 : [
-				{
-					ItemID : 1,
-					ItemName : "Thali",
-					Description : "Jain Thali",
-					Price : 100,
-					PrepTime : 15
-				}, { 
-					ItemID : 2,
-					ItemName : "Biryani",
-					Description : "Kashmiri Biryani",
-					Price : 50,
-					PrepTime : 30
-				}, {
-					ItemID : 3,
-					ItemName : "Curd Rice",
-					Description : "Special Curd Rice",
-					Price : 35,
-					PrepTime : 20
-				}, {
-					ItemID : 4,
-					ItemName : "Desertz",
-					Description : "Gulam Jamoon",
-					Price : 20,
-					PrepTime : 10
-				}, {
-					ItemID : 5,
-					ItemName : "Roti",
-					Description : "Thanduri Roti",
-					Price : 10,
-					PrepTime : 20
-				}, {
-					ItemID : 6,
-					ItemName : "Roti 1",
-					Description : "Thanduri Roti",
-					Price : 10,
-					PrepTime : 20
-				} ],
+				data1 : [ ],
 				menuIndex : 6,
 
 				getAll : function() {
@@ -88,6 +51,15 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 			return MenuService;
 		} ]).config(function($routeProvider) {
 	$routeProvider.when('/', {
+		controller : 'HomeCtrl',
+		templateUrl : 'view/homepage.html'
+	}).when('/todaymenus', {
+		controller : 'CatererListCtrl',
+		templateUrl : 'view/catererlist.html'
+	}).when('/caterer/:catererId', {
+		controller : 'CatererMenuCtrl',
+		templateUrl : 'view/caterermenulist.html'
+	}).when('/menulist', {
 		controller : 'ListCtrl',
 		templateUrl : 'view/menulist.html'
 	}).when('/dailymenu', {
@@ -105,7 +77,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		url : "#/"
 	}, {
 		name : "Today's Menu",
-		url : "#/dailymenu"
+		url : "#/todaymenus"
 	}, {
 		name : "My Order",
 		url : "#/new"
@@ -125,6 +97,13 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	// }
 	// };
 	// alert($scope.menus);
+}).controller('HomeCtrl', function($scope, Menus, $resource, $http) {
+	$scope.menudata = $resource('rest/service/caterer/1/menu').get();
+}).controller('CatererListCtrl', function($scope, Menus, $resource, $http) {
+	$scope.catererData = $resource('rest/service/caterer/').get();
+}).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams) {
+	var catererId = $routeParams.catererId;
+	$scope.menudata = $resource('rest/service/caterer/'+catererId+'/menu').get();
 }).controller('ListCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/1/menu').get();
 	// $scope.menus =[{itemID: 1, itemName: "Thali", description: "Jain
