@@ -7,12 +7,12 @@
 		table="MENU_TAGS_MAPPING">
 		<id name="menuTagsMappingId" type="java.lang.Integer">
 			<column name="MENU_TAGS_MAPPING_ID" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		 <property name="tags" type="string">
             <column name="TAG_IDS" />
         </property>
 		<many-to-one name="menu" column="ITEM_ID"
-			class="com.mastek.topcoders.smartkanteen.bean.Menu" lazy="false" />
+			class="com.mastek.topcoders.smartkanteen.bean.Menu" lazy="false" unique="true" />
 	</class>
 </hibernate-mapping>

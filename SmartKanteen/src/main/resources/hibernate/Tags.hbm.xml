@@ -6,7 +6,7 @@
 	<class name="com.mastek.topcoders.smartkanteen.bean.Tag" table="TAGS">
 		<id name="tagId" type="java.lang.Integer">
 			<column name="TAG_ID" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<property name="tagName" type="java.lang.String">
 			<column name="TAG_NAME" length="30" not-null="true" />

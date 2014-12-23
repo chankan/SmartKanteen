@@ -44,6 +44,6 @@ public class MenuTagsMapping implements java.io.Serializable
 	@Override
 	public String toString()
 	{
-		return "MenuTagsMapping [menuTagsMappingId=" + menuTagsMappingId + ", menu=" + menu + ", tags=" + tags + "]";
+		return "MenuTagsMapping [menuTagsMappingId=" + menuTagsMappingId + ", tags=" + tags + "]";
 	}
 }

@@ -3,7 +3,6 @@ package com.mastek.topcoders.smartkanteen.bean;
 // Generated Dec 4, 2014 12:33:20 PM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,7 +17,7 @@ public class Menu implements java.io.Serializable
 	private String description;
 	private BigDecimal price;
 	private Integer prepTime;
-	private Set<MenuTagsMapping> menuTagsMappings;
+	private MenuTagsMapping menuTagsMapping;
 
 	public Integer getItemId()
 	{
@@ -70,20 +69,20 @@ public class Menu implements java.io.Serializable
 		this.prepTime = prepTime;
 	}
 
-	public Set<MenuTagsMapping> getMenuTagsMappings()
+	public MenuTagsMapping getMenuTagsMapping()
 	{
-		return menuTagsMappings;
+		return menuTagsMapping;
 	}
 
-	public void setMenuTagsMappings(Set<MenuTagsMapping> menuTagsMappings)
+	public void setMenuTagsMapping(MenuTagsMapping menuTagsMapping)
 	{
-		this.menuTagsMappings = menuTagsMappings;
+		this.menuTagsMapping = menuTagsMapping;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "Menu [itemId=" + itemId + ", itemName=" + itemName + ", description=" + description + ", price="
-				+ price + ", prepTime=" + prepTime + ", menuTagsMappings=" + menuTagsMappings + "]";
+				+ price + ", prepTime=" + prepTime + ", menuTagsMapping=" + menuTagsMapping + "]";
 	}
 }
