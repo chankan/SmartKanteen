@@ -260,6 +260,15 @@ public class MenuServiceImpl implements MenuService
 
 		dao.addDailyMenuItem(dailyMenu);
 	}
+	
+	@Override
+	public void updateDailyMenu(Integer catererId, Date menuDate,
+			List<Menu> menu) {
+		MenuDAO dao = new MenuDAO();
+		dao.updateDailyMenuItem(catererId,menuDate,menu);
+	}
+	
+	
 
 	@Override
 	public Boolean deleteDailyMenu(Integer dailyMenuId)
@@ -269,6 +278,13 @@ public class MenuServiceImpl implements MenuService
 		return result;
 	}
 
+	@Override
+	public Boolean deleteDailyMenu(Integer catererId, Date menuDate) {
+		MenuDAO dao = new MenuDAO();
+		boolean result = dao.deleteDailyMenu(catererId,menuDate);
+		return result;
+	}
+	
 	@Override
 	public void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
 	{

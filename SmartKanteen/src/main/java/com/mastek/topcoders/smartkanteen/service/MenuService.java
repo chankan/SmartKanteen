@@ -53,8 +53,12 @@ public interface MenuService
 	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
 
 	Boolean deleteDailyMenu(Integer dailyMenuId);
-
+	
+	Boolean deleteDailyMenu(Integer catererId, Date menuDate);
+	
 	void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
+	
+	void updateDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
 
 	void appendDailyMenuItems(Integer dailyMenuId, Menu menu);
 

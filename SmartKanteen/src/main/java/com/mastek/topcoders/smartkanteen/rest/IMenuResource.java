@@ -3,6 +3,7 @@ package com.mastek.topcoders.smartkanteen.rest;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
@@ -11,41 +12,41 @@ import com.mastek.topcoders.smartkanteen.bean.Menu;
 
 public interface IMenuResource {
 	
-	//Methods related to caterer
+	/*Methods related to caterer*/
 	
 		List<Caterer> getCaterers();
 		
 		Caterer getCaterer(Integer catererId);
 		
-		Integer addCaterer(Caterer caterer);
+		Response addCaterer(Caterer caterer);
 		
-		void updateCaterer(Integer catererId, String catererName);
+		Response updateCaterer(Integer catererId, String catererName);
 		
 		Response deleteCaterer(Integer catererId);
 		
-		//Methods Ends
+		/*Methods Ends*/
 		
 
-	//Methods related to Master Menu
+	/*Methods related to Master Menu*/
 
-	List<Menu> getMenuMaster ();
+	//List<Menu> getMenuMaster ();
 		
 	List<Menu> getMenuMasterByCaterer(Integer catererId);
 	
-	List<Menu> getMenuByName(String itemName);
+	//List<Menu> getMenuByName(String itemName);
 	
-	Integer addItemInMenuMaster(Menu menuMaster);
+	//Integer addItemInMenuMaster(Menu menuMaster);
 		
-	Integer addItemInMenuMaster(Menu menuMaster, int catererId);
+	Response addUpdateItemInMenuMaster(Menu menuMaster, int catererId);
 		
-	void updateItemInMenuMaster(Menu menu);
+	//void updateItemInMenuMaster(Menu menu);
 		
-	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
-			Integer prepTime);
+	//void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
+	//		Integer prepTime);
 	
 	Response deleteItemFromMenuMaster(Integer itemId);
 	
-	//Methods Ends
+	/*Methods Ends*/
 	
 	
 	
@@ -55,20 +56,20 @@ public interface IMenuResource {
 	
 	
 	
-	//Methods related to DailyMenu
+	/*Methods related to DailyMenu*/
 	
 	List<Menu> getDailyMenu(DateParam menuDate, Integer catererId);
 	
-	void addDailyMenu(Integer catererId, DateParam menuDate, List<Menu> menu);
+	void addDailyMenu(List<Menu> menu,Integer catererId, DateParam menuDate);
 	
-	//void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList);
+	void updateDailyMenu(List<Menu> menuList,Integer catererId, DateParam menuDate);
 	
-	void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
+	//void appendDailyMenu(Integer dailyMenuId, List<Menu> menuList);
 	
-	Boolean deleteDailyMenu(Integer dailyMenuId);
+	//Response deleteDailyMenu(Integer dailyMenuId);
+	Response deleteDailyMenu(Integer catererId, DateParam menuDate);
+	//Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
 	
-	Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
-	
-	//Method Ends
+	/*Method Ends*/
 
 }

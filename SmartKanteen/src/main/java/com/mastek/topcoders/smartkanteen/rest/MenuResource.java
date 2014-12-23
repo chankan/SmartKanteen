@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -17,8 +16,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.ObjectNotFoundException;
+
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
+import com.mastek.topcoders.smartkanteen.rest.exception.NotAuthorizedException;
 import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
 
 
@@ -26,12 +28,12 @@ import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
 public class MenuResource implements IMenuResource {
 
 	private final MenuServiceImpl menuService;
+	private String role="Admin";
 
 	public MenuResource() {
 		menuService = new MenuServiceImpl();
 	}
 
-	//Fetching All caterers
 
 	@Path("/caterer")
 	@GET
@@ -43,74 +45,105 @@ public class MenuResource implements IMenuResource {
 		return caterer;
 	}
 
-	//Fetching Caterer using CatererID
+	@Path("/caterer")
+	@POST
+	@Produces  ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override 
+	public Response addCaterer(Caterer caterer) {
+		// TODO Auto-generated method stub
+		if(role.equalsIgnoreCase("superAdmin"))
+		{
+			menuService.addCaterer(caterer);
+			return Response   
+					.status(200)   
+					.entity("New Caterer with id "+ caterer.getCatererId()+ " is deleted!!").build();
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to Add Caterer!!!");
+		}
+	}
 
 	@Path("/caterer/{catererId}")
 	@GET
 	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Override
 	public Caterer getCaterer(@PathParam("catererId")Integer catererId) {
-		Caterer caterer;
-		caterer=menuService.getCaterer(catererId);
+		Caterer caterer =null;
+		if(role.equalsIgnoreCase("superAdmin") || role.equalsIgnoreCase("user") )
+		{
+			caterer=menuService.getCaterer(catererId);
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to Access other Caterer's Data!!!");
+		}
 		return caterer;
 	}
 
-	//Adding Caterer using Caterer Object
-
-	@Path("/caterer")
-	@POST
-	@Produces  ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-	@Override 
-	public Integer addCaterer(Caterer caterer) {
-		// TODO Auto-generated method stub
-		menuService.addCaterer(caterer);
-		return null;
-	}
-
-	//Updating Caterer Objects
 	@Path("/caterer/{catererId}/")
 	@POST
 	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public void updateCaterer(@PathParam("catererId")Integer catererId, //@FormParam("catererName")
+	public Response updateCaterer(@PathParam("catererId")Integer catererId, //@FormParam("catererName")
 			String catererName){
 		//create dummy date for catererName
 		catererName="xyz";
-		menuService.updateCaterer(catererId, catererName);
+		if(role.equalsIgnoreCase("superAdmin"))
+		{
+
+			if(menuService.updateCaterer(catererId, catererName))
+			{
+				return Response   
+						.status(200)   
+						.entity("Caterer with id "+ catererId+ " is updated!!").build();
+
+			}
+			else
+			{
+				return Response.status(404).entity("No such Caterer").build();
+			}
+
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to Add Caterer!!!");
+		}
+
 	}
 
-
-	//Deleting Caterer
-	@Path("caterer/delete/{catererId}")
-	@GET
+	@Path("caterer/{catererId}")
+	@DELETE
 	@Produces({MediaType.TEXT_PLAIN,MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Override
 	public Response deleteCaterer(@PathParam("catererId")Integer catererId) {
 		// TODO Auto-generated method stub
-
-		try {
-			if(menuService.deleteCaterer(catererId))
-			{
+		if(role.equalsIgnoreCase("superAdmin"))
+		{
+			try {
+				if(menuService.deleteCaterer(catererId))
+				{
+					return Response   
+							.status(200)   
+							.entity("Caterer with Id "+catererId+" is deleted!!").build();
+				}
+				else
+				{
+					return Response   
+							.status(404)   
+							.entity("No Such Caterer Exist!!").build();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				return Response   
-						.status(200)   
-						.entity("Caterer with Id "+catererId+" is deleted!!").build();
-			}
-			else
-			{
-				return Response   
-						.status(200)   
+						.status(404)			   
 						.entity("No Such Caterer Exist!!").build();
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			return Response   
-					.status(404)			   
-					.entity("No Such Caterer Exist!!").build();
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to Add Caterer!!!");
 		}
 	}
-
-
-
-	//Fetching Menu by CatererId
 
 	@Path("/caterer/{catererId}/menu")
 	@GET
@@ -122,37 +155,84 @@ public class MenuResource implements IMenuResource {
 		return menu;
 	}
 
-	//Adding Menu for Specific Caterer
 	@Path("/caterer/{catererId}/menu/")
 	@POST
 	@Produces ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes ({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Integer addItemInMenuMaster(Menu menuMaster,@PathParam("catererId")int catererId){
-		if(MenuValidation.validate(menuMaster))
+	public Response addUpdateItemInMenuMaster(Menu menuMaster,@PathParam("catererId")int catererId){
+		if(role.equalsIgnoreCase("admin"))
 		{
-			if(true)//menuMaster.getItemId()<1 || menuMaster.getItemId()==null)
+
+			if(MenuValidation.validate(menuMaster))
 			{
-				Caterer caterer= new Caterer();
-				caterer.setCatererId(catererId);
-				menuService.addItemInMenuMaster(menuMaster,caterer);
+				if(menuMaster.getItemId()==null)
+				{
+					Caterer caterer= new Caterer();
+					caterer.setCatererId(catererId);
+					menuService.addItemInMenuMaster(menuMaster,caterer);
+					return Response.status(200).entity("Menu Added!!").build();
+
+				}
+				else	
+				{
+					//updating Menu for particular customer
+					menuService.updateItemInMenuMaster(menuMaster);
+					return Response.status(200).entity("Menu Updated!!").build();
+				}
 			}
 			else
 			{
-				//updating Menu for particular customer
-				menuService.updateItemInMenuMaster(menuMaster);
+
+				return Response.status(200).entity("Menu Constraints Not Followed!!").build();
+			}
+		}
+		else	
+		{
+			throw new NotAuthorizedException("You Don't Have Permission!!!");
+			//throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+		}
+
+
+	}
+
+	@Path("/menu/{itemId}")
+	@DELETE
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Override
+	public Response deleteItemFromMenuMaster(@PathParam("itemId")Integer itemId) {
+		// TODO Auto-generated method stub
+		if(role.equalsIgnoreCase("Admin"))
+		{
+			try{
+				if (menuService.deleteItemFromMenuMaster(itemId)) {
+					return Response   
+							.status(200)   
+							.entity("Menu with Id "+itemId+" is deleted!!").build();
+
+				}
+				else{
+					return Response   
+							.status(402)   
+							.entity("No Such Menu Exist!!").build();
+				}
+
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+				return Response   
+						.status(402)   
+						.entity("No Such Menu Exist!!").build();
 			}
 		}
 		else
 		{
-			System.out.println("Menu Constraints Not Followed!!");
+			throw new NotAuthorizedException("You Don't Have Permission to delete item!!!");
 		}
-		return null;
+
+
 	}
 
-
-	//Fetching DailyMenu
-
-	@Path("/caterer/{catererId}/menu/date/{date}")
+	@Path("/caterer/{catererId}/menu/{date}")
 	@GET
 	@Produces  ({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Override
@@ -164,30 +244,74 @@ public class MenuResource implements IMenuResource {
 		return dailymenu;
 	}
 
-	//Adding Daily Menu
-	@Path("/caterer/{catererId}/menu/date/{date}")
+	@Path("/caterer/{catererId}/menu/{date}")
 	@POST
+	@Consumes ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
 	@Override
-	public void addDailyMenu(@PathParam("catererId")Integer catererId, @PathParam("date")DateParam menuDate, List<Menu> menu) {
+	public void addDailyMenu(List<Menu> menu, @PathParam("catererId")Integer catererId, @PathParam("date")DateParam menuDate) {
 		System.out.println("iN add daily");
 		Date date=menuDate.getDate();
-		menuService.addDailyMenu(catererId, date, menu);
+		if(role.equalsIgnoreCase("Admin"))
+		{
+			menuService.addDailyMenu(catererId, date, menu);
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to add daily Menu!!!");
+		}
 	}
 
-	//		//updating Daily Menu
-	//		@Path("/caterer/{catererId}/menu/date/{date}")
-	//		//@POST
-	//		@PUT
-	//		@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-	//		@Override
-	//		public void updateDailyMenu(Integer dailyMenuId, List<Menu> menuList) {
-	//			// TODO Auto-generated method stub
-	//			menuService.updateDailyMenuItems(dailyMenuId, menuList);
-	//		}
+	@Path("/caterer/{catererId}/menu/{date}")
+	@PUT
+	@Produces ({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override
+	public void updateDailyMenu(List<Menu> menuList,@PathParam("catererId")Integer catererId, @PathParam("date")DateParam menuDate) {
+		
+		Date date=menuDate.getDate();
+		if(role.equalsIgnoreCase("Admin"))
+		{
+			menuService.updateDailyMenu(catererId, date, menuList);
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to update daily Menu!!!");
+		}
+	}
+
+	@Path("/caterer/{catererId}/menu/{date}")
+	@DELETE
+	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Override
+	public Response deleteDailyMenu(@PathParam("catererId")Integer catererId, @PathParam("date")DateParam menuDate) {
+		// TODO Auto-generated method stub
+		Date date = menuDate.getDate();
+		if(role.equalsIgnoreCase("Admin"))
+		{
+			if (menuService.deleteDailyMenu(catererId, date))
+			{
+				return Response   
+						.status(200)   
+						.entity("Daily Menu for 23 december is deleted!!").build();
+
+			}
+			else
+			{
+				return Response   
+						.status(200)   
+						.entity("No Menu for 20 december").build();
+			}
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to delete daily Menu!!!");
+		}
+	}
 
 
-	// Fetching Master Menu List
+	/*	Not Needed AS OF NOW
+	 * 
+	 * // Fetching Master Menu List
 
 	@Path("/menu")
 	@GET
@@ -273,37 +397,7 @@ public class MenuResource implements IMenuResource {
 	}
 
 
-	//Deleting Menu item 
-	@Path("/menu/delete/{itemId}")
-	@DELETE
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Override
-	public Response deleteItemFromMenuMaster(@PathParam("itemId")Integer itemId) {
-		// TODO Auto-generated method stub
 
-		try{
-			if (menuService.deleteItemFromMenuMaster(itemId)) {
-				return Response   
-						.status(200)   
-						.entity("Menu with Id "+itemId+" is deleted!!").build();
-
-			}
-			else{
-				return Response   
-						.status(200)   
-						.entity("No Such Menu Exist!!").build();
-			}
-
-		}
-		catch (Exception e) {
-			// TODO: handle exception
-			return Response   
-					.status(200)   
-					.entity("No Such Menu Exist!!").build();
-		}
-
-
-	}
 
 
 
@@ -323,15 +417,7 @@ public class MenuResource implements IMenuResource {
 
 	}
 
-	//deleting Daily Menu
-	@Path("/menu/caterer/delete/{dailyMenuId}/")
-	@POST
-	@Produces ({ MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-	@Override
-	public Boolean deleteDailyMenu(@PathParam("dailyMenuId")Integer dailyMenuId) {
-		// TODO Auto-generated method stub
-		return (menuService.deleteDailyMenu(dailyMenuId));
-	}
+
 
 
 	// Removing daily Menu Items
@@ -348,7 +434,7 @@ public class MenuResource implements IMenuResource {
 
 	//Adding Menu using Form Fields
 
-	/*@Path("/add")
+	@Path("/add")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Override
@@ -389,35 +475,44 @@ public class MenuResource implements IMenuResource {
 
 	public static void main(String[] args) {
 		MenuResource resource= new MenuResource();
-		Menu menu= new Menu();
-		menu.setItemName("testAddN1");
-		menu.setDescription("testDescNew");
-		menu.setPrepTime(20000);
-		menu.setPrice(new BigDecimal(20.0));
+		//		Menu menu= new Menu();
+		//		menu.setItemName("");
+		//		menu.setDescription("testDescNew");
+		//		menu.setPrepTime(20000);
+		//		menu.setPrice(new BigDecimal(20.0));
+		//
+		//		System.out.println(MenuValidation.validate(menu));
 
 		//				Menu menu= new Menu();
 		//				menu.setItemName("testAddN2");
 		//				menu.setDescription("testDescNew");
 		//				menu.setPrepTime(20000);
 		//				menu.setPrice(new BigDecimal(20.0));
+		//
+		//		List<Menu> menuList = new ArrayList<Menu>();
+		//		resource.addUpdateItemInMenuMaster(menu,10);
+		//		/*
+		//				Caterer caterer = new Caterer();
+		//				caterer.setCatererId(14);
+		//				caterer.setCatererName("mdp");
+		//				resource.updateCaterer(14, "");
+		//
+		//		Menu menu1=new Menu();
+		//		menu1.setItemId(8);
+		//		List<Menu> menuList= new ArrayList<Menu>();
+		//		menuList.add(menu1);
 
+		//resource.addDailyMenu(10, new DateParam("2014-12-18"), menuList);
+		//		List<Menu> menuList= new ArrayList<Menu>();
+		//		menuList=resource.getMenuMaster();
+		//		System.out.println(menuList);
+		
+		Menu menu = new Menu();
+		menu.setItemId(3);
 		List<Menu> menuList = new ArrayList<Menu>();
-		resource.addItemInMenuMaster(menu,1);
-		/*
-		Caterer caterer = new Caterer();
-		//caterer.setCatererId(4);
-		caterer.setCatererName("mdp");
-		resource.addCaterer(caterer);*/
-
-		/*	Menu menu1=new Menu();
-		menu1.setItemId(8);
-		List<Menu> menuList= new ArrayList<Menu>();
-		menuList.add(menu1);
-
-		resource.addDailyMenu(2, new DateParam("2014-12-16"), menuList);
-		List<Menu> menuList= new ArrayList<Menu>();
-		menuList=resource.getMenuMaster();
-		System.out.println(menuList);*/
+		menuList.add(menu);
+		//Date date =new DateParam("20141218").getDate();
+		resource.addDailyMenu(menuList,10, new DateParam("20141218"));
 	}
 
 

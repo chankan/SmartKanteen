@@ -14,7 +14,7 @@ public class DateParam {
 
 	  public DateParam(String dateStr) throws WebApplicationException {
 	    
-	    final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 	    
 	      try {
 			this.date = dateFormat.parse(dateStr);

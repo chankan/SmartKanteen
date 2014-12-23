@@ -17,9 +17,9 @@ public class MenuValidation {
 		BigDecimal price=menu.getPrice();
 
 
-		if(itemName != null)
+		if(itemName != null && itemName.matches(".*\\w.*"))
 		{
-			if(itemName.length()<10)
+			if(itemName.trim().length()<=10)
 			{
 				if(description !=null)
 				{
@@ -29,7 +29,7 @@ public class MenuValidation {
 						{
 							if(prepTime > 0)
 							{
-								if(!(price.equals(null)))
+								if(!(price.equals(null)) )
 								{
 									if(price.compareTo(new BigDecimal(0))!=0)
 									{

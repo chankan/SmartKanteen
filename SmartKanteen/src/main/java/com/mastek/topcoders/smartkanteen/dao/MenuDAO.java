@@ -463,6 +463,56 @@ public class MenuDAO
 		DatabaseUtil.closeSession(session);
 	}
 
+	public void updateDailyMenuItem(Integer catererId, Date menuDate,
+			List<Menu> menulist) {
+		Session session = DatabaseUtil.getSession();
+
+		Transaction tx = session.beginTransaction();
+		try
+		{
+
+
+			Query selectQuery = session.createQuery("Select dailyMenuId FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
+			selectQuery.setParameter("catererId", catererId);
+			selectQuery.setParameter("menuDate", menuDate);
+			List<Integer> dailyMenuList = selectQuery.list();
+
+			Integer dailyMenuId = null;
+
+			if (dailyMenuList != null && dailyMenuList.size() == 1)
+			{
+				dailyMenuId = dailyMenuList.get(0);
+			}
+
+			if (dailyMenuId != null)
+			{
+				Query query = session.createQuery("DELETE FROM DailyMenuMapping WHERE dailyMenuId = :dailyMenuId ");
+				query.setParameter("dailyMenuId", dailyMenuId);
+
+				query.executeUpdate();
+
+
+				for (Menu menu : menulist)
+				{
+					DailyMenuMapping dailyMenuMapping = new DailyMenuMapping();
+					dailyMenuMapping.setMenu(menu);
+					dailyMenuMapping.setDailyMenuId(dailyMenuId);
+
+					session.saveOrUpdate(dailyMenuMapping);
+				}
+			}
+
+			tx.commit();
+		}
+		catch (Exception e)
+		{
+			tx.rollback();
+		}
+
+		DatabaseUtil.closeSession(session);
+
+	}
+
 	public void appendDailyMenu(DailyMenu dailyMenu)
 	{
 		Session session = DatabaseUtil.getSession();
@@ -502,6 +552,47 @@ public class MenuDAO
 		Transaction tx = session.beginTransaction();
 		try
 		{
+			DailyMenu dailyMenu = (DailyMenu) session.load(DailyMenu.class, dailyMenuId);
+			if (dailyMenu != null)
+			{
+				session.delete(dailyMenu);
+				tx.commit();
+				result = true;
+			}
+		}
+		catch (ObjectNotFoundException hib)
+		{
+			System.out.println("Item does not exist...");
+			tx.rollback();
+		}
+		catch (Exception e)
+		{
+			result = false;
+			tx.rollback();
+		}
+		DatabaseUtil.closeSession(session);
+		return result;
+	}
+
+	public Boolean deleteDailyMenu(Integer catererId, Date menuDate)
+	{
+		boolean result = false;
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		try
+		{
+			Query selectQuery = session.createQuery("Select dailyMenuId FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
+			selectQuery.setParameter("catererId", catererId);
+			selectQuery.setParameter("menuDate", menuDate);
+			List<Integer> dailyMenuList = selectQuery.list();
+
+			Integer dailyMenuId = null;
+
+			if (dailyMenuList != null && dailyMenuList.size() == 1)
+			{
+				dailyMenuId = dailyMenuList.get(0);
+			}
+
 			DailyMenu dailyMenu = (DailyMenu) session.load(DailyMenu.class, dailyMenuId);
 			if (dailyMenu != null)
 			{
