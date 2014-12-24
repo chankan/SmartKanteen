@@ -49,25 +49,40 @@ CREATE  TABLE Daily_Menu_Mapping
 ------------------------------------------------------------------------------------
 CREATE  TABLE  User
 (
-	user_id		NUMBER			auto_increment	CONSTRAINT	user_pk			PRIMARY KEY,
-	login_id	VARCHAR2(50),
-	first_name	VARCHAR2(30)					CONSTRAINT	first_name_nn	NOT NULL,
-	last_name	VARCHAR2(30)					CONSTRAINT	last_name		NOT NULL,
-	password	VARCHAR2(30)					CONSTRAINT	password_nn		NOT NULL,
-	email_id	VARCHAR2(30)					CONSTRAINT	email_id_nn		NOT NULL
+	user_id					NUMBER			auto_increment	CONSTRAINT	user_pk						PRIMARY KEY,
+	login_id				VARCHAR2(30)					CONSTRAINT  login_nn					NOT NULL,
+	password				VARCHAR2(30)					CONSTRAINT	password_nn					NOT NULL,
+	email_id				VARCHAR2(30)					CONSTRAINT	email_id_nn					NOT NULL,
+	account_creation_date	DATE							CONSTRAINT  account_generation_date_nn  NOT NULL
 );
 ALTER TABLE	User	ADD	CONSTRAINT	login_id_uk	UNIQUE KEY(login_id);
 ALTER TABLE	User	ADD	CONSTRAINT	email_id_uk	UNIQUE KEY(email_id);
 
+----------------------------------------------------------------------------
+CREATE TABLE  USER_DETAILS
+(
+	user_details_id		NUMBER  auto_increment     CONSTRAINT  user_details_pk   PRIMARY KEY,
+	first_name			VARCHAR2(30),
+	last_name			VARCHAR2(30),
+	gender				VARCHAR2(1),
+	date_of_birth		DATE,
+	contact_no			NUMBER,
+	extension_no		NUMBER,
+	employee_id			NUMBER,
+	user_id				NUMBER,
+	CONSTRAINT	user_fk	FOREIGN KEY	(user_id)	REFERENCES USER(user_id)
+);
+
 ----------------------------------------------------------------------------------------
 CREATE TABLE  Order_Master
 (
-	order_id	NUMBER	auto_increment	CONSTRAINT	order_pk		PRIMARY KEY,
-	user_id		NUMBER,
-	total_cost	FLOAT					CONSTRAINT	total_cost_nn	NOT NULL,
-	order_date	DATE					CONSTRAINT	order_date_nn	NOT NULL,
-	status		VARCHAR2(30)			CONSTRAINT	status_nn		NOT NULL,
-	remark		VARCHAR2(200),
+	order_id			NUMBER	auto_increment	CONSTRAINT	order_pk				PRIMARY KEY,
+	user_id				NUMBER,
+	total_cost			FLOAT					CONSTRAINT	total_cost_nn			NOT NULL,
+	order_date			DATE					CONSTRAINT	order_date_nn			NOT NULL,
+	order_created_date	DATE					CONSTRAINT	order_created_date_nn	NOT NULL,
+	status				VARCHAR2(30)			CONSTRAINT	status_nn				NOT NULL,
+	remark				VARCHAR2(200),
 	CONSTRAINT	user_id_fk	FOREIGN KEY	(user_id)	REFERENCES User(user_id)
 );
 
@@ -76,9 +91,10 @@ CREATE TABLE  Order_Master
  (
  	order_details_id		NUMBER	auto_increment	CONSTRAINT	ordered_details_pk	PRIMARY KEY,
  	order_id				NUMBER,
- 	daily_menu_mapping_id	NUMBER,
- 	CONSTRAINT	order_fk				FOREIGN KEY	(order_id)				REFERENCES	Order_Master(order_id),
- 	CONSTRAINT	daily_menu_mapping_fk	FOREIGN KEY	(daily_menu_mapping_id)	REFERENCES	Daily_Menu_Mapping(daily_menu_mapping_id)
+ 	item_id					NUMBER,
+ 	quantity				NUMBER,
+ 	CONSTRAINT	order_fk	FOREIGN KEY	(order_id)	REFERENCES	Order_Master(order_id),
+ 	CONSTRAINT	menu_fk		FOREIGN KEY	(menu_id)	REFERENCES	MENU_MASTER(item_id)
  );
  
  -------------------------------------------------------------------------------------------
@@ -96,4 +112,20 @@ CREATE TABLE  Order_Master
  	TAG_IDS					VARCHAR2(100),
  	CONSTRAINT	MENU_MASTER_FK	FOREIGN KEY	(ITEM_ID)	REFERENCES	MENU_MASTER(ITEM_ID)
  );
+
 --------------------------------------------------------------------------------------------
+CREATE TABLE ROLE 
+(
+	role_id		NUMBER			auto_increment	CONSTRAINT	role_pk			PRIMARY KEY,
+	role_name	VARCHAR2(30)					CONSTRAINT	role_name_nn	NOT NULL
+);
+
+----------------------------------------------------------------------------
+CREATE TABLE  USER_ROLE_MAPPING
+(
+	user_role_mapping_id	NUMBER	auto_increment	CONSTRAINT	user_role_mapping_pk	PRIMARY KEY,
+	role_id					NUMBER,
+	user_id					NUMBER,
+	CONSTRAINT	role_fk		FOREIGN KEY	(role_id)	REFERENCES	role(role_id),
+	CONSTRAINT	user_fk		FOREIGN KEY	(user_id)	REFERENCES	user(user_id)
+);
