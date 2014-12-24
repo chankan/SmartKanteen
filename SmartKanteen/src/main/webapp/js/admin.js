@@ -64,15 +64,17 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		templateUrl : 'view/menulist.html'
 	}).when('/dailymenu', {
 		controller : 'DailyMenuCtrl',
-		templateUrl : 'view/todaysmenulist.html'
-	}).when('/new', {
-		controller : 'CreateCtrl',
-		templateUrl : 'detail.html'
+		templateUrl : 'view/todaysmenulist.html'//UserMenu End
+	}).when('/admin/menu', {//Admin Menu
+		controller : 'AddMenuCtrl',
+		templateUrl : 'view/catererMenuUpdate.html'
 	}).otherwise({
 		redirectTo : '/'
 	});
 }).controller('MenuCtrl', function($scope, Menus) {
-	$scope.mainMenu = [ {
+	
+	
+	var userMenu = [ {
 		name : "Home",
 		url : "#/"
 	}, {
@@ -90,13 +92,25 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		name : "Logout",
 		url : "#/logout"
 	}, ];
-	// $scope.remove = function(id) {
-	// var result=Menus.remove(id);
-	// if(result){
-	// $location.path('/');
-	// }
-	// };
-	// alert($scope.menus);
+	
+	var adminMenu = [ 
+	                 {name : "Home", url : "#/"},
+	                 {name : "Master Menu",url : "#/admin/menu"},
+	                 {name : "Today's Menu",url : "#/todaymenus"},
+	                 {name : "Order", url : "#/new"	},
+	                 ];
+	
+	$scope.loginMenu = [ {
+		name : "UserName",
+		url : "#/"
+	}, {
+		name : "Logout",
+		url : "#/logout"
+	}, ];
+	
+	
+	$scope.mainMenu=adminMenu;
+	
 }).controller('HomeCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/1/menu').get();
 }).controller('CatererListCtrl', function($scope, Menus, $resource, $http) {
@@ -221,20 +235,36 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 			// alert($scope.menus);
 		})
 
-.controller('CreateCtrl', function($scope, $location, Menus) {
-	$scope.menu = {
-		ItemID : -1,
-		ItemName : "",
-		Description : "",
-		Price : 0,
-		PrepTime : 0
-	};
+.controller('CreateCtrl', function($scope, $location, $resource, Menus) {
 	$scope.save = function() {
-		var result = Menus.save(-1, $scope.menu);
+		
+		var result = $resource('rest/service/caterer/3/menu/').save($scope.menu);
 		if (result) {
 			$location.path('/');
 		}
 	};
+		})
+.controller('AddMenuCtrl', function($scope, $location, $resource, $routeParams) {
+	var catererId = 3;
+	$scope.get=function(){
+		$scope.menudata = $resource('rest/service/caterer/'+catererId+'/menu').get();
+		if($scope.menudata){
+			$scope.displayMenuList=true;
+		}
+	};
+	$scope.update=function(cMenu){
+		$scope.menu=cMenu;
+		$scope.displayMenuList=false;
+	};
+	$scope.save = function() {
+		var result = $resource('rest/service/caterer/'+catererId+'/menu/').save($scope.menu);
+		if (result) {
+			$scope.get();
+		}
+	};
+	$scope.get();
+//	$scope.displayMenuList=true;
+	
 }).controller('EditCtrl', function($scope, $location, $routeParams, Menus) {
 	var cmenu = Menus.get($routeParams.menuId);
 	$scope.errormessage = "";

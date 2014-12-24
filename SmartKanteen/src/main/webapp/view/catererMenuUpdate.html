@@ -1,0 +1,103 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<h4>Menu Master</h4>
+					<a href="" ng-click="displayMenuList=!displayMenuList;menu=null;">{{(displayMenuList)?"Add new Menu":"View Menu List"}}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" ng-show="displayMenuList">
+		<div class="col-md-12 ">
+			<table class="table table-bordered" style="width: 100%">
+				<thead class="">
+					<tr>
+						<th style="width: 20%">Id</th>
+						<th style="width: 20%">Name</th>
+						<th style="width: 20%">Description</th>
+						<th style="width: 20%">Price</th>
+						<th style="width: 10%">Preparation time</th>
+						<th style="width: 5%">Breakfast</th>
+						<th style="width: 5%">Lunch</th>
+						
+<!-- 						<th style="width: 10%">Remove</th> -->
+					</tr>
+				</thead>
+				<tbody id="">
+					<tr ng-repeat="menu in menudata.menu |orderBy:'itemName'">
+						<td><a href="" ng-click="update(menu)">{{menu.itemId}}</a></td>
+						<td>{{menu.itemName}}</td>
+						<td>{{menu.description}}</td>
+						<td>{{menu.price}}</td>
+						<td>{{menu.prepTime}}</td>
+						<td><input type="checkbox" ></td>
+						<td><input type="checkbox" ></td>
+<!-- 						<td><a href="" ng-click="remove(menu.itemID)">remove</a></td> -->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row"  ng-hide="displayMenuList">
+		<form >
+			<div class="well form-group">
+				<div class="row">
+					<div class="col-md-6" ng-hide="error">
+						<h3 class="text-center">Add/Update Menu</h3>
+						<div class="row">
+							<div class="col-md-5">
+								<label>Name</label>
+							</div>
+							<div class="col-md-7">
+								<input type="text" class="form-control" id="ItemName"
+									ng-model="menu.itemName">
+							</div>
+						</div>
+
+
+						<div class="row margin-top-10">
+							<div class="col-md-5">
+								<label>Description</label>
+							</div>
+							<div class="col-md-7">
+								<textarea rows="3" class="form-control" cols="22"
+									id="Description" ng-model="menu.description"></textarea>
+							</div>
+						</div>
+
+						<div class="row margin-top-10">
+							<div class="col-md-5">
+								<label>Price</label>
+							</div>
+							<div class="col-md-7">
+								<input type="text" class="form-control" id="price"
+									ng-model="menu.price">
+							</div>
+						</div>
+
+						<div class="row margin-top-10">
+
+							<div class="col-md-5">
+								<label>Preparation Time</label>
+							</div>
+							<div class="col-md-7">
+								<input type="text" class="form-control" id="prepTime"
+									ng-model="menu.prepTime">
+							</div>
+						</div>
+						<div class="row margin-top-10">
+							<div class="col-md-12 text-center">
+								<a href="" ng-click="get()" class="btn">Cancel</a>
+								<button class="btn btn-primary" ng-click="save()">{{(menu.itemId>=0)?"Update":"Save"}}</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">{{errormessage}}</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

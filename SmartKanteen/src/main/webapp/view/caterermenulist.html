@@ -30,13 +30,13 @@
 		</div>
 	</div>
 	<div class="row">
-		<div ng-repeat="menu in menudata.menu| filter:search | orderBy:'name'">
+		<div ng-repeat="menu in menudata.menu| filter:search | orderBy:'menu.itemName'">
 			<div class="col-lg-3 col-md-3">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-3">
-								<i class=" glyphicon glyphicon-glass"></i>
+								<i class=" huge glyphicon glyphicon-glass"></i>
 <!-- 								<div>&nbsp;</div> -->
 <!-- 								<div>Rs.{{menu.price}}</div> -->
 							</div>
