@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 23, 2014 4:16:14 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.mastek.topcoders.smartkanteen.bean.UserRoleMapping"
+		table="USER_ROLE_MAPPING">
+		<id name="userRoleMappingId" type="int">
+			<column name="user_role_mapping_id" />
+			<generator class="native" />
+		</id>
+		
+		<many-to-one name="role" column="ROLE_ID" unique="true"
+			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.Role"
+			not-null="true" />
+			
+			<many-to-one name="user" column="USER_ID" unique="true"  cascade="all"
+			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.User"
+			not-null="true" />
+	</class>
+</hibernate-mapping>

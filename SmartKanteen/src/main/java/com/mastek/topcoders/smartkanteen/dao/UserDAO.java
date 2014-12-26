@@ -1,34 +1,38 @@
 package com.mastek.topcoders.smartkanteen.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.mastek.topcoders.smartkanteen.bean.Role;
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserDetails;
+import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
-
-
+import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
+import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 
 public class UserDAO
 {
-
-	public Boolean getUserByLoginId(String loginId)
+	public User getUserByLoginId(String loginId)
 	{
-		boolean result = false;
+		User user = null;
 		Session session = DatabaseUtil.getSession();
 		Query query = session.createQuery("FROM User WHERE loginId= :login_id");
 		query.setParameter("login_id", loginId);
 		List<User> userList = query.list();
-
-		if (userList.size() <= 0)
+		
+		if (userList != null && userList.size() == 1)
 		{
-			result = true;
-			System.out.println("ENTER THE NULL CONDITION... ");
+			user = userList.get(0);
+			System.out.println(user);
 		}
+		
 		DatabaseUtil.closeSession(session);
-		return result;
+		return user;
 	}
 
 	public User getUserById(int userId)
@@ -39,104 +43,195 @@ public class UserDAO
 		return user;
 	}
 
-	public Boolean registerUser(User user)
+	public User updateUser(User user, UserDetails userDetails) throws Exception
 	{
-		boolean result = false;
-		Session session = DatabaseUtil.getSession();
-		Transaction tx;
-		if (user != null)
-		{
-			if (getUserByLoginId(user.getLoginId()))
-			{
-				tx = session.beginTransaction();
-				try
-				{
-
-					session.save(user);
-					tx.commit();
-
-				}
-				catch (Exception e)
-				{
-					System.out.println(e.getMessage());
-					tx.rollback();
-				}
-				result = true;
-			}
-		}
-		DatabaseUtil.closeSession(session);
-		return result;
-	}
-
-	public boolean updateUser(User user)
-	{
-		boolean result1 = false;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
 		System.out.println(user.getUserId());
-		User user1 = getUserById(user.getUserId());
+		User userDB = getUserById(user.getUserId());
 
-		if (user!=null)
+		if (userDB != null)
 		{
 			try
 			{
 				tx = session.beginTransaction();
+				session.update(userDetails);
 				session.update(user);
 				tx.commit();
 			}
 			catch (Exception e)
 			{
-				System.out.println(e.getMessage());
+				e.printStackTrace();
 				tx.rollback();
-				result1 = false;
+				DatabaseUtil.closeSession(session);
+				throw e;
 			}
-			result1 = true;
 		}
 		DatabaseUtil.closeSession(session);
-		return result1;
+		return user;
 	}
 
-	public Boolean authenticateUser(String loginId, String password)
+	public User authenticateUser(String loginId, String password)
 	{
-		boolean result = false;
+		User user = null;
+
 		Session session = DatabaseUtil.getSession();
 		Query query = session.createQuery("FROM User WHERE loginId= :loginId AND password= :pwd");
 		query.setParameter("loginId", loginId);
 		query.setParameter("pwd", password);
 		List<User> userList = query.list();
 
-		if (userList.size() > 0)
+		if (userList != null && userList.size() == 1)
 		{
-			result = true;
+			user = userList.get(0);
 		}
+		
 		DatabaseUtil.closeSession(session);
-		return result;
+		return user;
 	}
 
-	public Boolean deleteUser(User user)
+	public Boolean deleteUser(User user) throws Exception
 	{
 		boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
-		if (getUserById(user.getUserId())!=null)
+		User userDB = getUserById(user.getUserId());
+		
+		if (userDB != null)
 		{
 			try
 			{
-
 				tx = session.beginTransaction();
-				session.delete(user);
-				tx.commit();
+				UserDetails userDetails = userDB.getUserDetails();
+				Set<UserRoleMapping> userRoleMappingSetDB = userDB.getUserRoleMappingSet();
 
+				for (UserRoleMapping userRoleMapping : userRoleMappingSetDB)
+				{
+					session.delete(userRoleMapping);
+				}
+
+				session.delete(userDetails);
+				session.delete(userDB);
+				tx.commit();
+				result = true;
 			}
 			catch (Exception e)
 			{
-				System.out.println(e.getMessage());
+				e.printStackTrace();
 				tx.rollback();
 				result = false;
+				DatabaseUtil.closeSession(session);
+				throw e;
 			}
-			result = true;
 		}
 		DatabaseUtil.closeSession(session);
 		return result;
 	}
+
+	public User createUser(User user, UserDetails userDetails, UserRoleMapping userRoleMapping) throws UserExistException,Exception
+	{
+		Session session = DatabaseUtil.getSession();
+		Transaction tx;
+		if (user != null)
+		{
+			if (getUserByLoginId(user.getLoginId()) == null)
+			{
+				tx = session.beginTransaction();
+				try
+				{
+					session.save(user);
+					session.save(userDetails);
+					session.save(userRoleMapping);
+					tx.commit();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					tx.rollback();
+					DatabaseUtil.closeSession(session);
+					throw e;
+				}
+			}
+			else
+			{
+				throw new UserExistException("Login id entered already exist...");
+			}
+		}
+		DatabaseUtil.closeSession(session);
+		return user;
+	}
+
+	public User updateUserRole(int userId, int roleId) throws Exception
+	{
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = null;
+		Role role;
+		User user = getUserById(userId);
+
+		if (user != null)
+		{
+			try
+			{
+				tx = session.beginTransaction();
+				Set<UserRoleMapping> userRoleMappingSet = user.getUserRoleMappingSet();
+    
+				if (userRoleMappingSet !=null && userRoleMappingSet.size() > 0)
+				{
+					for (UserRoleMapping userRoleMapping : userRoleMappingSet)
+					{
+						role = new Role();
+						role.setRoleId(roleId);
+						userRoleMapping.setRole(role);
+						session.save(userRoleMapping);
+					}
+					
+					tx.commit();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				DatabaseUtil.closeSession(session);
+				throw e;
+			}
+			DatabaseUtil.closeSession(session);
+			return user;
+		}
+
+		return null;
+	}
+
+	public User changePassword(String loginId, String oldPassword, String newPassword) throws IncorrectPasswordException,Exception
+	{
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = null;
+		User user = getUserByLoginId(loginId);
+		if (user != null)
+		{
+			if (user.getPassword().equals(oldPassword))
+			{
+				try
+				{
+					user.setPassword(newPassword);
+					tx = session.beginTransaction();
+					session.update(user);
+					tx.commit();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					tx.rollback();
+					DatabaseUtil.closeSession(session);
+					throw e;
+				}
+			}
+			else
+			{
+				throw new IncorrectPasswordException("Invalid Password...");
+			}
+		}
+		DatabaseUtil.closeSession(session);
+		return user;
+	}
+
 }
