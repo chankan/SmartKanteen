@@ -7,21 +7,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
+
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
+import com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping;
+import com.mastek.topcoders.smartkanteen.bean.Tag;
 
 public class Test
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		/*testingMenuTable();
 
 		testingCatererTable();
 
-		testingDailyMenuTable();*/
+		testingDailyMenuTable();
+		
+		testingTagsTable;*/
 	}
 
-	public static void testingMenuTable()
+	public static void testingMenuTable() throws ObjectNotFoundException, Exception
 	{
 		System.out.println("Initial DB");
 		displayMenuItems();
@@ -30,6 +36,10 @@ public class Test
 		System.out.println("After Adding Items");
 		displayMenuItems();
 
+		testAddItemInMenuMaster();
+		System.out.println("After Adding Items with tags");
+		displayMenuItems();
+		
 		testAddMenuWithCaterer();
 		System.out.println("After Adding Menu Items With Caterer");
 		displayMenuItems();
@@ -52,7 +62,7 @@ public class Test
 		System.out.println(service.getMenuMaster());
 	}
 
-	public static void testAddMenu()
+	public static void testAddMenu() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -62,6 +72,11 @@ public class Test
 		menuMaster.setDescription("South Indian");
 		menuMaster.setPrepTime(5);
 		menuMaster.setPrice(new BigDecimal(40));
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenuTagsMappingId(1);
+		menuTagsMapping.setMenu(menuMaster);
+		menuTagsMapping.setTags("3,4,13");
+		menuMaster.setMenuTagsMapping(menuTagsMapping);
 		service.addItemInMenuMaster(menuMaster);
 
 		Menu menuMaster1 = new Menu();
@@ -70,6 +85,10 @@ public class Test
 		menuMaster1.setDescription("Punjabi");
 		menuMaster1.setPrepTime(15);
 		menuMaster1.setPrice(new BigDecimal(40));
+		MenuTagsMapping menuTagsMapping1 = new MenuTagsMapping();
+		menuTagsMapping1.setMenuTagsMappingId(2);
+		menuTagsMapping1.setTags("1,7");
+		menuMaster1.setMenuTagsMapping(menuTagsMapping1);
 		service.addItemInMenuMaster(menuMaster1);
 
 		Menu menuMaster2 = new Menu();
@@ -97,7 +116,22 @@ public class Test
 		service.addItemInMenuMaster(menuMaster4);
 	}
 
-	public static void testAddMenuWithCaterer()
+	public static void testAddItemInMenuMaster() throws Exception
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Menu menu = new Menu();
+		menu.setDescription("Test Data");
+		menu.setItemId(13);
+		menu.setItemName("Test Item");
+		menu.setPrepTime(15);
+		menu.setPrice(new BigDecimal(50));
+
+		String tags = "1,2,3";
+		service.addItemInMenuMaster(menu, tags);
+	}
+	
+	public static void testAddMenuWithCaterer() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -125,7 +159,7 @@ public class Test
 		service.addItemInMenuMaster(menuMaster1, caterer1);
 	}
 
-	public static void testUpdateMenuItems()
+	public static void testUpdateMenuItems() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -138,7 +172,7 @@ public class Test
 		service.updateItemInMenuMaster(menu);
 	}
 
-	public static Boolean testDeleteItems()
+	public static Boolean testDeleteItems() throws ObjectNotFoundException, Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 		boolean result = true;
@@ -156,7 +190,7 @@ public class Test
 		System.out.println(menuList);
 	}
 
-	public static void testingCatererTable()
+	public static void testingCatererTable() throws ObjectNotFoundException, Exception
 	{
 		System.out.println("Initial DB");
 		displayCaterers();
@@ -186,7 +220,7 @@ public class Test
 		System.out.println(service.getCaterers());
 	}
 
-	public static void testAddCaterer()
+	public static void testAddCaterer() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -202,7 +236,7 @@ public class Test
 		service.addCaterer(caterer1);
 	}
 
-	public static void testUpdateCaterer()
+	public static void testUpdateCaterer() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -219,7 +253,7 @@ public class Test
 		System.out.println(service.getCaterer(1));
 	}
 
-	public static void testDeleteCaterer()
+	public static void testDeleteCaterer() throws ObjectNotFoundException, Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 		service.deleteCaterer(4);
@@ -232,20 +266,20 @@ public class Test
 		System.out.println(menuList);
 	}
 
-	public static void testingDailyMenuTable()
+	public static void testingDailyMenuTable() throws ObjectNotFoundException, Exception
 	{
 		System.out.println("Initial");
 		displayDailyMenu();
 
-		testaddDailyMenu();
+		testAddDailyMenu();
 		System.out.println("After Adding");
 		displayDailyMenu();
 
-		testupdateDailyMenuItems();
+		testUpdateDailyMenuItems();
 		System.out.println("After Updating");
 		displayDailyMenu();
 
-		testappendDailyMenuItems();
+		testAppendDailyMenuItems();
 		System.out.println("After Appending");
 		displayDailyMenu();
 
@@ -269,7 +303,7 @@ public class Test
 		System.out.println(menuList);
 	}
 
-	public static void testaddDailyMenu()
+	public static void testAddDailyMenu() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -280,7 +314,7 @@ public class Test
 		service.addDailyMenu(2, new Date(), menuList);
 	}
 
-	public static void testupdateDailyMenuItems()
+	public static void testUpdateDailyMenuItems() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -292,7 +326,7 @@ public class Test
 		service.updateDailyMenuItems(1, menuList);
 	}
 
-	public static void testappendDailyMenuItems()
+	public static void testAppendDailyMenuItems() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 		Menu menu = new Menu();
@@ -306,7 +340,7 @@ public class Test
 		service.appendDailyMenuItems(1, menuList);
 	}
 
-	public static Boolean testRemoveDailyMenuItems()
+	public static Boolean testRemoveDailyMenuItems() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 
@@ -338,10 +372,78 @@ public class Test
 		System.out.println(menuList);
 	}
 
-	public static Boolean testDeleteDailyMenu()
+	public static Boolean testDeleteDailyMenu() throws ObjectNotFoundException, Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
 		boolean result = service.deleteDailyMenu(5);
 		return result;
+	}
+
+	public static void testingTagsTable() throws ObjectNotFoundException, Exception
+	{
+		System.out.println("Initial");
+		displayTags();
+
+		testAddTag();
+		System.out.println("After Adding");
+		displayTags();
+
+		testUpdateTag();
+		System.out.println("After Updating");
+		displayTags();
+
+		System.out.println("Get Tag by Id");
+		testGetTagById();
+
+		testDeleteTag();
+		System.out.println("After Deleting");
+		displayTags();
+	}
+
+	public static void displayTags()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+		List<Tag> tagList = service.getTags();
+
+		System.out.println(tagList);
+	}
+
+	public static void testAddTag() throws Exception
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Tag tag = new Tag();
+		tag.setTagName("Shush");
+
+		service.addTag(tag);
+	}
+
+	public static void testUpdateTag() throws Exception
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Tag tag = new Tag();
+		tag.setTagId(1);
+		tag.setTagName("Lunch");
+
+		service.updateTag(tag);
+	}
+
+	public static void testDeleteTag() throws ObjectNotFoundException, Exception
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+
+		Tag tag = new Tag();
+		tag.setTagId(4);
+
+		service.deleteTag(tag);
+	}
+
+	public static void testGetTagById()
+	{
+		MenuServiceImpl service = new MenuServiceImpl();
+		Tag tag = service.getTag(1);
+
+		System.out.println(tag);
 	}
 }

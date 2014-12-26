@@ -4,11 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.junit.Test;
 
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenuMapping;
@@ -20,6 +21,7 @@ import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
 public class DailyMenuTestCase
 {
 
+	//TODO Needs refactoring
 	/**
 	 * There is a bug in this method  so 
 	 * pls  solve as soon as possible...
@@ -27,15 +29,17 @@ public class DailyMenuTestCase
 	 *  user to add duplicate entries 
 	 *  in the dailyMenu table which 
 	 *  should be avioded  )
+	 * @throws Exception 
 	 * 
 	 */
 
 	@Test
-	public void testAddDailyMenu()
+	public void testAddDailyMenu() throws Exception
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 		String dateInString = "15-12-2014 0:0:0";
 		Date date = null;
+
 		try
 		{
 			date = sdf.parse(dateInString);
@@ -44,23 +48,26 @@ public class DailyMenuTestCase
 		{
 			e.printStackTrace();
 		}
+
 		MenuService service = new MenuServiceImpl();
-		Menu menu1 = new Menu();
-		menu1.setItemId(6);
+		Menu menu = new Menu();
+		menu.setItemId(6);
+
 		List<Menu> menuList = new ArrayList<Menu>();
-		menuList.add(menu1);
-		service.addDailyMenu(1, date, menuList);
+		menuList.add(menu);
+
+		DailyMenu dailyMenu = service.addDailyMenu(1, date, menuList);
 	}
 
-											/**
-											* There is bug in the 
-											* getDailyMenu() method
-											* (Bug : If there  are multiple entries
-											*  related to the specified date and
-											*  caterer_id then it shows 
-											*  only the last entry. )
-											*  
-											*/
+	/**
+	* There is bug in the 
+	* getDailyMenu() method
+	* (Bug : If there  are multiple entries
+	*  related to the specified date and
+	*  caterer_id then it shows 
+	*  only the last entry. )
+	*  
+	*/
 
 	@Test
 	public void testGetDailyMenu()
@@ -80,35 +87,38 @@ public class DailyMenuTestCase
 		MenuService service = new MenuServiceImpl();
 		List<Menu> menuList = service.getDailyMenu(date, 1);
 
-		System.out.println(menuList);
-
 		Assert.assertEquals(2, menuList.size());
 	}
 
 	@Test
-	public void testDeleteDailyMenu()
+	public void testDeleteDailyMenu() throws ObjectNotFoundException, Exception
 	{
 		Session session = DatabaseUtil.getSession();
-		boolean result1 = false;
+		boolean isDeleted = false;
+
 		MenuService service = new MenuServiceImpl();
-		boolean result2 = service.deleteDailyMenu(10);
+		boolean resultDB = service.deleteDailyMenu(10);
+
 		DailyMenu dailyMenu = (DailyMenu) session.get(DailyMenu.class, 11);
+
 		if (dailyMenu == null)
 		{
-			result1 = true;
+			isDeleted = true;
 		}
-		Assert.assertEquals(result2, result1);
+
+		Assert.assertEquals(isDeleted, resultDB);
 	}
 
-															/**
-															 * Bug :- The Items were not 
-															 * getting deleted but  
-															 *   it has been solved. 
-															 * 
-															 */
+	/**
+	 * Bug :- The Items were not 
+	 * getting deleted but  
+	 *   it has been solved. 
+	 * @throws Exception 
+	 * 
+	 */
 
 	@Test
-	public void testRemoveDailyMenuItems()
+	public void testRemoveDailyMenuItems() throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
 
@@ -128,53 +138,54 @@ public class DailyMenuTestCase
 		Assert.assertEquals(3, menuList.size());
 	}
 
-																    /**
-																        * Bug:-
-																        *      This method     
-																        *      is allowing 
-																        *      duplicate 
-																        *      entries in the  
-																        *      daily_menu_mapping 
-																        *      tab;e  
-																        */
+	/**
+	    * Bug:-
+	    *      This method     
+	    *      is allowing 
+	    *      duplicate 
+	    *      entries in the  
+	    *      daily_menu_mapping 
+	    *      tab;e  
+	 * @throws Exception 
+	    */
 
-		@Test
-	public  void TestAppendDailyMenuItems()
+	@Test
+	public void TestAppendDailyMenuItems() throws Exception
 	{
-	Menu menu1= new Menu();
-	menu1.setItemId(6);
-	Menu menu2= new Menu(); 
-	menu2.setItemId(5);
+		Menu menu1 = new Menu();
+		menu1.setItemId(6);
+		Menu menu2 = new Menu();
+		menu2.setItemId(5);
 
-	List<Menu> menuList=new ArrayList<Menu>();
-	menuList.add(menu1);
-	menuList.add(menu2);
+		List<Menu> menuList = new ArrayList<Menu>();
+		menuList.add(menu1);
+		menuList.add(menu2);
 
-	MenuService service= new MenuServiceImpl();
-	service.appendDailyMenuItems(3, menuList);
+		MenuService service = new MenuServiceImpl();
+		service.appendDailyMenuItems(3, menuList);
 
-	Session session= DatabaseUtil.getSession();
-	Query query= session.createQuery("FROM DailyMenuMapping WHERE dailyMenuId= :daily_menu_id");
-	query.setParameter("daily_menu_id",3);
+		Session session = DatabaseUtil.getSession();
+		Query query = session.createQuery("FROM DailyMenuMapping WHERE dailyMenuId= :daily_menu_id");
+		query.setParameter("daily_menu_id", 3);
 
-	List<DailyMenuMapping> dailyMenuMappingList =  query.list();
+		List<DailyMenuMapping> dailyMenuMappingList = query.list();
 
-	Assert.assertEquals(3,dailyMenuMappingList.size());
+		Assert.assertEquals(3, dailyMenuMappingList.size());
 
 	}
 
-																			/**
-																			* Bug:-
-																			*      This method     
-																			*      is allowing 
-																			*      duplicate 
-																			*      entries in the  
-																			*      daily_menu_mapping 
-																			*      tab;e  
-																			*/
+	/**
+	* Bug:-
+	*      This method     
+	*      is allowing 
+	*      duplicate 
+	*      entries in the  
+	*      daily_menu_mapping 
+	*      tab;e  
+	*/
 
 	@Test
-	public void TestAppendDailyMenuItem()
+	public void TestAppendDailyMenuItem() throws Exception
 	{
 		Menu menu = new Menu();
 		menu.setItemId(6);

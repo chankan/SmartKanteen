@@ -67,46 +67,50 @@ public class MenuDAO
 		return menuList;
 	}
 
-	public Integer addItem(Menu menuMaster)
+	public Menu addItem(Menu menuMaster) throws Exception
 	{
-		Integer result = 0;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
 		try
 		{
-			result = (Integer) session.save(menuMaster);
+			session.save(menuMaster);
 
-			menuMaster.getMenuTagsMapping().setMenu(menuMaster);
+			MenuTagsMapping menuTagsMapping = menuMaster.getMenuTagsMapping();
 
-			result = (Integer) session.save(menuMaster.getMenuTagsMapping());
+			if (menuTagsMapping != null)
+			{
+				menuTagsMapping.setMenu(menuMaster);
+				session.save(menuMaster.getMenuTagsMapping());
+			}
+
 			tx.commit();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 		DatabaseUtil.closeSession(session);
 
-		return result;
+		return menuMaster;
 	}
 
-	public void addItemInMenuMaster(Menu menuMaster, Caterer caterer)
+	public CatererMenuMapping addItemInMenuMaster(Menu menuMaster, Caterer caterer) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
+
+		CatererMenuMapping catererMenuMapping = null;
 
 		if (menuMaster != null && caterer != null)
 		{
 			try
 			{
-				Integer itemId = addItem(menuMaster);
+				addItem(menuMaster);
 
-				System.out.println(menuMaster);
-				menuMaster.setItemId(itemId);
-
-				CatererMenuMapping catererMenuMapping = new CatererMenuMapping();
+				catererMenuMapping = new CatererMenuMapping();
 				catererMenuMapping.setCatererId(caterer.getCatererId());
 				catererMenuMapping.setMenu(menuMaster);
 
@@ -115,10 +119,15 @@ public class MenuDAO
 			}
 			catch (Exception e)
 			{
+				e.printStackTrace();
 				tx.rollback();
+				DatabaseUtil.closeSession(session);
+				throw e;
 			}
 		}
 		DatabaseUtil.closeSession(session);
+
+		return catererMenuMapping;
 	}
 
 	public Menu getItem(Integer itemId)
@@ -139,7 +148,7 @@ public class MenuDAO
 		return null;
 	}
 
-	public void updateItem(Menu menuMaster)
+	public Menu updateItem(Menu menuMaster) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
 
@@ -188,11 +197,16 @@ public class MenuDAO
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
+
+		return menuMaster;
 	}
 
-	public Boolean deleteItem(Integer itemId)
+	public Boolean deleteItem(Integer itemId) throws ObjectNotFoundException, Exception
 	{
 		boolean result = true;
 		Session session = DatabaseUtil.getSession();
@@ -220,10 +234,20 @@ public class MenuDAO
 			session.delete(menuMaster);
 			tx.commit();
 		}
+		catch (ObjectNotFoundException hib)
+		{
+			hib.printStackTrace();
+			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw hib;
+		}
 		catch (Exception e)
 		{
 			result = false;
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 		DatabaseUtil.closeSession(session);
 		return result;
@@ -253,27 +277,29 @@ public class MenuDAO
 		return catererList;
 	}
 
-	public Integer addCaterer(Caterer caterer)
+	public Caterer addCaterer(Caterer caterer) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
-		Integer result = 0;
+
 		try
 		{
-			result = (Integer) session.save(caterer);
+			session.save(caterer);
 			tx.commit();
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 		DatabaseUtil.closeSession(session);
-		return result;
+		return caterer;
 	}
 
-	public boolean updateCaterer(Caterer caterer)
+	public Caterer updateCaterer(Caterer caterer) throws Exception
 	{
-		boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		if (caterer != null)
 		{
@@ -285,17 +311,19 @@ public class MenuDAO
 			}
 			catch (Exception e)
 			{
+				e.printStackTrace();
 				tx.rollback();
+				DatabaseUtil.closeSession(session);
+				throw e;
 			}
 			DatabaseUtil.closeSession(session);
-			result = true;
 		}
-		return result;
+		return caterer;
 	}
 
-	public boolean deleteCaterer(Integer catererId)
+	public Boolean deleteCaterer(Integer catererId) throws ObjectNotFoundException, Exception
 	{
-		boolean result = false;
+		Boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		Caterer caterer = (Caterer) session.load(Caterer.class, catererId);
 		if (caterer != null)
@@ -305,18 +333,23 @@ public class MenuDAO
 			{
 				session.delete(caterer);
 				tx.commit();
+				result = true;
 			}
 			catch (ObjectNotFoundException hib)
 			{
-				System.out.println("Caterer does not exist...");
+				hib.printStackTrace();
 				tx.rollback();
+				DatabaseUtil.closeSession(session);
+				throw hib;
 			}
 			catch (Exception e)
 			{
+				e.printStackTrace();
 				tx.rollback();
+				DatabaseUtil.closeSession(session);
+				throw e;
 			}
 			DatabaseUtil.closeSession(session);
-			result = true;
 		}
 		return result;
 	}
@@ -377,11 +410,12 @@ public class MenuDAO
 		return menuList;
 	}
 
-	public void addDailyMenuItem(DailyMenu dailyMenu)
+	public DailyMenu addDailyMenuItem(DailyMenu dailyMenu) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
+
+		DailyMenu dailyMenuResult = null;
 		try
 		{
 			Query insertDailyMenuQuery = session
@@ -406,6 +440,7 @@ public class MenuDAO
 			{
 				List<Menu> menuList = dailyMenu.getMenuList();
 
+				Set<DailyMenuMapping> dailyMenuMappings = new HashSet<DailyMenuMapping>();
 				for (Menu menu : menuList)
 				{
 					DailyMenuMapping dailyMenuMapping = new DailyMenuMapping();
@@ -413,23 +448,35 @@ public class MenuDAO
 					dailyMenuMapping.setDailyMenuId(dailyMenuId);
 
 					session.save(dailyMenuMapping);
+					dailyMenuMappings.add(dailyMenuMapping);
 				}
+
+				dailyMenuResult = new DailyMenu();
+				dailyMenuResult.setDailyMenuMapping(dailyMenuMappings);
+				dailyMenuResult.setCatererId(dailyMenu.getCatererId());
+				dailyMenuResult.setDailyMenuId(dailyMenuId);
+				dailyMenuResult.setMenuDate(dailyMenu.getMenuDate());
+				dailyMenuResult.setMenuList(menuList);
 			}
 
 			tx.commit();
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 		DatabaseUtil.closeSession(session);
+		return dailyMenuResult;
 	}
 
-	public void updateDailyMenu(DailyMenu dailyMenu)
+	public DailyMenu updateDailyMenu(DailyMenu dailyMenu) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
+
 		try
 		{
 			Integer dailyMenuId = dailyMenu.getDailyMenuId();
@@ -443,6 +490,7 @@ public class MenuDAO
 
 				List<Menu> menuList = dailyMenu.getMenuList();
 
+				Set<DailyMenuMapping> dailyMenuMappings = new HashSet<DailyMenuMapping>();
 				for (Menu menu : menuList)
 				{
 					DailyMenuMapping dailyMenuMapping = new DailyMenuMapping();
@@ -450,29 +498,37 @@ public class MenuDAO
 					dailyMenuMapping.setDailyMenuId(dailyMenuId);
 
 					session.saveOrUpdate(dailyMenuMapping);
+					dailyMenuMappings.add(dailyMenuMapping);
 				}
+
+				dailyMenu.setDailyMenuMapping(dailyMenuMappings);
 			}
 
 			tx.commit();
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 
 		DatabaseUtil.closeSession(session);
+		return dailyMenu;
 	}
 
-	public void updateDailyMenuItem(Integer catererId, Date menuDate,
-			List<Menu> menulist) {
+	public DailyMenu updateDailyMenuItem(Integer catererId, Date menuDate, List<Menu> menuList) throws Exception
+	{
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
+
+		DailyMenu dailyMenu = null;
 		try
 		{
 
-
-			Query selectQuery = session.createQuery("Select dailyMenuId FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
+			Query selectQuery = session
+					.createQuery("Select dailyMenuId FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
 			selectQuery.setParameter("catererId", catererId);
 			selectQuery.setParameter("menuDate", menuDate);
 			List<Integer> dailyMenuList = selectQuery.list();
@@ -491,33 +547,44 @@ public class MenuDAO
 
 				query.executeUpdate();
 
-
-				for (Menu menu : menulist)
+				Set<DailyMenuMapping> dailyMenuMappings = new HashSet<DailyMenuMapping>();
+				for (Menu menu : menuList)
 				{
 					DailyMenuMapping dailyMenuMapping = new DailyMenuMapping();
 					dailyMenuMapping.setMenu(menu);
 					dailyMenuMapping.setDailyMenuId(dailyMenuId);
 
 					session.saveOrUpdate(dailyMenuMapping);
+					dailyMenuMappings.add(dailyMenuMapping);
 				}
+
+				dailyMenu = new DailyMenu();
+				dailyMenu.setCatererId(catererId);
+				dailyMenu.setDailyMenuId(dailyMenuId);
+				dailyMenu.setDailyMenuMapping(dailyMenuMappings);
+				dailyMenu.setMenuDate(menuDate);
+				dailyMenu.setMenuList(menuList);
 			}
 
 			tx.commit();
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 
 		DatabaseUtil.closeSession(session);
-
+		return dailyMenu;
 	}
 
-	public void appendDailyMenu(DailyMenu dailyMenu)
+	public Boolean appendDailyMenu(DailyMenu dailyMenu) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
+		Boolean result = false;
 		try
 		{
 			Integer dailyMenuId = dailyMenu.getDailyMenuId();
@@ -537,15 +604,21 @@ public class MenuDAO
 			}
 
 			tx.commit();
+			result = true;
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 		DatabaseUtil.closeSession(session);
+
+		return result;
 	}
 
-	public Boolean deleteDailyMenu(Integer dailyMenuId)
+	public Boolean deleteDailyMenu(Integer dailyMenuId) throws ObjectNotFoundException, Exception
 	{
 		boolean result = false;
 		Session session = DatabaseUtil.getSession();
@@ -564,24 +637,30 @@ public class MenuDAO
 		{
 			System.out.println("Item does not exist...");
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw hib;
 		}
 		catch (Exception e)
 		{
-			result = false;
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
+
 		DatabaseUtil.closeSession(session);
 		return result;
 	}
 
-	public Boolean deleteDailyMenu(Integer catererId, Date menuDate)
+	public Boolean deleteDailyMenu(Integer catererId, Date menuDate) throws ObjectNotFoundException, Exception
 	{
-		boolean result = false;
+		Boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
 		try
 		{
-			Query selectQuery = session.createQuery("Select dailyMenuId FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
+			Query selectQuery = session
+					.createQuery("Select dailyMenuId FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
 			selectQuery.setParameter("catererId", catererId);
 			selectQuery.setParameter("menuDate", menuDate);
 			List<Integer> dailyMenuList = selectQuery.list();
@@ -605,24 +684,29 @@ public class MenuDAO
 		{
 			System.out.println("Item does not exist...");
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw hib;
 		}
 		catch (Exception e)
 		{
 			result = false;
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
+
 		DatabaseUtil.closeSession(session);
 		return result;
 	}
 
-	public Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
+	public Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList) throws Exception
 	{
-		boolean result = false;
+		Boolean result = false;
 		Session session = null;
 		Transaction tx = null;
+
 		if (menuList != null && menuList.size() >= 1)
 		{
-
 			try
 			{
 				session = DatabaseUtil.getSession();
@@ -647,14 +731,17 @@ public class MenuDAO
 				query.executeUpdate();
 
 				tx.commit();
-
+				result = true;
 			}
 			catch (Exception e)
 			{
+				e.printStackTrace();
 				tx.rollback();
+				DatabaseUtil.closeSession(session);
+				throw e;
 			}
-			result = true;
 		}
+
 		DatabaseUtil.closeSession(session);
 		return result;
 	}
@@ -683,29 +770,34 @@ public class MenuDAO
 			return tagList.get(0);
 		}
 
+		System.out.println(tagList);
+
 		return null;
 	}
 
-	public Integer addTag(Tag tag)
+	public Tag addTag(Tag tag) throws Exception
 	{
-		Integer result = 0;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
+
 		try
 		{
-			result = (Integer) session.save(tag);
+			session.save(tag);
 			tx.commit();
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
-		DatabaseUtil.closeSession(session);
 
-		return result;
+		DatabaseUtil.closeSession(session);
+		return tag;
 	}
 
-	public void updateTag(Tag tag)
+	public Tag updateTag(Tag tag) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		if (tag != null)
@@ -718,14 +810,21 @@ public class MenuDAO
 			}
 			catch (Exception e)
 			{
+				e.printStackTrace();
 				tx.rollback();
+				DatabaseUtil.closeSession(session);
+				throw e;
 			}
+
 			DatabaseUtil.closeSession(session);
 		}
+
+		return tag;
 	}
 
-	public void deleteTag(Tag tag)
+	public Boolean deleteTag(Tag tag) throws ObjectNotFoundException, Exception
 	{
+		Boolean result = false;
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
 
@@ -798,24 +897,35 @@ public class MenuDAO
 
 				session.delete(tagDB);
 				tx.commit();
+				result = true;
 			}
+		}
+		catch (ObjectNotFoundException hib)
+		{
+			hib.printStackTrace();
+			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw hib;
 		}
 		catch (Exception e)
 		{
 			tx.rollback();
 			e.printStackTrace();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 
 		DatabaseUtil.closeSession(session);
+		return result;
 	}
 
-	public void addMenuTags(MenuTagsMapping menuTagsMapping)
+	public MenuTagsMapping addMenuTags(MenuTagsMapping menuTagsMapping) throws HibernateException, Exception
 	{
 		Menu menu = menuTagsMapping.getMenu();
-
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
+
+		MenuTagsMapping menuTagsMappingResult = null;
 
 		try
 		{
@@ -846,10 +956,12 @@ public class MenuDAO
 					menuTagsMappingDB.setTags(tags);
 
 					session.update(menuTagsMappingDB);
+					menuTagsMappingResult = menuTagsMappingDB;
 				}
 				else if (menuTagsMappingList == null || menuTagsMappingList.size() == 0)
 				{
 					session.saveOrUpdate(menuTagsMapping);
+					menuTagsMappingResult = menuTagsMapping;
 				}
 			}
 			else
@@ -861,21 +973,31 @@ public class MenuDAO
 		}
 		catch (HibernateException he)
 		{
+			he.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw he;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 
 		DatabaseUtil.closeSession(session);
+		return menuTagsMappingResult;
 	}
 
-	public void updateMenuTags(MenuTagsMapping menuTagsMapping)
+	public MenuTagsMapping updateMenuTags(MenuTagsMapping menuTagsMapping) throws HibernateException, Exception
 	{
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
-
+		MenuTagsMapping menuTagsMappingDB = null;
 		try
 		{
-			MenuTagsMapping menuTagsMappingDB = (MenuTagsMapping) session.get(MenuTagsMapping.class, menuTagsMapping);
+			menuTagsMappingDB = (MenuTagsMapping) session.get(MenuTagsMapping.class, menuTagsMapping);
 
 			String tagsDB = menuTagsMappingDB.getTags();
 			String[] tagArrDB = tagsDB.split(",");
@@ -918,17 +1040,29 @@ public class MenuDAO
 		}
 		catch (HibernateException he)
 		{
+			he.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw he;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 
 		DatabaseUtil.closeSession(session);
+		return menuTagsMappingDB;
 	}
 
-	public void deleteMenuTags(MenuTagsMapping menuTagsMapping)
+	public Boolean deleteMenuTags(MenuTagsMapping menuTagsMapping) throws HibernateException, Exception
 	{
 		Session session = DatabaseUtil.getSession();
-
 		Transaction tx = session.beginTransaction();
+
+		Boolean result = false;
 
 		try
 		{
@@ -937,15 +1071,27 @@ public class MenuDAO
 			if (menuTagsMappingDB != null)
 			{
 				session.delete(menuTagsMappingDB);
+				result = true;
 			}
 
 			tx.commit();
 		}
 		catch (HibernateException he)
 		{
+			he.printStackTrace();
 			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw he;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
 		}
 
 		DatabaseUtil.closeSession(session);
+		return result;
 	}
 }
