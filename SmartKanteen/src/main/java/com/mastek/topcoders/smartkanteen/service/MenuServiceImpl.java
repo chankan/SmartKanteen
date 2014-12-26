@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.ObjectNotFoundException;
+
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
+import com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping;
@@ -38,14 +42,14 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public Integer addItemInMenuMaster(Menu menuMaster)
+	public Menu addItemInMenuMaster(Menu menuMaster) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 		return dao.addItem(menuMaster);
 	}
 
 	@Override
-	public Integer addItemInMenuMaster(Menu menu, String tags)
+	public Menu addItemInMenuMaster(Menu menu, String tags) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 
@@ -60,35 +64,14 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public void addItemInMenuMaster(Menu menuMaster, Caterer caterer)
+	public CatererMenuMapping addItemInMenuMaster(Menu menuMaster, Caterer caterer) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
-		dao.addItemInMenuMaster(menuMaster, caterer);
+		return dao.addItemInMenuMaster(menuMaster, caterer);
 	}
 
 	@Override
-	public void addItemInMenuMaster(Menu menuMaster, Caterer caterer, String tags)
-	{
-		MenuDAO dao = new MenuDAO();
-
-		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-		menuTagsMapping.setMenu(menuMaster);
-		menuTagsMapping.setTags(tags);
-
-		menuMaster.setMenuTagsMapping(menuTagsMapping);
-
-		dao.addItemInMenuMaster(menuMaster, caterer);
-	}
-
-	@Override
-	public void updateItemInMenuMaster(Menu menu)
-	{
-		MenuDAO dao = new MenuDAO();
-		dao.updateItem(menu);
-	}
-
-	@Override
-	public void updateItemInMenuMaster(Menu menuMaster, String tags)
+	public CatererMenuMapping addItemInMenuMaster(Menu menuMaster, Caterer caterer, String tags) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 
@@ -98,12 +81,33 @@ public class MenuServiceImpl implements MenuService
 
 		menuMaster.setMenuTagsMapping(menuTagsMapping);
 
-		dao.updateItem(menuMaster);
+		return dao.addItemInMenuMaster(menuMaster, caterer);
 	}
 
 	@Override
-	public void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
-			Integer prepTime)
+	public Menu updateItemInMenuMaster(Menu menu) throws Exception
+	{
+		MenuDAO dao = new MenuDAO();
+		return dao.updateItem(menu);
+	}
+
+	@Override
+	public Menu updateItemInMenuMaster(Menu menuMaster, String tags) throws Exception
+	{
+		MenuDAO dao = new MenuDAO();
+
+		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
+		menuTagsMapping.setMenu(menuMaster);
+		menuTagsMapping.setTags(tags);
+
+		menuMaster.setMenuTagsMapping(menuTagsMapping);
+
+		return dao.updateItem(menuMaster);
+	}
+
+	@Override
+	public Menu updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price,
+			Integer prepTime) throws Exception
 	{
 		if (itemId == null || itemId == 0)
 		{
@@ -136,16 +140,18 @@ public class MenuServiceImpl implements MenuService
 				menuMaster.setPrepTime(prepTime);
 			}
 
-			dao.updateItem(menuMaster);
+			return dao.updateItem(menuMaster);
 		}
 		else
 		{
 			System.out.println("Menu item not found!!");
 		}
+
+		return null;
 	}
 
 	@Override
-	public Boolean deleteItemFromMenuMaster(Integer itemId)
+	public Boolean deleteItemFromMenuMaster(Integer itemId) throws ObjectNotFoundException, Exception
 	{
 		MenuDAO dao = new MenuDAO();
 		boolean result = dao.deleteItem(itemId);
@@ -153,35 +159,35 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public void addMenuTags(Menu menu, String tags)
+	public MenuTagsMapping addMenuTags(Menu menu, String tags) throws HibernateException, Exception
 	{
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
 		menuTagsMapping.setMenu(menu);
 		menuTagsMapping.setTags(tags);
 
 		MenuDAO dao = new MenuDAO();
-		dao.addMenuTags(menuTagsMapping);
+		return dao.addMenuTags(menuTagsMapping);
 	};
 
 	@Override
-	public void updateMenuTags(Menu menu, String tags)
+	public MenuTagsMapping updateMenuTags(Menu menu, String tags) throws HibernateException, Exception
 	{
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
 		menuTagsMapping.setMenu(menu);
 		menuTagsMapping.setTags(tags);
 
 		MenuDAO dao = new MenuDAO();
-		dao.updateMenuTags(menuTagsMapping);
+		return dao.updateMenuTags(menuTagsMapping);
 	}
 
 	@Override
-	public void deleteMenuTags(Menu menu)
+	public Boolean deleteMenuTags(Menu menu) throws HibernateException, Exception
 	{
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
 		menuTagsMapping.setMenu(menu);
 
 		MenuDAO dao = new MenuDAO();
-		dao.deleteMenuTags(menuTagsMapping);
+		return dao.deleteMenuTags(menuTagsMapping);
 	}
 
 	@Override
@@ -201,18 +207,15 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public Integer addCaterer(Caterer caterer)
+	public Caterer addCaterer(Caterer caterer) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
-		Integer result = dao.addCaterer(caterer);
-		return result;
+		return dao.addCaterer(caterer);
 	}
 
 	@Override
-	public Boolean updateCaterer(Integer catererId, String catererName)
+	public Caterer updateCaterer(Integer catererId, String catererName) throws Exception
 	{
-		boolean result = false;
-
 		if (catererId == 0 || catererId == null)
 		{
 			System.out.println("CatererId not found");
@@ -227,17 +230,17 @@ public class MenuServiceImpl implements MenuService
 			{
 				caterer.setCatererName(catererName);
 			}
-			result = dao.updateCaterer(caterer);
+			return dao.updateCaterer(caterer);
 		}
-		return result;
+
+		return null;
 	}
 
 	@Override
-	public Boolean deleteCaterer(Integer catererId)
+	public Boolean deleteCaterer(Integer catererId) throws ObjectNotFoundException, Exception
 	{
 		MenuDAO dao = new MenuDAO();
-		boolean result = dao.deleteCaterer(catererId);
-		return result;
+		return dao.deleteCaterer(catererId);
 	}
 
 	@Override
@@ -249,7 +252,7 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menuList)
+	public DailyMenu addDailyMenu(Integer catererId, Date menuDate, List<Menu> menuList) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 
@@ -258,20 +261,18 @@ public class MenuServiceImpl implements MenuService
 		dailyMenu.setMenuDate(menuDate);
 		dailyMenu.setMenuList(menuList);
 
-		dao.addDailyMenuItem(dailyMenu);
+		return dao.addDailyMenuItem(dailyMenu);
 	}
-	
-	@Override
-	public void updateDailyMenu(Integer catererId, Date menuDate,
-			List<Menu> menu) {
-		MenuDAO dao = new MenuDAO();
-		dao.updateDailyMenuItem(catererId,menuDate,menu);
-	}
-	
-	
 
 	@Override
-	public Boolean deleteDailyMenu(Integer dailyMenuId)
+	public DailyMenu updateDailyMenu(Integer catererId, Date menuDate, List<Menu> menu) throws Exception
+	{
+		MenuDAO dao = new MenuDAO();
+		return dao.updateDailyMenuItem(catererId, menuDate, menu);
+	}
+
+	@Override
+	public Boolean deleteDailyMenu(Integer dailyMenuId) throws ObjectNotFoundException, Exception
 	{
 		MenuDAO dao = new MenuDAO();
 		boolean result = dao.deleteDailyMenu(dailyMenuId);
@@ -279,14 +280,14 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public Boolean deleteDailyMenu(Integer catererId, Date menuDate) {
+	public Boolean deleteDailyMenu(Integer catererId, Date menuDate) throws ObjectNotFoundException, Exception
+	{
 		MenuDAO dao = new MenuDAO();
-		boolean result = dao.deleteDailyMenu(catererId,menuDate);
-		return result;
+		return dao.deleteDailyMenu(catererId, menuDate);
 	}
-	
+
 	@Override
-	public void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
+	public DailyMenu updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 
@@ -294,11 +295,11 @@ public class MenuServiceImpl implements MenuService
 		dailyMenu.setDailyMenuId(dailyMenuId);
 		dailyMenu.setMenuList(menuList);
 
-		dao.updateDailyMenu(dailyMenu);
+		return dao.updateDailyMenu(dailyMenu);
 	}
 
 	@Override
-	public void appendDailyMenuItems(Integer dailyMenuId, Menu menu)
+	public Boolean appendDailyMenuItems(Integer dailyMenuId, Menu menu) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 
@@ -309,11 +310,11 @@ public class MenuServiceImpl implements MenuService
 		menuList.add(menu);
 		dailyMenu.setMenuList(menuList);
 
-		dao.appendDailyMenu(dailyMenu);
+		return dao.appendDailyMenu(dailyMenu);
 	}
 
 	@Override
-	public void appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
+	public Boolean appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 
@@ -321,11 +322,11 @@ public class MenuServiceImpl implements MenuService
 		dailyMenu.setDailyMenuId(dailyMenuId);
 		dailyMenu.setMenuList(menuList);
 
-		dao.appendDailyMenu(dailyMenu);
+		return dao.appendDailyMenu(dailyMenu);
 	}
 
 	@Override
-	public Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList)
+	public Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
 		boolean result = dao.removeDailyMenuItems(dailyMenuId, menuList);
@@ -349,14 +350,14 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public void addTag(Tag tag)
+	public Tag addTag(Tag tag) throws Exception
 	{
 		MenuDAO dao = new MenuDAO();
-		dao.addTag(tag);
+		return dao.addTag(tag);
 	}
 
 	@Override
-	public void updateTag(Tag tag)
+	public Tag updateTag(Tag tag) throws Exception
 	{
 		if (tag.getTagId() == 0 || tag.getTagId() == null)
 		{
@@ -372,14 +373,16 @@ public class MenuServiceImpl implements MenuService
 			{
 				tagDB.setTagName(tag.getTagName());
 			}
-			dao.updateTag(tagDB);
+			return dao.updateTag(tagDB);
 		}
+
+		return null;
 	}
 
 	@Override
-	public void deleteTag(Tag tag)
+	public Boolean deleteTag(Tag tag) throws ObjectNotFoundException, Exception
 	{
 		MenuDAO dao = new MenuDAO();
-		dao.deleteTag(tag);
+		return dao.deleteTag(tag);
 	}
 }

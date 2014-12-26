@@ -4,8 +4,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.ObjectNotFoundException;
+
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
+import com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping;
+import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
+import com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping;
 import com.mastek.topcoders.smartkanteen.bean.Tag;
 
 public interface MenuService
@@ -16,63 +22,63 @@ public interface MenuService
 
 	List<Menu> getMenuByName(String itemName);
 
-	Integer addItemInMenuMaster(Menu menuMaster);
+	Menu addItemInMenuMaster(Menu menuMaster) throws Exception;
 
-	Integer addItemInMenuMaster(Menu menu, String tags);
+	Menu addItemInMenuMaster(Menu menu, String tags) throws Exception;
 
-	void addItemInMenuMaster(Menu menuMaster, Caterer caterer);
+	CatererMenuMapping addItemInMenuMaster(Menu menuMaster, Caterer caterer) throws Exception;
 
-	void addItemInMenuMaster(Menu menuMaster, Caterer caterer, String tags);
+	CatererMenuMapping addItemInMenuMaster(Menu menuMaster, Caterer caterer, String tags) throws Exception;
 
-	void updateItemInMenuMaster(Menu menu);
+	Menu updateItemInMenuMaster(Menu menu) throws Exception;
 
-	void updateItemInMenuMaster(Menu menuMaster, String tags);
+	Menu updateItemInMenuMaster(Menu menuMaster, String tags) throws Exception;
 
-	void updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price, Integer prepTime);
+	Menu updateItemInMenuMaster(Integer itemId, String itemName, String description, BigDecimal price, Integer prepTime) throws Exception;
 
-	Boolean deleteItemFromMenuMaster(Integer itemId);
+	Boolean deleteItemFromMenuMaster(Integer itemId) throws ObjectNotFoundException, Exception;
 
-	void addMenuTags(Menu menu, String tags);
+	MenuTagsMapping addMenuTags(Menu menu, String tags) throws HibernateException, Exception;
 
-	void updateMenuTags(Menu menu, String tags);
+	MenuTagsMapping updateMenuTags(Menu menu, String tags) throws HibernateException, Exception;
 
-	void deleteMenuTags(Menu menu);
+	Boolean deleteMenuTags(Menu menu) throws HibernateException, Exception;
 
 	Caterer getCaterer(Integer catererId);
 
 	List<Caterer> getCaterers();
 
-	Integer addCaterer(Caterer caterer);
+	Caterer addCaterer(Caterer caterer) throws Exception;
 
-	Boolean updateCaterer(Integer catererId, String catererName);
+	Caterer updateCaterer(Integer catererId, String catererName) throws Exception;
 
-	Boolean deleteCaterer(Integer catererId);
+	Boolean deleteCaterer(Integer catererId) throws ObjectNotFoundException, Exception;
 
 	List<Menu> getDailyMenu(Date menuDate, Integer catererId);
 
-	void addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
+	DailyMenu addDailyMenu(Integer catererId, Date menuDate, List<Menu> menu) throws Exception;
 
-	Boolean deleteDailyMenu(Integer dailyMenuId);
+	Boolean deleteDailyMenu(Integer dailyMenuId) throws ObjectNotFoundException, Exception;
 	
-	Boolean deleteDailyMenu(Integer catererId, Date menuDate);
+	Boolean deleteDailyMenu(Integer catererId, Date menuDate) throws ObjectNotFoundException, Exception;
 	
-	void updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
+	DailyMenu updateDailyMenuItems(Integer dailyMenuId, List<Menu> menuList) throws Exception;
 	
-	void updateDailyMenu(Integer catererId, Date menuDate, List<Menu> menu);
+	DailyMenu updateDailyMenu(Integer catererId, Date menuDate, List<Menu> menu) throws Exception;
 
-	void appendDailyMenuItems(Integer dailyMenuId, Menu menu);
+	Boolean appendDailyMenuItems(Integer dailyMenuId, Menu menu) throws Exception;
 
-	void appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
+	Boolean appendDailyMenuItems(Integer dailyMenuId, List<Menu> menuList) throws Exception;
 
-	Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList);
+	Boolean removeDailyMenuItems(Integer dailyMenuId, List<Menu> menuList) throws Exception;
 
 	List<Tag> getTags();
 
 	Tag getTag(Integer tagId);
 
-	void addTag(Tag tag);
+	Tag addTag(Tag tag) throws Exception;
 
-	void updateTag(Tag tag);
+	Tag updateTag(Tag tag) throws Exception;
 
-	void deleteTag(Tag tag);
+	Boolean deleteTag(Tag tag) throws ObjectNotFoundException, Exception;
 }
