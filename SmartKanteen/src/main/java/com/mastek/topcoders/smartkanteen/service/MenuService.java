@@ -50,7 +50,7 @@ public interface MenuService
 
 	Caterer addCaterer(Caterer caterer) throws Exception;
 
-	Caterer updateCaterer(Integer catererId, String catererName) throws Exception;
+	Caterer updateCaterer(Integer catererId, String catererName, String catererDetails) throws Exception;
 
 	Boolean deleteCaterer(Integer catererId) throws ObjectNotFoundException, Exception;
 

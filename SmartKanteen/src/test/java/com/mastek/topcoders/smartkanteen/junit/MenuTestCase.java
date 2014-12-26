@@ -20,14 +20,6 @@ public class MenuTestCase
 {
 
 	//TODO Needs refactoring
-	/**
-		 *  (Problem over here is that 
-		 *   even if the caterer does 
-		 *   not exist the items 
-		 *   are added into the
-		 *   menu_master so is it fine 
-	 * @throws Exception 
-		 */
 
 	@Test
 	public void testAddItemInMenuMasterByCaterer() throws Exception

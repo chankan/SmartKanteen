@@ -1,8 +1,9 @@
 ----------------------------------------------------------------------
 CREATE TABLE CATERER  
 (
-	caterer_id		NUMBER			auto_increment	CONSTRAINT	caterer_pk		PRIMARY KEY,
-	caterer_name	VARCHAR2(50)					CONSTRAINT	caterer_name_nn	NOT NULL
+	CATERER_ID		NUMBER			auto_increment	CONSTRAINT	caterer_pk		PRIMARY KEY,
+	CATERER_NAME	VARCHAR2(50)					CONSTRAINT	caterer_name_nn	NOT NULL,
+	CATERER_DETAILS	VARCHAR2(200)
 );
 
 ----------------------------------------------------------------------

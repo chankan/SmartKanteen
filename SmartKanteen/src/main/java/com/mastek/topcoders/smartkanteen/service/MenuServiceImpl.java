@@ -214,7 +214,7 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
-	public Caterer updateCaterer(Integer catererId, String catererName) throws Exception
+	public Caterer updateCaterer(Integer catererId, String catererName, String catererDetails) throws Exception
 	{
 		if (catererId == 0 || catererId == null)
 		{
@@ -230,6 +230,12 @@ public class MenuServiceImpl implements MenuService
 			{
 				caterer.setCatererName(catererName);
 			}
+			
+			if (catererDetails != null)
+			{
+				caterer.setCatererDetails(catererDetails);
+			}
+			
 			return dao.updateCaterer(caterer);
 		}
 

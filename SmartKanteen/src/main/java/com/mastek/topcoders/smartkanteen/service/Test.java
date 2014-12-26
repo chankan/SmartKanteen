@@ -227,11 +227,13 @@ public class Test
 		Caterer caterer = new Caterer();
 		caterer.setCatererId(3);
 		caterer.setCatererName("Tadka Caterer");
-
+		caterer.setCatererDetails("Tadka");
+		
 		Caterer caterer1 = new Caterer();
 		caterer1.setCatererId(4);
 		caterer1.setCatererName("Nitya Caterer");
-
+		caterer1.setCatererDetails("Nitya");
+		
 		service.addCaterer(caterer);
 		service.addCaterer(caterer1);
 	}
@@ -243,8 +245,9 @@ public class Test
 		Caterer caterer = new Caterer();
 		caterer.setCatererId(1);
 		caterer.setCatererName("Royal Kings");
+		caterer.setCatererDetails("Royal Kings");
 
-		service.updateCaterer(caterer.getCatererId(), caterer.getCatererName());
+		service.updateCaterer(caterer.getCatererId(), caterer.getCatererName(), caterer.getCatererDetails());
 	}
 
 	public static void testGetCatererById()

@@ -14,6 +14,7 @@ public class Caterer implements java.io.Serializable
 {
 	private Integer catererId;
 	private String catererName;
+	private String catererDetails;
 	private Set<CatererMenuMapping> catererMenuMapping;
 	private Set<DailyMenu> menuList;
 
@@ -35,6 +36,16 @@ public class Caterer implements java.io.Serializable
 	public void setCatererName(String catererName)
 	{
 		this.catererName = catererName;
+	}
+
+	public String getCatererDetails()
+	{
+		return catererDetails;
+	}
+
+	public void setCatererDetails(String catererDetails)
+	{
+		this.catererDetails = catererDetails;
 	}
 
 	public Set<CatererMenuMapping> getCatererMenuMapping()
@@ -60,7 +71,7 @@ public class Caterer implements java.io.Serializable
 	@Override
 	public String toString()
 	{
-		return "Caterer [catererId=" + catererId + ", catererName=" + catererName + ", catererMenuMapping="
-				+ catererMenuMapping + ", menuList=" + menuList + "]";
+		return "Caterer [catererId=" + catererId + ", catererName=" + catererName + ", catererDetails="
+				+ catererDetails + ", catererMenuMapping=" + catererMenuMapping + ", menuList=" + menuList + "]";
 	}
 }
