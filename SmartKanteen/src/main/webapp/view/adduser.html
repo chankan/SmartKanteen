@@ -1,0 +1,53 @@
+<div class="container-fluid" ng-controller="userCtrl">
+	<form role="form">
+
+		<div class="well form-group">
+			<div class="row">
+				<div class="col-md-6" ng-hide="error">
+					<h3 class="text-center">User Registration</h3>
+					<div class="row">
+						<div class="col-md-5">
+							<label>User Name</label>
+						</div>
+						<div class="col-md-7">
+							<input type="text" class="form-control" id="loginid"
+								ng-model="user.loginId">
+						</div>
+					</div>
+					
+
+					<div class="row margin-top-10">
+						<div class="col-md-5">
+							<label>Password</label>
+						</div>
+						<div class="col-md-7">
+							<input type="password" rows="3" class="form-control" cols="22"
+								id="password" ng-model="user.password">
+						</div>
+					</div>
+					
+					<div class="row margin-top-10">
+						<div class="col-md-5">
+							<label>Email</label>
+						</div>
+						<div class="col-md-7">
+							<input type="text" class="form-control" id="emailid"
+								ng-model="user.emailId">
+						</div>
+					</div>
+
+				<BR>
+					<div class="row margin-top-10">
+						<div class="col-md-12 text-center">
+							<!-- 							<a href="#/" class="btn">Cancel</a> -->
+							<button class="btn btn-primary" ng-click="save()">Sign
+								Up</button>
+							<!-- 							<button class="btn btn-danger margin-right-20" -->
+							<!-- 								ng-click="remove()" ng-show="(menu.itemId>=0)">Delete</button> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

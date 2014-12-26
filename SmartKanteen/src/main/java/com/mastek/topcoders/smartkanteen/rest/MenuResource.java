@@ -15,9 +15,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.ObjectNotFoundException;
+
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
+import com.mastek.topcoders.smartkanteen.bean.Tag;
 import com.mastek.topcoders.smartkanteen.rest.exception.GenericException;
 import com.mastek.topcoders.smartkanteen.rest.exception.NotAuthorizedException;
 import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
@@ -376,6 +379,104 @@ public class MenuResource implements IMenuResource
 		}
 	}
 
+	@Path("/tag")
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public List<Tag> getTags() {
+		List<Tag> taglist=null;
+		taglist=menuService.getTags();
+		return taglist;
+	}
+	
+	@Path("/tag")
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public Tag addTag(Tag tag) {
+		Tag addedtag = null;
+		if (role.equalsIgnoreCase("Admin"))
+		{
+			try
+			{
+				addedtag = menuService.addTag(tag);
+				return addedtag;
+			} 
+			catch (Exception e)
+			{
+				throw new GenericException("Something Went Wrong!!");
+			}
+		}
+		else
+		{
+			throw new NotAuthorizedException(
+					"You Don't Have Permission to AddTag!!!");
+		}
+	}
+	
+	@Path("/tag")
+	@PUT
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public Tag updateTag(Tag tag) {
+		Tag updatedtag = null;
+		if (role.equalsIgnoreCase("Admin"))
+		{
+			try
+			{
+				updatedtag = menuService.updateTag(tag);
+				return updatedtag;
+			} 
+			catch (Exception e)
+			{
+				throw new GenericException("Something Went Wrong!!");
+			}
+		}
+		else
+		{
+			throw new NotAuthorizedException(
+					"You Don't Have Permission to AddTag!!!");
+		} 
+	}
+
+	@Path("/tag")
+	@DELETE
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public Response deleteTag(Tag tag) {
+		if (role.equalsIgnoreCase("Admin"))
+		{
+			try
+			{
+				if(menuService.deleteTag(tag))
+				{
+					return Response.status(200)
+							.entity("Tag "+tag.getTagName()+" is deleted")
+							.build();
+				}
+				else
+				{
+					throw new GenericException("Something went wrong!!");
+				}
+			}
+			catch(ObjectNotFoundException hib )
+			{
+				throw new GenericException("This Tag is not Present!");
+			}
+			catch (Exception e) {
+				throw new GenericException("Something went wrong!!");
+			}
+			
+		}
+		else
+		{
+			throw new NotAuthorizedException("You Don't Have Permission to delete a tag");
+		}
+			
+		
+		
+	}
+	
 	public static void main(String[] args) {
 		MenuResource resource = new MenuResource();
 
@@ -387,4 +488,5 @@ public class MenuResource implements IMenuResource
 		resource.addDailyMenu(menuList, 10, new DateParam("20141218"));
 	}
 
+	
 }

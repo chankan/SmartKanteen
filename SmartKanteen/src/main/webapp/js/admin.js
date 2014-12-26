@@ -65,6 +65,9 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	}).when('/dailymenu', {
 		controller : 'DailyMenuCtrl',
 		templateUrl : 'view/todaysmenulist.html'//UserMenu End
+	}).when('/user', {
+		controller : 'userCtrl',
+		templateUrl : 'view/adduser.html'//UserMenu End
 	}).when('/admin/menu', {//Admin Menu
 		controller : 'AddMenuCtrl',
 		templateUrl : 'view/catererMenuUpdate.html'
@@ -86,8 +89,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	}, ];
 
 	$scope.loginMenu = [ {
-		name : "UserName",
-		url : "#/"
+		name : "Register Now!!",
+		url : "#/user"
 	}, {
 		name : "Logout",
 		url : "#/logout"
@@ -101,15 +104,15 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	                 ];
 	
 	$scope.loginMenu = [ {
-		name : "UserName",
-		url : "#/"
+		name : "Register Now!!",
+		url : "#/user"
 	}, {
 		name : "Logout",
 		url : "#/logout"
 	}, ];
 	
 	
-	$scope.mainMenu=adminMenu;
+	$scope.mainMenu=userMenu;
 	
 }).controller('HomeCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/1/menu').get();

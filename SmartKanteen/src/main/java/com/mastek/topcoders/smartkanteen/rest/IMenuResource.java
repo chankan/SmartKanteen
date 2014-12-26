@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
+import com.mastek.topcoders.smartkanteen.bean.Tag;
 
 
 public interface IMenuResource {
@@ -52,4 +53,9 @@ public interface IMenuResource {
 
 	/*Method Ends*/
 
+	/*Methods related to tags */
+	List<Tag> getTags();
+	Tag addTag(Tag tag) ;
+	Tag updateTag(Tag tag) ;
+	Response deleteTag(Tag tag);
 }
