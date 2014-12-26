@@ -1,88 +1,138 @@
 package com.mastek.topcoders.smartkanteen.service;
 
+import java.util.Date;
+
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserDetails;
+import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
+import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
+import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.dao.UserDAO;
-
-
 
 public class UserServiceImpl implements UserService
 {
 	public User getUserById(int userId)
 	{
 		UserDAO dao = new UserDAO();
-		User user  = dao.getUserById(userId);
+		User user = dao.getUserById(userId);
 		return user;
 	}
 
-	public Boolean registerUser(User user)
+	public User authenicateUser(String loginId, String password)
 	{
 		UserDAO dao = new UserDAO();
-		boolean result = dao.registerUser(user);
-		return result;
+		User user = dao.authenticateUser(loginId, password);
+		return user;
 	}
 
-	public Boolean authenicateUser(String loginId, String password)
+	public User createUser(User user, UserDetails userDetails, UserRoleMapping userRoleMapping) throws UserExistException,Exception
 	{
 		UserDAO dao = new UserDAO();
-		boolean result = dao.authenticateUser(loginId, password);
-		return result;
-
+		return dao.createUser(user, userDetails, userRoleMapping);
 	}
 
-	public Boolean updateUser(Integer userId, String loginId, String firstName, String lastName, String password,
-			String emailId)
+	public User updateUser(Integer userId, String loginId, String firstName, String lastName, String emailId,
+			String gender, Date dateOfBirth, Integer contactNo, Integer extensionNo, Integer employeeId)
+			throws Exception
 	{
-
-	   boolean result1=false;
 		User user;
+		UserDetails userDetails;
 
 		if (userId == null || userId == 0)
 		{
 			System.out.println("User does not exist...");
-			return false;
+			return null;
 		}
-		    user = getUserById(userId);
 
-		if (user!=null)
+		user = getUserById(userId);
+		userDetails = user.getUserDetails();
+
+		if (user != null)
 		{
 			user.setUserId(userId);
 			if (loginId != null)
 			{
 				user.setLoginId(loginId);
 			}
-			if (firstName != null)
-			{
-				user.setFirstName(firstName);
-			}
-			if (lastName != null)
-			{
-				user.setLastName(lastName);
-			}
-			if (password != null)
-			{
-				user.setPassword(password);
-			}
+
 			if (emailId != null)
 			{
 				user.setEmailId(emailId);
 			}
+
+			if (emailId != null)
+			{
+				user.setEmailId(emailId);
+			}
+
+			if (emailId != null)
+			{
+				user.setEmailId(emailId);
+			}
+
+			if (firstName != null)
+			{
+				userDetails.setFirstName(firstName);
+			}
+
+			if (lastName != null)
+			{
+				userDetails.setLastName(lastName);
+			}
+
+			if (gender != null)
+			{
+				userDetails.setGender(gender);
+			}
+
+			if (lastName != null)
+			{
+				userDetails.setLastName(lastName);
+			}
+
+			if (dateOfBirth != null)
+			{
+				userDetails.setDateOfBirth(dateOfBirth);
+			}
+
+			if (contactNo != null && contactNo != 0)
+			{
+				userDetails.setContactNo(contactNo);
+			}
+
+			if (extensionNo != null && extensionNo != 0)
+			{
+				userDetails.setExtensionNo(extensionNo);
+			}
+
+			if (employeeId != null && employeeId != 0)
+			{
+				userDetails.setEmployeeId(employeeId);
+			}
+
 			UserDAO dao = new UserDAO();
 
-			boolean result2 = dao.updateUser(user);
-			if (result2 == true)
-			{
-				result1 = true;
-			}
+			return dao.updateUser(user, userDetails);
 		}
-		return result1;
 
+		return null;
 	}
 
-	public Boolean deleteUser(User user)
+	public Boolean deleteUser(User user) throws Exception
 	{
 		UserDAO dao = new UserDAO();
-		boolean result = dao.deleteUser(user);
-		return result;
+		return dao.deleteUser(user);
 	}
 
+	public User updateUserRole(int userId, int roleId) throws Exception
+	{
+		UserDAO dao = new UserDAO();
+		return dao.updateUserRole(userId, roleId);
+	}
+
+	public User changePassword(String loginId, String oldPassword, String newPassword) throws  IncorrectPasswordException,Exception
+	{
+		UserDAO dao = new UserDAO();
+		return dao.changePassword(loginId, oldPassword, newPassword);
+	}
 }

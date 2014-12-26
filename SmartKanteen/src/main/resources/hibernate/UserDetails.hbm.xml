@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 24, 2014 2:31:35 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.mastek.topcoders.smartkanteen.bean.UserDetails"
+		table="USER_PROFILE">
+		<id name="userDetailsId" type="java.lang.Integer">
+			<column name="USER_DETAILS_ID" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="user" column="user_id"  cascade="all"
+			class="com.mastek.topcoders.smartkanteen.bean.User" not-null="true" />
+		
+		
+		<property name="firstName" type="string">
+			<column name="FIRST_NAME" length="30" />
+		</property>
+		<property name="lastName" type="string">
+			<column name="LAST_NAME" length="30" />
+		</property>
+		<property name="gender" type="string">
+			<column name="GENDER" length="1" />
+		</property>
+		<property name="dateOfBirth" type="date">
+			<column name="DATE_OF_BIRTH" length="8" />
+		</property>
+		<property name="contactNo" type="java.lang.Integer">
+			<column name="CONTACT_NO" />
+		</property>
+		<property name="extensionNo" type="java.lang.Integer">
+			<column name="EXTENSION_NO" />
+		</property>
+		<property name="employeeId" type="java.lang.Integer">
+			<column name="EMPLOYEE_ID"/>
+		</property>
+	</class>
+</hibernate-mapping>
