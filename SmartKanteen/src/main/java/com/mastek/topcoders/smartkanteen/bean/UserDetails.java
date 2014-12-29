@@ -16,7 +16,7 @@ public class UserDetails implements java.io.Serializable
 	private String lastName;
 	private String gender;
 	private Date dateOfBirth;
-	private Integer contactNo;
+	private Long contactNo;
 	private Integer extensionNo;
 	private Integer employeeId;
 
@@ -80,12 +80,12 @@ public class UserDetails implements java.io.Serializable
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Integer getContactNo()
+	public Long getContactNo()
 	{
 		return this.contactNo;
 	}
 
-	public void setContactNo(Integer contactNo)
+	public void setContactNo(Long contactNo)
 	{
 		this.contactNo = contactNo;
 	}
@@ -113,8 +113,8 @@ public class UserDetails implements java.io.Serializable
 	@Override
 	public String toString()
 	{
-		return "UserDetails [userDetailsId=" + userDetailsId + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", contactNo="
-				+ contactNo + ", extensionNo=" + extensionNo + ", employeeId=" + employeeId + "]";
+		return "UserDetails [userDetailsId=" + userDetailsId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", contactNo=" + contactNo + ", extensionNo="
+				+ extensionNo + ", employeeId=" + employeeId + "]";
 	}
 }

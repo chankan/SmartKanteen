@@ -1,11 +1,18 @@
 package com.mastek.topcoders.smartkanteen.junit;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.hibernate.Session;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
+import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
+import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.service.UserService;
 import com.mastek.topcoders.smartkanteen.service.UserServiceImpl;
 
@@ -13,57 +20,80 @@ public class UserTestCase
 {
 
 	@Test
-	public void testRegisterUser()
+	public void testCreateUser()
 	{
-
-		User user1 = new User();
-		user1.setFirstName("Jinal");
-		user1.setLastName("Bhagadia");
-		user1.setLoginId("Jinal12781");
-		user1.setPassword("Jinal123");
-		user1.setEmailId("Jinal.bhagadia@mastek.com");
-
-		UserService service = new UserServiceImpl();
-		boolean result = service.registerUser(user1);
-		if (result == false)
+		User userDB = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String dateInString = "24-12-2014 0:0:0";
+		Date date = null;
+		try
 		{
-			System.out.println("User already exist...");
+			date = sdf.parse(dateInString);
 		}
-		Session session = DatabaseUtil.getSession();
-		User user2 = (User) session.get(User.class, 10);
-
-		if (user2 != null)
+		catch (ParseException e)
 		{
-			Assert.assertEquals(user1.getFirstName(), user2.getFirstName());
-			Assert.assertEquals(user1.getLastName(), user2.getLastName());
-			Assert.assertEquals(user1.getLoginId(), user2.getLoginId());
-			Assert.assertEquals(user1.getPassword(), user2.getPassword());
-			Assert.assertEquals(user1.getEmailId(), user2.getEmailId());
-			System.out.println("Enter the if else condition...");
+			e.printStackTrace();
 		}
-		DatabaseUtil.closeSession(session);
+		User user = new User();
+		user.setLoginId("Sahil");
+		user.setPassword("123456");
+		user.setEmailId("Sahil.yadav@mastek.com");
+		user.setAccountCreationDate(date);
+
+		UserServiceImpl service = new UserServiceImpl();
+		try
+		{
+			userDB = service.createUser(user);
+		}
+		catch (UserExistException e)
+		{
+			e.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		User fetchedUser = (User) service.getUserById(22);
+		Assert.assertEquals(userDB.getLoginId(), fetchedUser.getLoginId());
+		Assert.assertEquals(userDB.getPassword(), fetchedUser.getPassword());
+		Assert.assertEquals(userDB.getEmailId(), fetchedUser.getEmailId());
+		Assert.assertEquals(userDB.getAccountCreationDate(), fetchedUser.getAccountCreationDate());
 	}
 
 	@Test
 	public void testUpdateUser()
 	{
-		User user1 = new User();
-		user1.setUserId(8);
-		user1.setPassword("Dipesh123");
-		user1.setEmailId("dipesh.patel@mastek.com");
-		UserService service = new UserServiceImpl();
 
-		boolean result = service.updateUser(user1.getUserId(), user1.getLoginId(), user1.getFirstName(),
-				user1.getLastName(), user1.getPassword(), user1.getEmailId());
-		if (result)
+		User user = new User();
+		user.setUserId(1);
+
+		UserDetails userDetails = new UserDetails();
+		userDetails.setFirstName("Rohit");
+		userDetails.setLastName("Sharma");
+		userDetails.setGender("M");
+		user.setUserDetails(userDetails);
+		UserService service = new UserServiceImpl();
+		try
 		{
-			System.out.println("User is updated successfully...");
+			/*User user1 = service.updateUser(user.getUserId(), user.getLoginId(), userDetails.getFirstName(),
+					userDetails.getLastName(), user.getEmailId(), userDetails.getGender(),
+					userDetails.getDateOfBirth(), userDetails.getContactNo(), userDetails.getExtensionNo(),
+					userDetails.getEmployeeId());*/
+			User updatedUser = service.updateUser(user);
+
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 
 		Session session = DatabaseUtil.getSession();
-		User fetchedUser = (User) session.get(User.class, 8);
-		Assert.assertEquals(user1.getPassword(), fetchedUser.getPassword());
+		User userDb = (User) session.get(User.class, user.getUserId());
 
+		Assert.assertEquals(userDetails.getFirstName(), userDb.getUserDetails().getFirstName());
+		Assert.assertEquals(userDetails.getLastName(), userDb.getUserDetails().getLastName());
+		Assert.assertEquals(userDetails.getGender(), userDb.getUserDetails().getGender());
 		DatabaseUtil.closeSession(session);
 	}
 
@@ -72,12 +102,20 @@ public class UserTestCase
 	{
 		boolean result2 = false;
 		User user1 = new User();
-		user1.setUserId(9);
+		user1.setUserId(23);
 		UserService service = new UserServiceImpl();
-		boolean result1 = service.deleteUser(user1);
+		boolean result1 = false;
+		try
+		{
+			result1 = service.deleteUser(user1);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		Session session = DatabaseUtil.getSession();
-		User user2 = (User) session.get(User.class, 9);
+		User user2 = (User) session.get(User.class, 17);
 
 		if (user2 == null)
 		{
@@ -90,9 +128,8 @@ public class UserTestCase
 	public void testAuthenicateUser()
 	{
 		UserService service = new UserServiceImpl();
-		boolean result = service.authenicateUser("Jekin12740", "jekin123");
+		Boolean result = service.authenicateUser("Kiran12741", "123456");
 		Assert.assertEquals(true, result);
-
 	}
 
 	@Test
@@ -100,13 +137,27 @@ public class UserTestCase
 	{
 		boolean result = false;
 		UserService service = new UserServiceImpl();
-		User user = service.getUserById(5);
+		User user = service.getUserById(12);
 		if (user != null)
 		{
 			result = true;
 		}
-
 		Assert.assertEquals(true, result);
 	}
 
+	@Test
+	public void testChangePassword() throws Exception
+	{
+		UserService service = new UserServiceImpl();
+		User user = null;
+		try
+		{
+			user = service.changePassword("Kiran12741", "123456", "Kiran@123");
+		}
+		catch (IncorrectPasswordException e)
+		{
+			e.printStackTrace();
+		}
+		Assert.assertEquals("Kiran@123", user.getPassword());
+	}
 }

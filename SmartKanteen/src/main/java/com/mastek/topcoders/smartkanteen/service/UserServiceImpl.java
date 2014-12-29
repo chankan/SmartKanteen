@@ -1,7 +1,9 @@
 package com.mastek.topcoders.smartkanteen.service;
 
 import java.util.Date;
+import java.util.List;
 
+import com.mastek.topcoders.smartkanteen.bean.Role;
 import com.mastek.topcoders.smartkanteen.bean.User;
 import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
@@ -18,22 +20,31 @@ public class UserServiceImpl implements UserService
 		return user;
 	}
 
-	public User authenicateUser(String loginId, String password)
+	public Boolean authenicateUser(String loginId, String password)
 	{
 		UserDAO dao = new UserDAO();
-		User user = dao.authenticateUser(loginId, password);
-		return user;
+		return dao.authenticateUser(loginId, password);
+
 	}
 
-	public User createUser(User user, UserDetails userDetails, UserRoleMapping userRoleMapping) throws UserExistException,Exception
+	public User createUser(User user) throws UserExistException, Exception
 	{
 		UserDAO dao = new UserDAO();
+
+		Role role = new Role();
+		role.setRoleId(3);
+		UserRoleMapping userRoleMapping = new UserRoleMapping();
+		userRoleMapping.setRole(role);
+		userRoleMapping.setUser(user);
+
+		UserDetails userDetails = new UserDetails();
+		userDetails.setUser(user);
+
 		return dao.createUser(user, userDetails, userRoleMapping);
 	}
 
 	public User updateUser(Integer userId, String loginId, String firstName, String lastName, String emailId,
-			String gender, Date dateOfBirth, Integer contactNo, Integer extensionNo, Integer employeeId)
-			throws Exception
+			String gender, Date dateOfBirth, Long contactNo, Integer extensionNo, Integer employeeId) throws Exception
 	{
 		User user;
 		UserDetails userDetails;
@@ -114,7 +125,77 @@ public class UserServiceImpl implements UserService
 
 			return dao.updateUser(user, userDetails);
 		}
+		return null;
+	}
 
+	public User updateUser(User user) throws Exception
+	{
+		User userDb;
+		UserDetails userDetails, userDetailsDb;
+
+		if (user.getUserId() == null || user.getUserId() == 0)
+		{
+			System.out.println("User does not exist...");
+			return null;
+		}
+		userDetails = user.getUserDetails();
+
+		userDb = getUserById(user.getUserId());
+		userDetailsDb = userDb.getUserDetails();
+
+		if (user != null)
+		{
+			userDb.setUserId(user.getUserId());
+			if (user.getLoginId() != null)
+			{
+				userDb.setLoginId(user.getLoginId());
+			}
+
+			if (user.getEmailId() != null)
+			{
+				userDb.setEmailId(user.getEmailId());
+			}
+
+			if (userDetails.getFirstName() != null)
+			{
+				userDetailsDb.setFirstName(userDetails.getFirstName());
+			}
+
+			if (userDetails.getLastName() != null)
+			{
+				userDetailsDb.setLastName(userDetails.getLastName());
+			}
+
+			if (userDetails.getGender() != null)
+			{
+				userDetailsDb.setGender(userDetails.getGender());
+			}
+
+			if (userDetails.getDateOfBirth() != null)
+			{
+				userDetailsDb.setDateOfBirth(userDetails.getDateOfBirth());
+			}
+
+			if (userDetails.getContactNo() != null && userDetails.getContactNo() != 0)
+			{
+				userDetailsDb.setContactNo(userDetails.getContactNo());
+			}
+
+			if (userDetails.getExtensionNo() != null && userDetails.getExtensionNo() != 0)
+			{
+				userDetailsDb.setExtensionNo(userDetails.getExtensionNo());
+			}
+
+			if (userDetails.getEmployeeId() != null && userDetails.getEmployeeId() != 0)
+			{
+				userDetailsDb.setEmployeeId(userDetails.getEmployeeId());
+			}
+			System.out.println(user.toString() + "\n" + userDetailsDb.toString());
+
+			UserDAO dao = new UserDAO();
+
+			return dao.updateUser(userDb, userDetailsDb);
+		}
 		return null;
 	}
 
@@ -124,13 +205,14 @@ public class UserServiceImpl implements UserService
 		return dao.deleteUser(user);
 	}
 
-	public User updateUserRole(int userId, int roleId) throws Exception
+	public User updateUserRole(User user, List<Role> roleList) throws Exception
 	{
 		UserDAO dao = new UserDAO();
-		return dao.updateUserRole(userId, roleId);
+		return dao.updateUserRole(user, roleList);
 	}
 
-	public User changePassword(String loginId, String oldPassword, String newPassword) throws  IncorrectPasswordException,Exception
+	public User changePassword(String loginId, String oldPassword, String newPassword)
+			throws IncorrectPasswordException, Exception
 	{
 		UserDAO dao = new UserDAO();
 		return dao.changePassword(loginId, oldPassword, newPassword);

@@ -9,10 +9,10 @@
 			<column name="USER_DETAILS_ID" />
 			<generator class="identity" />
 		</id>
-		<many-to-one name="user" column="user_id"  cascade="all"
+		<many-to-one name="user" column="user_id" cascade="all"
 			class="com.mastek.topcoders.smartkanteen.bean.User" not-null="true" />
-		
-		
+
+
 		<property name="firstName" type="string">
 			<column name="FIRST_NAME" length="30" />
 		</property>
@@ -25,14 +25,14 @@
 		<property name="dateOfBirth" type="date">
 			<column name="DATE_OF_BIRTH" length="8" />
 		</property>
-		<property name="contactNo" type="java.lang.Integer">
+		<property name="contactNo" type="java.lang.Long">
 			<column name="CONTACT_NO" />
 		</property>
 		<property name="extensionNo" type="java.lang.Integer">
 			<column name="EXTENSION_NO" />
 		</property>
 		<property name="employeeId" type="java.lang.Integer">
-			<column name="EMPLOYEE_ID"/>
+			<column name="EMPLOYEE_ID" />
 		</property>
 	</class>
 </hibernate-mapping>
