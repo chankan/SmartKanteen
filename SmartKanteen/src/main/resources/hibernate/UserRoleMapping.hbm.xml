@@ -9,12 +9,12 @@
 			<column name="user_role_mapping_id" />
 			<generator class="native" />
 		</id>
-		
+
 		<many-to-one name="role" column="ROLE_ID" unique="true"
 			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.Role"
 			not-null="true" />
-			
-			<many-to-one name="user" column="USER_ID" unique="true"  cascade="all"
+
+		<many-to-one name="user" column="USER_ID" cascade="all"
 			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.User"
 			not-null="true" />
 	</class>

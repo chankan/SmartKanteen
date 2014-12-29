@@ -1,9 +1,7 @@
 package com.mastek.topcoders.smartkanteen.rest;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
@@ -22,7 +20,7 @@ public interface IMenuResource {
 		
 		Caterer addCaterer(Caterer caterer);
 		
-		Caterer updateCaterer(Integer catererId, String catererName);
+		Caterer updateCaterer(Integer catererId,Caterer caterer);
 		
 		Response deleteCaterer(Integer catererId);
 		

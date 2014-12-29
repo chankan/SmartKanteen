@@ -26,8 +26,8 @@
 <!-- 						<th style="width: 10%">Remove</th> -->
 					</tr>
 				</thead>
-				<tbody id="">
-					<tr ng-repeat="menu in menudata.menu |orderBy:'itemName'">
+				<tbody ng-show="menudata.length > 0">
+					<tr ng-repeat="menu in menudata |orderBy:'itemName'">
 						<td><a href="" ng-click="update(menu)">{{menu.itemId}}</a></td>
 						<td>{{menu.itemName}}</td>
 						<td>{{menu.description}}</td>
@@ -36,6 +36,11 @@
 						<td><input type="checkbox" ></td>
 						<td><input type="checkbox" ></td>
 <!-- 						<td><a href="" ng-click="remove(menu.itemID)">remove</a></td> -->
+					</tr>
+				</tbody>
+				<tbody ng-hide="menudata.length>0">
+					<tr >
+						<td colspan="7">No menu item present for this caterer.</td> 
 					</tr>
 				</tbody>
 			</table>
@@ -47,6 +52,10 @@
 				<div class="row">
 					<div class="col-md-6" ng-hide="error">
 						<h3 class="text-center">Add/Update Menu</h3>
+						
+						<div class="row">
+							<div class="col-md-12 ">{{errormessage}}</div>
+						</div>
 						<div class="row">
 							<div class="col-md-5">
 								<label>Name</label>
@@ -95,7 +104,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-6">{{errormessage}}</div>
+					
 				</div>
 			</div>
 		</form>

@@ -20,7 +20,8 @@
 		<property name="accountCreationDate" type="date">
 			<column name="ACCOUNT_CREATION_DATE" />
 		</property>
-		<set name="userRoleMappingSet" inverse="true"  lazy="false">
+		<set name="userRoleMappingSet" inverse="true" lazy="false"
+			cascade="all">
 			<key column="user_id" />
 			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.UserRoleMapping" />
 		</set>

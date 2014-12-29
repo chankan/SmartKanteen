@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.ObjectNotFoundException;
 
@@ -24,13 +25,14 @@ import com.mastek.topcoders.smartkanteen.bean.Tag;
 import com.mastek.topcoders.smartkanteen.rest.exception.GenericException;
 import com.mastek.topcoders.smartkanteen.rest.exception.NotAuthorizedException;
 import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
+import com.sun.org.apache.regexp.internal.recompile;
 
 @Path("/service")
 public class MenuResource implements IMenuResource 
 {
 
 	private final MenuServiceImpl menuService;
-	private String role = "Admin";
+	private String role = "admin";
 
 	public MenuResource() 
 	{
@@ -45,7 +47,16 @@ public class MenuResource implements IMenuResource
 	{
 		List<Caterer> caterer;
 		caterer = menuService.getCaterers();
-		return caterer;
+		if(!caterer.isEmpty())
+		{
+			return caterer;
+		}
+		else
+		{	
+			
+			throw new GenericException("No Data present");
+		}
+
 	}
 
 	@Path("/caterer")
@@ -54,13 +65,12 @@ public class MenuResource implements IMenuResource
 	@Override
 	public Caterer addCaterer(Caterer caterer)
 	{
-		Caterer addedcaterer = null;
+		role = "superadmin";
 		if (role.equalsIgnoreCase("superAdmin"))
 		{
 			try
-			{
-				addedcaterer = menuService.addCaterer(caterer);
-				return addedcaterer;
+			{	Caterer addedcaterer = menuService.addCaterer(caterer);
+			return addedcaterer;
 			} 
 			catch (Exception e)
 			{
@@ -80,34 +90,35 @@ public class MenuResource implements IMenuResource
 	@Override
 	public Caterer getCaterer(@PathParam("catererId") Integer catererId)
 	{
-		Caterer caterer = null;
+
 		if (role.equalsIgnoreCase("superAdmin")
 				|| role.equalsIgnoreCase("user"))
 		{
-			caterer = menuService.getCaterer(catererId);
+			Caterer caterer = menuService.getCaterer(catererId);
+			return caterer;
 		} else
 		{
 			throw new NotAuthorizedException(
 					"You Don't Have Permission to Access other Caterer's Data!!!");
 		}
-		return caterer;
+
 	}
 
 	@Path("/caterer/{catererId}/")
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Caterer updateCaterer(@PathParam("catererId") Integer catererId, // @FormParam("catererName")
-			String catererName) 
+	public Caterer updateCaterer(@PathParam("catererId") Integer catererId, 
+			Caterer caterer) 
 	{
-		Caterer caterer = new Caterer();
+
 		if (role.equalsIgnoreCase("superAdmin"))
 		{
 			try
 			{
-				caterer = menuService.updateCaterer(catererId, catererName);
-				if (!caterer.equals(null))
+				Caterer updatedcaterer=menuService.updateCaterer(caterer);
+				if (!updatedcaterer.equals(null))
 				{
-					return caterer;
+					return updatedcaterer;
 				} 
 				else
 				{
@@ -129,7 +140,7 @@ public class MenuResource implements IMenuResource
 	@Path("caterer/{catererId}")
 	@DELETE
 	@Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,
-			MediaType.APPLICATION_XML })
+		MediaType.APPLICATION_XML })
 	@Override
 	public Response deleteCaterer(@PathParam("catererId") Integer catererId)
 	{
@@ -170,7 +181,16 @@ public class MenuResource implements IMenuResource
 	{
 		List<Menu> menu;
 		menu = menuService.getMenuMasterByCaterer(catererId);
-		return menu;
+		if(!menu.isEmpty())
+		{
+			return menu;
+		}	
+		else
+		{	
+			
+			throw new GenericException("No Data present");
+		}
+
 	}
 
 	@Path("/caterer/{catererId}/menu/")
@@ -277,7 +297,15 @@ public class MenuResource implements IMenuResource
 		List<Menu> dailymenu;
 		Date date = menuDate.getDate();
 		dailymenu = menuService.getDailyMenu(date, catererId);
-		return dailymenu;
+		if(!dailymenu.isEmpty())
+		{
+			return dailymenu;
+		}
+		else
+		{
+			throw new GenericException("No data Present!");
+		}
+		
 	}
 
 	@Path("/caterer/{catererId}/menu/{date}")
@@ -313,7 +341,7 @@ public class MenuResource implements IMenuResource
 	@Path("/caterer/{catererId}/menu/{date}")
 	@PUT
 	@Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML,
-			MediaType.APPLICATION_JSON })
+		MediaType.APPLICATION_JSON })
 	@Override
 	public DailyMenu updateDailyMenu(List<Menu> menuList,
 			@PathParam("catererId") Integer catererId,
@@ -388,7 +416,7 @@ public class MenuResource implements IMenuResource
 		taglist=menuService.getTags();
 		return taglist;
 	}
-	
+
 	@Path("/tag")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -413,7 +441,7 @@ public class MenuResource implements IMenuResource
 					"You Don't Have Permission to AddTag!!!");
 		}
 	}
-	
+
 	@Path("/tag")
 	@PUT
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -466,17 +494,17 @@ public class MenuResource implements IMenuResource
 			catch (Exception e) {
 				throw new GenericException("Something went wrong!!");
 			}
-			
+
 		}
 		else
 		{
 			throw new NotAuthorizedException("You Don't Have Permission to delete a tag");
 		}
-			
-		
-		
+
+
+
 	}
-	
+
 	public static void main(String[] args) {
 		MenuResource resource = new MenuResource();
 
@@ -488,5 +516,5 @@ public class MenuResource implements IMenuResource
 		resource.addDailyMenu(menuList, 10, new DateParam("20141218"));
 	}
 
-	
+
 }
