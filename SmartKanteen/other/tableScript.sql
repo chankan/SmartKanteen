@@ -52,8 +52,8 @@ CREATE  TABLE  User
 (
 	user_id					NUMBER			auto_increment	CONSTRAINT	user_pk						PRIMARY KEY,
 	login_id				VARCHAR2(30)					CONSTRAINT  login_nn					NOT NULL,
-	password				VARCHAR2(30)					CONSTRAINT	password_nn					NOT NULL,
-	email_id				VARCHAR2(30)					CONSTRAINT	email_id_nn					NOT NULL,
+	password				VARCHAR2(32)					CONSTRAINT	password_nn					NOT NULL,
+	email_id				VARCHAR2(50)					CONSTRAINT	email_id_nn					NOT NULL,
 	account_creation_date	DATE							CONSTRAINT  account_generation_date_nn  NOT NULL
 );
 ALTER TABLE	User	ADD	CONSTRAINT	login_id_uk	UNIQUE KEY(login_id);
@@ -95,7 +95,7 @@ CREATE TABLE  Order_Master
  	item_id					NUMBER,
  	quantity				NUMBER,
  	CONSTRAINT	order_fk	FOREIGN KEY	(order_id)	REFERENCES	Order_Master(order_id),
- 	CONSTRAINT	menu_fk		FOREIGN KEY	(menu_id)	REFERENCES	MENU_MASTER(item_id)
+ 	CONSTRAINT	menu_fk		FOREIGN KEY	(item_id)	REFERENCES	MENU_MASTER(item_id)
  );
  
  -------------------------------------------------------------------------------------------
@@ -128,5 +128,5 @@ CREATE TABLE  USER_ROLE_MAPPING
 	role_id					NUMBER,
 	user_id					NUMBER,
 	CONSTRAINT	role_fk		FOREIGN KEY	(role_id)	REFERENCES	role(role_id),
-	CONSTRAINT	user_fk		FOREIGN KEY	(user_id)	REFERENCES	user(user_id)
+	CONSTRAINT	user_role_fk		FOREIGN KEY	(user_id)	REFERENCES	user(user_id)
 );

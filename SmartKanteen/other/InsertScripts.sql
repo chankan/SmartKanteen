@@ -1,13 +1,10 @@
-======================================================================
-Insert Query
-
-Caterer
+--- Insert Scripts for Caterer ----
 ----------------------------------------------------------------------
 INSERT INTO caterer(caterer_name, caterer_details) values ('Royal Caterer', 'All food cuisines');	
 INSERT INTO caterer(caterer_name, caterer_details) values ('Famous Caterer', 'Continental Food');
 
 
-Menu_Master
+--- Insert Scripts for Menu_Master ----
 ----------------------------------------------------------------------
 INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) values (1, 'Biryani', 'Biryani is one of the most popular food items', 100, 20);
 INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) values (2, 'Fried Rice', 'Fried Rice is one of the most popular food items', 80, 20);
@@ -20,7 +17,7 @@ INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) value
 INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) values (9, 'Paneer Tikka Masala', 'Paneer Tikka Masala  is one of the most popular food items', 100, 25);
 INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) values (10, 'Manchurian Fried Rice', 'Manchurian Fried Rice is one of the most popular food items', 100, 25);
 
-Tags
+--- Insert Scripts for Tags ----
 ----------------------------------------------------------------------
 INSERT INTO TAGS(TAG_ID, TAG_NAME) values (1, 'Lunch');
 INSERT INTO TAGS(TAG_ID, TAG_NAME) values (2, 'Dinner');
@@ -35,7 +32,7 @@ INSERT INTO TAGS(TAG_ID, TAG_NAME) values (10, 'Veg');
 INSERT INTO TAGS(TAG_ID, TAG_NAME) values (11, 'Non-Veg');
 
 
-MENU_TAGS_MAPPING
+--- Insert Scripts for MENU_TAGS_MAPPING ----
 ----------------------------------------------------------------------
 INSERT INTO MENU_TAGS_MAPPING(MENU_TAGS_MAPPING_ID, TAG_IDS, ITEM_ID) values (1, '1,2,10', 1);
 INSERT INTO MENU_TAGS_MAPPING(MENU_TAGS_MAPPING_ID, TAG_IDS, ITEM_ID) values (2, '1,2,5,10', 2);
@@ -49,13 +46,13 @@ INSERT INTO MENU_TAGS_MAPPING(MENU_TAGS_MAPPING_ID, TAG_IDS, ITEM_ID) values (9,
 INSERT INTO MENU_TAGS_MAPPING(MENU_TAGS_MAPPING_ID, TAG_IDS, ITEM_ID) values (10, '1,2,5,10', 10);
 
 
-Daily_Menu
+--- Insert Scripts for Daily_Menu ----
 -----------------------------------------------------------------------
 INSERT INTO DAILY_MENU(daily_menu_id, caterer_id, menu_date) VALUES (1, 1, SYSDATE);
 INSERT INTO DAILY_MENU(daily_menu_id, caterer_id, menu_date) VALUES (2, 2, SYSDATE);
 
 
-CATERER_MENU_MAPPING
+--- Insert Scripts for CATERER_MENU_MAPPING ----
 -------------------------------------------------------------------
 INSERT  INTO CATERER_MENU_MAPPING(CATERER_MENU_MAPPING_ID, caterer_id, item_id) VALUES (1, 1, 1);
 INSERT  INTO CATERER_MENU_MAPPING(CATERER_MENU_MAPPING_ID, caterer_id, item_id) VALUES (2, 1, 2);
@@ -69,7 +66,7 @@ INSERT  INTO CATERER_MENU_MAPPING(CATERER_MENU_MAPPING_ID, caterer_id, item_id) 
 INSERT  INTO CATERER_MENU_MAPPING(CATERER_MENU_MAPPING_ID, caterer_id, item_id) VALUES (10, 2, 10);
 
 
-Daily_Menu_Mapping
+--- Insert Scripts for Daily_Menu_Mapping ----
 --------------------------------------------------------------------
 INSERT INTO DAILY_MENU_MAPPING(DAILY_MENU_MAPPING_ID, ITEM_ID, DAILY_MENU_ID) VALUES (1, 1, 1); 
 INSERT INTO DAILY_MENU_MAPPING(DAILY_MENU_MAPPING_ID, ITEM_ID, DAILY_MENU_ID) VALUES (2, 2, 1);
@@ -80,14 +77,14 @@ INSERT INTO DAILY_MENU_MAPPING(DAILY_MENU_MAPPING_ID, ITEM_ID, DAILY_MENU_ID) VA
 INSERT INTO DAILY_MENU_MAPPING(DAILY_MENU_MAPPING_ID, ITEM_ID, DAILY_MENU_ID) VALUES (7, 8, 2);
 
 
-USER
+--- Insert Scripts for USER ----
 --------------------------------------------------------------------
 INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (1, 'tarul', 'tarul', 'tarul.yadav@mastek.com', SYSDATE);
 INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (2, 'rahul', 'rahul', 'rahul.panchal@mastek.com', SYSDATE);
 INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (3, 'vaibhav', 'vaibhav', 'vaibhav.karanjkar@mastek.com', SYSDATE);
 
 
-USER_DETAILS
+--- Insert Scripts for USER_DETAILS ----
 --------------------------------------------------------------------
 INSERT INTO USER_DETAILS(USER_DETAILS_ID, FIRST_NAME, LAST_NAME, GENDER, DATE_OF_BIRTH, CONTACT_NO, EXTENSION_NO, EMPLOYEE_ID, USER_ID) VALUES (1, 'Tarul', 'Yadav', 'F', '1985-08-22', 9619123456, 5678, 11050, 1);
 INSERT INTO USER_DETAILS(USER_DETAILS_ID, FIRST_NAME, LAST_NAME, GENDER, DATE_OF_BIRTH, CONTACT_NO, EXTENSION_NO, EMPLOYEE_ID, USER_ID) VALUES (2, 'Rahul', 'Panchal', 'M', '1991-03-21', 9619123456, 5678, 11050, 2);

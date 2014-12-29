@@ -49,6 +49,8 @@ public interface MenuService
 	List<Caterer> getCaterers();
 
 	Caterer addCaterer(Caterer caterer) throws Exception;
+	
+	Caterer updateCaterer(Caterer caterer) throws Exception;
 
 	Caterer updateCaterer(Integer catererId, String catererName, String catererDetails) throws Exception;
 

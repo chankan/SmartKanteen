@@ -746,6 +746,47 @@ public class MenuDAO
 		return result;
 	}
 
+	public DailyMenu dailyMenuExists(DailyMenu dailyMenu) throws ObjectNotFoundException, Exception
+	{
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		DailyMenu dailyMenuDB;
+
+		try
+		{
+			Query selectQuery = session
+					.createQuery("FROM DailyMenu WHERE catererId= :catererId AND menuDate= :menuDate");
+			selectQuery.setParameter("catererId", dailyMenu.getCatererId());
+			selectQuery.setParameter("menuDate", dailyMenu.getMenuDate());
+			List<DailyMenu> dailyMenuList = selectQuery.list();
+
+			if (dailyMenuList != null && dailyMenuList.size() >= 1)
+			{
+				dailyMenuDB = dailyMenuList.get(0);
+			}
+			else
+			{
+				dailyMenuDB = null;
+			}
+		}
+		catch (ObjectNotFoundException hib)
+		{
+			System.out.println("No Daily Menu Found...");
+			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw hib;
+		}
+		catch (Exception e)
+		{
+			tx.rollback();
+			DatabaseUtil.closeSession(session);
+			throw e;
+		}
+
+		DatabaseUtil.closeSession(session);
+		return dailyMenuDB;
+	}
+
 	public List<Tag> getTags()
 	{
 		Session session = DatabaseUtil.getSession();

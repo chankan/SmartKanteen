@@ -22,5 +22,8 @@
 		<mapping resource="hibernate/OrderMaster.hbm.xml"/>
 		<mapping resource="hibernate/Tags.hbm.xml"/>
 		<mapping resource="hibernate/User.hbm.xml"/>
+		<mapping resource="hibernate/UserDetails.hbm.xml"/>
+		<mapping resource="hibernate/UserRoleMapping.hbm.xml"/>
+		<mapping resource="hibernate/Role.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

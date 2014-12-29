@@ -214,6 +214,35 @@ public class MenuServiceImpl implements MenuService
 	}
 
 	@Override
+	public Caterer updateCaterer(Caterer caterer) throws Exception
+	{
+		if (caterer.getCatererId() == 0 || caterer.getCatererId() == null)
+		{
+			System.out.println("CatererId not found");
+		}
+
+		MenuDAO dao = new MenuDAO();
+		Caterer catererDB = dao.getCaterer(caterer.getCatererId());
+
+		if (catererDB != null)
+		{
+			if (caterer.getCatererName() != null)
+			{
+				catererDB.setCatererName(caterer.getCatererName());
+			}
+			
+			if (caterer.getCatererDetails() != null)
+			{
+				catererDB.setCatererDetails(caterer.getCatererDetails());
+			}
+			
+			return dao.updateCaterer(catererDB);
+		}
+
+		return null;
+	}
+	
+	@Override
 	public Caterer updateCaterer(Integer catererId, String catererName, String catererDetails) throws Exception
 	{
 		if (catererId == 0 || catererId == null)
@@ -266,8 +295,18 @@ public class MenuServiceImpl implements MenuService
 		dailyMenu.setCatererId(catererId);
 		dailyMenu.setMenuDate(menuDate);
 		dailyMenu.setMenuList(menuList);
+		
+		DailyMenu dailyMenuDB = dao.dailyMenuExists(dailyMenu);
 
-		return dao.addDailyMenuItem(dailyMenu);
+		if(dailyMenuDB == null)
+		{
+			return dao.addDailyMenuItem(dailyMenu);
+		}
+		else
+		{
+			Exception e = new Exception("Daily Menu already Exists!!");
+			throw e;
+		}
 	}
 
 	@Override

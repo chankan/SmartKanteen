@@ -24,7 +24,7 @@ public class Test
 
 		testingDailyMenuTable();
 		
-		testingTagsTable;*/
+		testingTagsTable();*/
 	}
 
 	public static void testingMenuTable() throws ObjectNotFoundException, Exception
