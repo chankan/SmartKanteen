@@ -1,5 +1,8 @@
 package com.mastek.topcoders.smartkanteen.dao;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Set;
 
@@ -21,16 +24,22 @@ public class UserDAO
 	{
 		User user = null;
 		Session session = DatabaseUtil.getSession();
-		Query query = session.createQuery("FROM User WHERE loginId= :login_id");
-		query.setParameter("login_id", loginId);
-		List<User> userList = query.list();
-		
-		if (userList != null && userList.size() == 1)
+		try
 		{
-			user = userList.get(0);
-			System.out.println(user);
+			Query query = session.createQuery("FROM User WHERE loginId= :login_id");
+			query.setParameter("login_id", loginId);
+			List<User> userList = query.list();
+
+			if (userList != null && userList.size() == 1)
+			{
+				user = userList.get(0);
+				System.out.println(user);
+			}
 		}
-		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		DatabaseUtil.closeSession(session);
 		return user;
 	}
@@ -38,16 +47,45 @@ public class UserDAO
 	public User getUserById(int userId)
 	{
 		Session session = DatabaseUtil.getSession();
-		User user = (User) session.get(User.class, userId);
+		User user = null;
+		try
+		{
+			user = (User) session.get(User.class, userId);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		DatabaseUtil.closeSession(session);
 		return user;
+	}
+
+	private String passwordEncryption(String input)
+	{
+
+		String md5 = null;
+
+		if (null == input)
+			return null;
+
+		try
+		{
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			digest.update(input.getBytes(), 0, input.length());
+			md5 = new BigInteger(1, digest.digest()).toString(16);
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
+		return md5;
 	}
 
 	public User updateUser(User user, UserDetails userDetails) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
-		System.out.println(user.getUserId());
+
 		User userDB = getUserById(user.getUserId());
 
 		if (userDB != null)
@@ -71,23 +109,28 @@ public class UserDAO
 		return user;
 	}
 
-	public User authenticateUser(String loginId, String password)
+	public Boolean authenticateUser(String loginId, String password)
 	{
-		User user = null;
-
+		boolean result = false;
 		Session session = DatabaseUtil.getSession();
-		Query query = session.createQuery("FROM User WHERE loginId= :loginId AND password= :pwd");
-		query.setParameter("loginId", loginId);
-		query.setParameter("pwd", password);
-		List<User> userList = query.list();
-
-		if (userList != null && userList.size() == 1)
+		try
 		{
-			user = userList.get(0);
+			Query query = session.createQuery("FROM User WHERE loginId= :loginId AND password= :pwd");
+			query.setParameter("loginId", loginId);
+			query.setParameter("pwd", passwordEncryption(password));
+			List<User> userList = query.list();
+
+			if (userList != null && userList.size() == 1)
+			{
+				result = true;
+			}
 		}
-		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		DatabaseUtil.closeSession(session);
-		return user;
+		return result;
 	}
 
 	public Boolean deleteUser(User user) throws Exception
@@ -96,7 +139,7 @@ public class UserDAO
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
 		User userDB = getUserById(user.getUserId());
-		
+
 		if (userDB != null)
 		{
 			try
@@ -128,10 +171,12 @@ public class UserDAO
 		return result;
 	}
 
-	public User createUser(User user, UserDetails userDetails, UserRoleMapping userRoleMapping) throws UserExistException,Exception
+	public User createUser(User user, UserDetails userDetails, UserRoleMapping userRoleMapping)
+			throws UserExistException, Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		Transaction tx;
+		String encryptedPassword = null;
 		if (user != null)
 		{
 			if (getUserByLoginId(user.getLoginId()) == null)
@@ -139,6 +184,8 @@ public class UserDAO
 				tx = session.beginTransaction();
 				try
 				{
+					encryptedPassword = passwordEncryption(user.getPassword());
+					user.setPassword(encryptedPassword);
 					session.save(user);
 					session.save(userDetails);
 					session.save(userRoleMapping);
@@ -161,32 +208,71 @@ public class UserDAO
 		return user;
 	}
 
-	public User updateUserRole(int userId, int roleId) throws Exception
+	public Boolean deleteUserRole(User user)
+	{
+		boolean result;
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = null;
+		try
+		{
+			tx = session.beginTransaction();
+
+			Set<UserRoleMapping> userRoleMappingSet = user.getUserRoleMappingSet();
+
+			String userRoleIds = "";
+
+			for (UserRoleMapping userRoleMapping : userRoleMappingSet)
+			{
+				userRoleIds = userRoleIds + ", " + userRoleMapping.getUserRoleMappingId();
+			}
+			if (userRoleIds.length() > 1)
+			{
+				userRoleIds = userRoleIds.substring(1);
+			}
+
+			Query query = session.createSQLQuery("DELETE FROM 	User_Role_Mapping WHERE user_role_mapping_id IN ( "
+					+ userRoleIds + ")");
+			query.executeUpdate();
+			tx.commit();
+			result = true;
+		}
+		catch (Exception e)
+		{
+			result = false;
+			tx.rollback();
+			e.printStackTrace();
+		}
+		DatabaseUtil.closeSession(session);
+		return result;
+	}
+
+	public User updateUserRole(User user, List<Role> roleList) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
-		Role role;
-		User user = getUserById(userId);
+
+		User userDb = getUserById(user.getUserId());
 
 		if (user != null)
 		{
 			try
 			{
+				deleteUserRole(userDb);
+
 				tx = session.beginTransaction();
-				Set<UserRoleMapping> userRoleMappingSet = user.getUserRoleMappingSet();
-    
-				if (userRoleMappingSet !=null && userRoleMappingSet.size() > 0)
+
+				if (roleList != null && roleList.size() > 0)
 				{
-					for (UserRoleMapping userRoleMapping : userRoleMappingSet)
+					for (Role role : roleList)
 					{
-						role = new Role();
-						role.setRoleId(roleId);
+						UserRoleMapping userRoleMapping = new UserRoleMapping();
+						userRoleMapping.setUser(userDb);
 						userRoleMapping.setRole(role);
 						session.save(userRoleMapping);
 					}
-					
-					tx.commit();
 				}
+				session.flush();
+				tx.commit();
 			}
 			catch (Exception e)
 			{
@@ -197,22 +283,23 @@ public class UserDAO
 			DatabaseUtil.closeSession(session);
 			return user;
 		}
-
 		return null;
 	}
 
-	public User changePassword(String loginId, String oldPassword, String newPassword) throws IncorrectPasswordException,Exception
+	public User changePassword(String loginId, String oldPassword, String newPassword)
+			throws IncorrectPasswordException, Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
 		User user = getUserByLoginId(loginId);
 		if (user != null)
 		{
-			if (user.getPassword().equals(oldPassword))
+
+			if (user.getPassword().equals(passwordEncryption(oldPassword)))
 			{
 				try
 				{
-					user.setPassword(newPassword);
+					user.setPassword(passwordEncryption(newPassword));
 					tx = session.beginTransaction();
 					session.update(user);
 					tx.commit();
