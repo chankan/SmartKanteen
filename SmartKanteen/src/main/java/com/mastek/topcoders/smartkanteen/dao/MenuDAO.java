@@ -41,13 +41,13 @@ public class MenuDAO
 		query.setParameter("catererID", catererId);
 		List<Caterer> catererList = query.list();
 
-		List<Menu> menuList = null;
-
+		List<Menu> menuList = new ArrayList<Menu>();
+		
 		if (catererList != null && catererList.size() == 1)
 		{
 			Caterer caterer = catererList.get(0);
 
-			menuList = new ArrayList<Menu>();
+			
 
 			for (CatererMenuMapping catererMenuMapping : caterer.getCatererMenuMapping())
 			{
