@@ -31,8 +31,11 @@ public class UserServiceImpl implements UserService
 	{
 		UserDAO dao = new UserDAO();
 
+		user.setAccountCreationDate(new Date());
+
 		Role role = new Role();
 		role.setRoleId(3);
+
 		UserRoleMapping userRoleMapping = new UserRoleMapping();
 		userRoleMapping.setRole(role);
 		userRoleMapping.setUser(user);
@@ -128,71 +131,140 @@ public class UserServiceImpl implements UserService
 		return null;
 	}
 
+	/*	public User updateUser(User user) throws Exception
+		{
+			User userDb;
+			UserDetails userDetails, userDetailsDb;
+
+			if (user.getUserId() == null || user.getUserId() == 0)
+			{
+				System.out.println("User does not exist...");
+				return null;
+			}
+			userDetails = user.getUserDetails();
+
+			userDb = getUserById(user.getUserId());
+			userDetailsDb = userDb.getUserDetails();
+
+			if (user != null)
+			{
+				userDb.setUserId(user.getUserId());
+				if (user.getLoginId() != null)
+				{
+					userDb.setLoginId(user.getLoginId());
+				}
+
+				if (user.getEmailId() != null)
+				{
+					userDb.setEmailId(user.getEmailId());
+				}
+
+				if (userDetails.getFirstName() != null)
+				{
+					userDetailsDb.setFirstName(userDetails.getFirstName());
+				}
+
+				if (userDetails.getLastName() != null)
+				{
+					userDetailsDb.setLastName(userDetails.getLastName());
+				}
+
+				if (userDetails.getGender() != null)
+				{
+					userDetailsDb.setGender(userDetails.getGender());
+				}
+
+				if (userDetails.getDateOfBirth() != null)
+				{
+					userDetailsDb.setDateOfBirth(userDetails.getDateOfBirth());
+				}
+
+				if (userDetails.getContactNo() != null && userDetails.getContactNo() != 0)
+				{
+					userDetailsDb.setContactNo(userDetails.getContactNo());
+				}
+
+				if (userDetails.getExtensionNo() != null && userDetails.getExtensionNo() != 0)
+				{
+					userDetailsDb.setExtensionNo(userDetails.getExtensionNo());
+				}
+
+				if (userDetails.getEmployeeId() != null && userDetails.getEmployeeId() != 0)
+				{
+					userDetailsDb.setEmployeeId(userDetails.getEmployeeId());
+				}
+				System.out.println(user.toString() + "\n" + userDetailsDb.toString());
+
+				UserDAO dao = new UserDAO();
+
+				return dao.updateUser(userDb, userDetailsDb);
+			}
+			return null;
+		}
+		*/
+
 	public User updateUser(User user) throws Exception
 	{
 		User userDb;
 		UserDetails userDetails, userDetailsDb;
+		UserDAO dao = new UserDAO();
 
-		if (user.getUserId() == null || user.getUserId() == 0)
+		if (user.getLoginId() == null)
 		{
-			System.out.println("User does not exist...");
+			System.out.println("Login Id does not exist...");
 			return null;
 		}
 		userDetails = user.getUserDetails();
 
-		userDb = getUserById(user.getUserId());
+		userDb = dao.getUserByLoginId(user.getLoginId());
 		userDetailsDb = userDb.getUserDetails();
 
 		if (user != null)
 		{
-			userDb.setUserId(user.getUserId());
-			if (user.getLoginId() != null)
-			{
-				userDb.setLoginId(user.getLoginId());
-			}
 
 			if (user.getEmailId() != null)
 			{
 				userDb.setEmailId(user.getEmailId());
 			}
 
-			if (userDetails.getFirstName() != null)
+			if (userDetails != null)
 			{
-				userDetailsDb.setFirstName(userDetails.getFirstName());
-			}
+				if (userDetails.getFirstName() != null)
+				{
+					userDetailsDb.setFirstName(userDetails.getFirstName());
+				}
 
-			if (userDetails.getLastName() != null)
-			{
-				userDetailsDb.setLastName(userDetails.getLastName());
-			}
+				if (userDetails.getLastName() != null)
+				{
+					userDetailsDb.setLastName(userDetails.getLastName());
+				}
 
-			if (userDetails.getGender() != null)
-			{
-				userDetailsDb.setGender(userDetails.getGender());
-			}
+				if (userDetails.getGender() != null)
+				{
+					userDetailsDb.setGender(userDetails.getGender());
+				}
 
-			if (userDetails.getDateOfBirth() != null)
-			{
-				userDetailsDb.setDateOfBirth(userDetails.getDateOfBirth());
-			}
+				if (userDetails.getDateOfBirth() != null)
+				{
+					userDetailsDb.setDateOfBirth(userDetails.getDateOfBirth());
+				}
 
-			if (userDetails.getContactNo() != null && userDetails.getContactNo() != 0)
-			{
-				userDetailsDb.setContactNo(userDetails.getContactNo());
-			}
+				if (userDetails.getContactNo() != null && userDetails.getContactNo() != 0)
+				{
+					userDetailsDb.setContactNo(userDetails.getContactNo());
+				}
 
-			if (userDetails.getExtensionNo() != null && userDetails.getExtensionNo() != 0)
-			{
-				userDetailsDb.setExtensionNo(userDetails.getExtensionNo());
-			}
+				if (userDetails.getExtensionNo() != null && userDetails.getExtensionNo() != 0)
+				{
+					userDetailsDb.setExtensionNo(userDetails.getExtensionNo());
+				}
 
-			if (userDetails.getEmployeeId() != null && userDetails.getEmployeeId() != 0)
-			{
-				userDetailsDb.setEmployeeId(userDetails.getEmployeeId());
+				if (userDetails.getEmployeeId() != null && userDetails.getEmployeeId() != 0)
+				{
+					userDetailsDb.setEmployeeId(userDetails.getEmployeeId());
+				}
 			}
 			System.out.println(user.toString() + "\n" + userDetailsDb.toString());
-
-			UserDAO dao = new UserDAO();
 
 			return dao.updateUser(userDb, userDetailsDb);
 		}
