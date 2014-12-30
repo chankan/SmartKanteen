@@ -1,7 +1,5 @@
 package com.mastek.topcoders.smartkanteen.junit;
 
-import java.util.List;
-
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.junit.Assert;
@@ -21,7 +19,7 @@ public class CatererTestCase
 		Caterer caterer = new Caterer();
 		caterer.setCatererName("Tadka");
 		caterer.setCatererDetails("All types of food");
-		
+
 		MenuService service = new MenuServiceImpl();
 		caterer = service.addCaterer(caterer);
 
@@ -35,14 +33,14 @@ public class CatererTestCase
 		Session session = DatabaseUtil.getSession();
 
 		Caterer caterer = new Caterer();
-		caterer.setCatererId(3);
+		caterer.setCatererId(1);
 		caterer.setCatererName("Rahul Caterer");
 		caterer.setCatererDetails("******");
 
 		MenuServiceImpl service = new MenuServiceImpl();
 		caterer = service.updateCaterer(caterer.getCatererId(), caterer.getCatererName(), caterer.getCatererDetails());
 
-		Caterer catererDB = (Caterer) session.get(Caterer.class, 3);
+		Caterer catererDB = (Caterer) session.get(Caterer.class, 1);
 		Assert.assertEquals(caterer.getCatererName(), catererDB.getCatererName());
 	}
 
@@ -62,13 +60,4 @@ public class CatererTestCase
 
 		Assert.assertEquals(isDeleted, resultDB);
 	}
-
-	@Test
-	public void testGetCaterers()
-	{
-		MenuService service = new MenuServiceImpl();
-		List<Caterer> catererList = service.getCaterers();
-		Assert.assertEquals(4, catererList.size());
-	}
-
 }

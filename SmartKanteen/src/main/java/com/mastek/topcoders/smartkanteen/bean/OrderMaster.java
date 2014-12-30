@@ -1,8 +1,7 @@
 package com.mastek.topcoders.smartkanteen.bean;
 
-// Generated Dec 19, 2014 7:06:57 PM by Hibernate Tools 3.4.0.CR1
+// Generated Dec 30, 2014 11:55:11 AM by Hibernate Tools 3.4.0.CR1
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -11,13 +10,16 @@ import java.util.Set;
  */
 public class OrderMaster implements java.io.Serializable
 {
+
 	private Integer orderId;
 	private User user;
-	private BigDecimal totalCost;
+	private Caterer caterer;
+	private double totalCost;
 	private Date orderDate;
+	private Date orderCreatedDate;
 	private String status;
 	private String remark;
-	private Set<OrderDetails> orderDetails;
+	private Set orderDetails;
 
 	public Integer getOrderId()
 	{
@@ -39,12 +41,22 @@ public class OrderMaster implements java.io.Serializable
 		this.user = user;
 	}
 
-	public BigDecimal getTotalCost()
+	public Caterer getCaterer()
+	{
+		return caterer;
+	}
+
+	public void setCaterer(Caterer caterer)
+	{
+		this.caterer = caterer;
+	}
+
+	public double getTotalCost()
 	{
 		return totalCost;
 	}
 
-	public void setTotalCost(BigDecimal totalCost)
+	public void setTotalCost(double totalCost)
 	{
 		this.totalCost = totalCost;
 	}
@@ -57,6 +69,16 @@ public class OrderMaster implements java.io.Serializable
 	public void setOrderDate(Date orderDate)
 	{
 		this.orderDate = orderDate;
+	}
+
+	public Date getOrderCreatedDate()
+	{
+		return orderCreatedDate;
+	}
+
+	public void setOrderCreatedDate(Date orderCreatedDate)
+	{
+		this.orderCreatedDate = orderCreatedDate;
 	}
 
 	public String getStatus()
@@ -79,12 +101,12 @@ public class OrderMaster implements java.io.Serializable
 		this.remark = remark;
 	}
 
-	public Set<OrderDetails> getOrderDetails()
+	public Set getOrderDetails()
 	{
 		return orderDetails;
 	}
 
-	public void setOrderDetails(Set<OrderDetails> orderDetails)
+	public void setOrderDetails(Set orderDetails)
 	{
 		this.orderDetails = orderDetails;
 	}
@@ -92,7 +114,8 @@ public class OrderMaster implements java.io.Serializable
 	@Override
 	public String toString()
 	{
-		return "OrderMaster [orderId=" + orderId + ", user=" + user + ", totalCost=" + totalCost + ", orderDate="
-				+ orderDate + ", status=" + status + ", remark=" + remark + ", orderDetails=" + orderDetails + "]";
+		return "OrderMaster [orderId=" + orderId + ", user=" + user + ", caterer=" + caterer + ", totalCost="
+				+ totalCost + ", orderDate=" + orderDate + ", orderCreatedDate=" + orderCreatedDate + ", status="
+				+ status + ", remark=" + remark + ", orderDetails=" + orderDetails + "]";
 	}
 }

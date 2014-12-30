@@ -84,28 +84,30 @@ CREATE TABLE  Order_Master
 	order_created_date	DATE					CONSTRAINT	order_created_date_nn	NOT NULL,
 	status				VARCHAR2(30)			CONSTRAINT	status_nn				NOT NULL,
 	remark				VARCHAR2(200),
-	CONSTRAINT	user_id_fk	FOREIGN KEY	(user_id)	REFERENCES User(user_id)
+	caterer_id			NUMBER,
+	CONSTRAINT	user_id_fk	FOREIGN KEY	(user_id)	REFERENCES User(user_id),
+	CONSTRAINT  caterer_fk  FOREIGN KEY (caterer_id) REFERENCES Caterer(caterer_id)
 );
 
- -----------------------------------------------------------------------------------------
- CREATE TABLE  Order_Details
- (
+-----------------------------------------------------------------------------------------
+CREATE TABLE  Order_Details
+(
  	order_details_id		NUMBER	auto_increment	CONSTRAINT	ordered_details_pk	PRIMARY KEY,
  	order_id				NUMBER,
  	item_id					NUMBER,
  	quantity				NUMBER,
  	CONSTRAINT	order_fk	FOREIGN KEY	(order_id)	REFERENCES	Order_Master(order_id),
  	CONSTRAINT	menu_fk		FOREIGN KEY	(item_id)	REFERENCES	MENU_MASTER(item_id)
- );
- 
- -------------------------------------------------------------------------------------------
+);
+
+-------------------------------------------------------------------------------------------
  CREATE TABLE TAGS
  (
  	TAG_ID		NUMBER			auto_increment	CONSTRAINT	TAGS_PK		PRIMARY KEY,
  	TAG_NAME	VARCHAR2(30)					CONSTRAINT	TAG_ID_NN	NOT NULL
  );
  
- -------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
  CREATE  TABLE MENU_TAGS_MAPPING
  (
  	MENU_TAGS_MAPPING_ID	NUMBER	auto_increment	CONSTRAINT	MENU_TAGS_MAPPING_PK	PRIMARY KEY,

@@ -22,22 +22,12 @@ public class DailyMenuTestCase
 {
 
 	//TODO Needs refactoring
-	/**
-	 * There is a bug in this method  so 
-	 * pls  solve as soon as possible...
-	 * (Bug: The method is allow the  
-	 *  user to add duplicate entries 
-	 *  in the dailyMenu table which 
-	 *  should be avioded  )
-	 * @throws Exception 
-	 * 
-	 */
 
 	@Test
 	public void testAddDailyMenu() throws Exception
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-		String dateInString = "15-12-2014 0:0:0";
+		String dateInString = "16-12-2014 0:0:0";
 		Date date = null;
 
 		try
@@ -59,37 +49,6 @@ public class DailyMenuTestCase
 		DailyMenu dailyMenu = service.addDailyMenu(1, date, menuList);
 	}
 
-	/**
-	* There is bug in the 
-	* getDailyMenu() method
-	* (Bug : If there  are multiple entries
-	*  related to the specified date and
-	*  caterer_id then it shows 
-	*  only the last entry. )
-	*  
-	*/
-
-	@Test
-	public void testGetDailyMenu()
-	{
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-		String dateInString = "18-12-2014 0:0:0";
-		Date date = null;
-		try
-		{
-			date = sdf.parse(dateInString);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		MenuService service = new MenuServiceImpl();
-		List<Menu> menuList = service.getDailyMenu(date, 1);
-
-		Assert.assertEquals(2, menuList.size());
-	}
-
 	@Test
 	public void testDeleteDailyMenu() throws ObjectNotFoundException, Exception
 	{
@@ -108,14 +67,6 @@ public class DailyMenuTestCase
 
 		Assert.assertEquals(isDeleted, resultDB);
 	}
-
-	/**
-	 * Bug :- The Items were not 
-	 * getting deleted but  
-	 *   it has been solved. 
-	 * @throws Exception 
-	 * 
-	 */
 
 	@Test
 	public void testRemoveDailyMenuItems() throws Exception
@@ -137,17 +88,6 @@ public class DailyMenuTestCase
 		System.out.println(menuList.size());
 		Assert.assertEquals(3, menuList.size());
 	}
-
-	/**
-	    * Bug:-
-	    *      This method     
-	    *      is allowing 
-	    *      duplicate 
-	    *      entries in the  
-	    *      daily_menu_mapping 
-	    *      tab;e  
-	 * @throws Exception 
-	    */
 
 	@Test
 	public void TestAppendDailyMenuItems() throws Exception
@@ -174,16 +114,6 @@ public class DailyMenuTestCase
 
 	}
 
-	/**
-	* Bug:-
-	*      This method     
-	*      is allowing 
-	*      duplicate 
-	*      entries in the  
-	*      daily_menu_mapping 
-	*      tab;e  
-	*/
-
 	@Test
 	public void TestAppendDailyMenuItem() throws Exception
 	{
@@ -202,5 +132,4 @@ public class DailyMenuTestCase
 		Assert.assertEquals(7, dailyMenuMappingList.size());
 
 	}
-
 }
