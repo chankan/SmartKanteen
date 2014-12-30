@@ -4,15 +4,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.hibernate.Session;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.mastek.topcoders.smartkanteen.bean.User;
 import com.mastek.topcoders.smartkanteen.bean.UserDetails;
-import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
+import com.mastek.topcoders.smartkanteen.dao.UserDAO;
 import com.mastek.topcoders.smartkanteen.service.UserService;
 import com.mastek.topcoders.smartkanteen.service.UserServiceImpl;
 
@@ -35,9 +34,9 @@ public class UserTestCase
 			e.printStackTrace();
 		}
 		User user = new User();
-		user.setLoginId("Sahil");
+		user.setLoginId("Kiran");
 		user.setPassword("123456");
-		user.setEmailId("Sahil.yadav@mastek.com");
+		user.setEmailId("kiran.nayak@mastek.com");
 		user.setAccountCreationDate(date);
 
 		UserServiceImpl service = new UserServiceImpl();
@@ -54,11 +53,10 @@ public class UserTestCase
 			e.printStackTrace();
 		}
 
-		User fetchedUser = (User) service.getUserById(22);
+		User fetchedUser = service.getUserById(4);
 		Assert.assertEquals(userDB.getLoginId(), fetchedUser.getLoginId());
 		Assert.assertEquals(userDB.getPassword(), fetchedUser.getPassword());
 		Assert.assertEquals(userDB.getEmailId(), fetchedUser.getEmailId());
-		Assert.assertEquals(userDB.getAccountCreationDate(), fetchedUser.getAccountCreationDate());
 	}
 
 	@Test
@@ -66,12 +64,11 @@ public class UserTestCase
 	{
 
 		User user = new User();
-		user.setUserId(1);
+		user.setLoginId("rahul");
+		user.setEmailId("Rahul.Panchal@mastek.com");
 
 		UserDetails userDetails = new UserDetails();
-		userDetails.setFirstName("Rohit");
-		userDetails.setLastName("Sharma");
-		userDetails.setGender("M");
+		userDetails.setExtensionNo(3535);
 		user.setUserDetails(userDetails);
 		UserService service = new UserServiceImpl();
 		try
@@ -88,21 +85,19 @@ public class UserTestCase
 			e.printStackTrace();
 		}
 
-		Session session = DatabaseUtil.getSession();
-		User userDb = (User) session.get(User.class, user.getUserId());
+		//Session session = DatabaseUtil.getSession();
+		UserDAO dao = new UserDAO();
+		User userDb = dao.getUserByLoginId("rahul");
 
-		Assert.assertEquals(userDetails.getFirstName(), userDb.getUserDetails().getFirstName());
-		Assert.assertEquals(userDetails.getLastName(), userDb.getUserDetails().getLastName());
-		Assert.assertEquals(userDetails.getGender(), userDb.getUserDetails().getGender());
-		DatabaseUtil.closeSession(session);
+		Assert.assertEquals(userDetails.getExtensionNo(), userDb.getUserDetails().getExtensionNo());
+		Assert.assertEquals(user.getEmailId(), userDb.getEmailId());
 	}
 
 	@Test
 	public void testDeleteUser()
 	{
-		boolean result2 = false;
 		User user1 = new User();
-		user1.setUserId(23);
+		user1.setUserId(3);
 		UserService service = new UserServiceImpl();
 		boolean result1 = false;
 		try
@@ -114,21 +109,14 @@ public class UserTestCase
 			e.printStackTrace();
 		}
 
-		Session session = DatabaseUtil.getSession();
-		User user2 = (User) session.get(User.class, 17);
-
-		if (user2 == null)
-		{
-			result2 = true;
-		}
-		Assert.assertEquals(result1, result2);
+		Assert.assertEquals(true, result1);
 	}
 
 	@Test
 	public void testAuthenicateUser()
 	{
 		UserService service = new UserServiceImpl();
-		Boolean result = service.authenicateUser("Kiran12741", "123456");
+		Boolean result = service.authenicateUser("tarul", "123456");
 		Assert.assertEquals(true, result);
 	}
 
@@ -137,7 +125,7 @@ public class UserTestCase
 	{
 		boolean result = false;
 		UserService service = new UserServiceImpl();
-		User user = service.getUserById(12);
+		User user = service.getUserById(1);
 		if (user != null)
 		{
 			result = true;
@@ -152,12 +140,15 @@ public class UserTestCase
 		User user = null;
 		try
 		{
-			user = service.changePassword("Kiran12741", "123456", "Kiran@123");
+			user = service.changePassword("rahul", "123456", "rahul123");
+			System.out.println("----------------------------------------------\n" + user);
 		}
 		catch (IncorrectPasswordException e)
 		{
 			e.printStackTrace();
 		}
-		Assert.assertEquals("Kiran@123", user.getPassword());
+		UserDAO dao = new UserDAO();
+		String password = dao.passwordEncryption("rahul123");
+		Assert.assertEquals(password, user.getPassword());
 	}
 }

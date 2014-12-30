@@ -11,6 +11,7 @@ import java.util.Set;
 public class OrderMaster implements java.io.Serializable
 {
 
+
 	private Integer orderId;
 	private User user;
 	private Caterer caterer;
@@ -20,97 +21,78 @@ public class OrderMaster implements java.io.Serializable
 	private String status;
 	private String remark;
 	private Set orderDetails;
-
 	public Integer getOrderId()
 	{
 		return orderId;
 	}
-
 	public void setOrderId(Integer orderId)
 	{
 		this.orderId = orderId;
 	}
-
 	public User getUser()
 	{
 		return user;
 	}
-
 	public void setUser(User user)
 	{
 		this.user = user;
 	}
-
 	public Caterer getCaterer()
 	{
 		return caterer;
 	}
-
 	public void setCaterer(Caterer caterer)
 	{
 		this.caterer = caterer;
 	}
-
 	public double getTotalCost()
 	{
 		return totalCost;
 	}
-
 	public void setTotalCost(double totalCost)
 	{
 		this.totalCost = totalCost;
 	}
-
 	public Date getOrderDate()
 	{
 		return orderDate;
 	}
-
 	public void setOrderDate(Date orderDate)
 	{
 		this.orderDate = orderDate;
 	}
-
 	public Date getOrderCreatedDate()
 	{
 		return orderCreatedDate;
 	}
-
 	public void setOrderCreatedDate(Date orderCreatedDate)
 	{
 		this.orderCreatedDate = orderCreatedDate;
 	}
-
 	public String getStatus()
 	{
 		return status;
 	}
-
 	public void setStatus(String status)
 	{
 		this.status = status;
 	}
-
 	public String getRemark()
 	{
 		return remark;
 	}
-
 	public void setRemark(String remark)
 	{
 		this.remark = remark;
 	}
-
 	public Set getOrderDetails()
 	{
 		return orderDetails;
 	}
-
 	public void setOrderDetails(Set orderDetails)
 	{
 		this.orderDetails = orderDetails;
 	}
-
 	@Override
 	public String toString()
 	{
@@ -118,4 +100,5 @@ public class OrderMaster implements java.io.Serializable
 				+ totalCost + ", orderDate=" + orderDate + ", orderCreatedDate=" + orderCreatedDate + ", status="
 				+ status + ", remark=" + remark + ", orderDetails=" + orderDetails + "]";
 	}
+	
 }

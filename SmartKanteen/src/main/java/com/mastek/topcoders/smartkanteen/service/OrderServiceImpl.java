@@ -5,6 +5,7 @@ import java.util.List;
 import com.mastek.topcoders.smartkanteen.bean.OrderDetails;
 import com.mastek.topcoders.smartkanteen.bean.OrderMaster;
 import com.mastek.topcoders.smartkanteen.dao.OrderDAO;
+import com.mastek.topcoders.smartkanteen.dao.UserDAO;
 
 public class OrderServiceImpl implements OrderService
 {
@@ -24,18 +25,19 @@ public class OrderServiceImpl implements OrderService
 	}
 
 	@Override
-	public void updateOrderStatus()
+	public OrderMaster updateOrderStatus(int orderId,String orderStatus)
 	{
-		// TODO Auto-generated method stub
-
-	}
+		OrderDAO dao= new OrderDAO();
+		return dao.updateOrderStatus(orderId, orderStatus);
+    }
 
 	@Override
-	public void getOrdersByCaterer(Integer catererId)
+	public List<OrderMaster> getOrdersByCaterer(Integer catererId)
 	{
-		// TODO Auto-generated method stub
-
+      OrderDAO dao= new OrderDAO();
+       return  dao.getOrderByCaterer(catererId);
 	}
+
 
 	@Override
 	public List<OrderMaster> getOrdersByUser(Integer userId)

@@ -39,6 +39,7 @@ public class OrderDAO
 	{
 		Session session = DatabaseUtil.getSession();
 		OrderMaster order = (OrderMaster) session.get(OrderMaster.class, orderId);
+		DatabaseUtil.closeSession(session);
 		return order;
 	}
 
@@ -48,8 +49,26 @@ public class OrderDAO
 		try
 		{
 			Session session = DatabaseUtil.getSession();
-			Query query = session.createQuery("FROM OrderMaster WHERE userId= :user_id");
-			query.setParameter("user_id", userId);
+			Query query = session.createQuery("FROM OrderMaster WHERE user_id= :userId");
+			query.setParameter("userId", userId);
+			orderMasterList = query.list();
+			DatabaseUtil.closeSession(session);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return orderMasterList;
+	}
+	
+	public List<OrderMaster> getOrderByCaterer(int catererId)
+	{
+		List<OrderMaster> orderMasterList = null;
+		try
+		{
+			Session session = DatabaseUtil.getSession();
+			Query query = session.createQuery("FROM OrderMaster WHERE caterer_id = :caterer_id");
+			query.setParameter("caterer_id", catererId);
 			orderMasterList = query.list();
 			DatabaseUtil.closeSession(session);
 		}
@@ -60,6 +79,8 @@ public class OrderDAO
 		return orderMasterList;
 	}
 
+	
+	
 	public OrderMaster updateOrderStatus(int orderId, String orderStatus)
 	{
 		Session session = DatabaseUtil.getSession();

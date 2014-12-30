@@ -11,14 +11,15 @@
 		<many-to-one name="user" column="USER_ID"
 			class="com.mastek.topcoders.smartkanteen.bean.User" lazy="false" />
 		<many-to-one name="caterer" column="CATERER_ID"
-			class="com.mastek.topcoders.smartkanteen.Caterer" lazy="false" />
+			class="com.mastek.topcoders.smartkanteen.bean.Caterer" lazy="false" />
+		
 		<property name="totalCost" type="double">
 			<column name="TOTAL_COST" not-null="true" />
 		</property>
-		<property name="orderDate" type="date">
-			<column name="ORDER_DATE" length="8" not-null="true" />
-		</property>
-		<property name="orderCreatedDate" type="date">
+		<property name="orderDate" type="timestamp">
+            <column name="ORDER_DATE" length="23" not-null="true" />
+        </property>
+        <property name="orderCreatedDate" type="date">
 			<column name="ORDER_CREATED_DATE" length="8" not-null="true" />
 		</property>
 		<property name="status" type="string">

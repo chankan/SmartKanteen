@@ -11,9 +11,9 @@ public interface OrderService
 
 	void cancelOrder();
 
-	void updateOrderStatus();
+	 OrderMaster updateOrderStatus(int orderId,String orderStatus);
 
-	void getOrdersByCaterer(Integer catererId);
+	 List<OrderMaster> getOrdersByCaterer(Integer catererId);
 
-	List<OrderMaster> getOrdersByUser(Integer userId);
+		List<OrderMaster> getOrdersByUser(Integer userId);
 }

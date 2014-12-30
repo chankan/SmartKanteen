@@ -60,7 +60,7 @@ public class UserDAO
 		return user;
 	}
 
-	private String passwordEncryption(String input)
+	public String passwordEncryption(String input)
 	{
 
 		String md5 = null;
