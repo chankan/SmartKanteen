@@ -1,5 +1,7 @@
 package com.mastek.topcoders.smartkanteen.service;
 
+import java.util.List;
+
 import com.mastek.topcoders.smartkanteen.bean.OrderDetails;
 import com.mastek.topcoders.smartkanteen.bean.OrderMaster;
 import com.mastek.topcoders.smartkanteen.dao.OrderDAO;
@@ -36,10 +38,10 @@ public class OrderServiceImpl implements OrderService
 	}
 
 	@Override
-	public void getOrdersByUser(Integer userId)
+	public List<OrderMaster> getOrdersByUser(Integer userId)
 	{
-		// TODO Auto-generated method stub
-
+		OrderDAO dao = new OrderDAO();
+		return dao.getOrderByUser(userId);
 	}
 
 }

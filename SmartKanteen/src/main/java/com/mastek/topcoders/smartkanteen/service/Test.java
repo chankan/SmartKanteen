@@ -6,25 +6,41 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hibernate.ObjectNotFoundException;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping;
 import com.mastek.topcoders.smartkanteen.bean.Tag;
+import com.mastek.topcoders.smartkanteen.bean.Role;
+import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserDetails;
+import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
+import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 
 public class Test
 {
 	public static void main(String[] args) throws Exception
 	{
+
 		/*testingMenuTable();
 
 		testingCatererTable();
 
+		<<<<<<< HEAD
 		testingDailyMenuTable();
 		
-		testingTagsTable();*/
+		testingTagsTable;*/
+
+		//testingDailyMenuTable();
+		//testCreateOrder();
+		//testCreateUser();
+		//testDeleteUser();
+		testUpdateUser();
+		//testAuthenticateUser();
+		//testGetUserById();
+		//testUpdateUserRole();
+		//testChangePassword();
 	}
 
 	public static void testingMenuTable() throws ObjectNotFoundException, Exception
@@ -39,7 +55,7 @@ public class Test
 		testAddItemInMenuMaster();
 		System.out.println("After Adding Items with tags");
 		displayMenuItems();
-		
+
 		testAddMenuWithCaterer();
 		System.out.println("After Adding Menu Items With Caterer");
 		displayMenuItems();
@@ -130,7 +146,7 @@ public class Test
 		String tags = "1,2,3";
 		service.addItemInMenuMaster(menu, tags);
 	}
-	
+
 	public static void testAddMenuWithCaterer() throws Exception
 	{
 		MenuServiceImpl service = new MenuServiceImpl();
@@ -227,13 +243,13 @@ public class Test
 		Caterer caterer = new Caterer();
 		caterer.setCatererId(3);
 		caterer.setCatererName("Tadka Caterer");
-		caterer.setCatererDetails("Tadka");
-		
+		//caterer.setCatererDetails("Tadka");
+
 		Caterer caterer1 = new Caterer();
 		caterer1.setCatererId(4);
 		caterer1.setCatererName("Nitya Caterer");
-		caterer1.setCatererDetails("Nitya");
-		
+		//caterer1.setCatererDetails("Nitya");
+
 		service.addCaterer(caterer);
 		service.addCaterer(caterer1);
 	}
@@ -245,9 +261,9 @@ public class Test
 		Caterer caterer = new Caterer();
 		caterer.setCatererId(1);
 		caterer.setCatererName("Royal Kings");
-		caterer.setCatererDetails("Royal Kings");
+		//caterer.setCatererDetails("Royal Kings");
 
-		service.updateCaterer(caterer.getCatererId(), caterer.getCatererName(), caterer.getCatererDetails());
+		//service.updateCaterer(caterer.getCatererId(), caterer.getCatererName(), caterer.getCatererDetails());
 	}
 
 	public static void testGetCatererById()
@@ -448,5 +464,204 @@ public class Test
 		Tag tag = service.getTag(1);
 
 		System.out.println(tag);
+	}
+
+	/*public static void  testCreateOrder()
+	{
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String dateInString = "15-12-2014 0:0:0";
+		Date date = null;
+		try
+		{
+			date = sdf.parse(dateInString);
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		DailyMenuMapping dailyMenuMapping= new DailyMenuMapping();
+		dailyMenuMapping.setDailyMenuMappingId(4);;
+		
+		
+		Set<OrderDetails> orderDetailsSet= new  HashSet<OrderDetails>(); 
+		 
+		
+		
+		OrderDetails orderDetails= new  OrderDetails();
+		orderDetails.setDailyMenuMapping(dailyMenuMapping);
+	
+		
+		User user= new User();
+		user.setUserId(11);
+		
+		
+		//Order Master  
+		OrderMaster order= new OrderMaster();
+		order.setTotalCost(new BigDecimal(120));
+	    order.setOrderDate(date);
+	    order.setOrderDetails(orderDetailsSet);
+	    order.setUser(user);
+		order.setRemark("Order is pending...");
+		order.setStatus("PENDING");
+		System.out.println(order.toString());
+		
+	    orderDetails.setOrderMaster(order);
+		
+		
+		OrderServiceImpl service= new OrderServiceImpl();
+		service.createOrder(order,orderDetails);
+		
+	}*/
+
+	/*	public static void getUserRole()
+		{
+			UserDAO dao = new UserDAO();
+			User user = dao.getRole(11);
+			System.out.println(user.toString());
+		}*/
+
+	public static void testCreateUser()
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String dateInString = "24-12-2014 0:0:0";
+		Date date = null;
+		try
+		{
+			date = sdf.parse(dateInString);
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		User user = new User();
+		user.setLoginId("Kiran");
+		user.setPassword("Nayak");
+		user.setEmailId("kiran.nayak@mastek.com");
+
+		UserServiceImpl service = new UserServiceImpl();
+		try
+		{
+			service.createUser(user);
+		}
+		catch (UserExistException e)
+		{
+			e.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void testDeleteUser()
+	{
+		UserServiceImpl service = new UserServiceImpl();
+		User user = new User();
+		user.setUserId(23);
+		try
+		{
+			service.deleteUser(user);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void testUpdateUser()
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String dateInString = "24-12-2014 0:0:0";
+		Date date = null;
+		try
+		{
+			date = sdf.parse(dateInString);
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+
+		User user = new User();
+		user.setLoginId("Kiran");
+
+		UserDetails userDetails = new UserDetails();
+		userDetails.setFirstName("Kiran");
+		userDetails.setLastName("Nayak");
+
+		UserService service = new UserServiceImpl();
+		try
+		{
+			//user.setUserDetails(userDetails);
+			service.updateUser(user);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static void testAuthenticateUser()
+	{
+		UserServiceImpl service = new UserServiceImpl();
+		Boolean result = service.authenicateUser("Radha", "123456");
+		System.out.println("Result" + result);
+	}
+
+	public static void testGetUserById()
+	{
+		UserServiceImpl service = new UserServiceImpl();
+		User user = service.getUserById(2);
+		System.out.println(user);
+	}
+
+	public static void testUpdateUserRole()
+	{
+		UserServiceImpl service = new UserServiceImpl();
+		try
+		{
+			User user = new User();
+			user.setUserId(6);
+			Role admin = new Role();
+			admin.setRoleId(1);
+			Role customer = new Role();
+			customer.setRoleId(2);
+
+			List<Role> roleList = new ArrayList<Role>();
+			roleList.add(admin);
+			roleList.add(customer);
+
+			User user1 = service.updateUserRole(user, roleList);
+			System.out.println(user);
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void testChangePassword()
+	{
+		UserServiceImpl service = new UserServiceImpl();
+		try
+		{
+			User user = service.changePassword("Radha", "Radha123", "123456");
+			System.out.println(user.toString());
+		}
+		catch (IncorrectPasswordException ipe)
+		{
+			ipe.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

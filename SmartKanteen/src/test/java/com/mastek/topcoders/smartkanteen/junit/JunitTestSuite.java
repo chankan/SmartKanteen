@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ /*CatererTestCase.class, MenuTestCase.class, DailyMenuTestCase.class*/ UserTestCase.class })
+@Suite.SuiteClasses({ TestFetch.class, CatererTestCase.class, MenuTestCase.class, DailyMenuTestCase.class, UserTestCase.class })
 public class JunitTestSuite
 {
 

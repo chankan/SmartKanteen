@@ -4,7 +4,7 @@
 <!-- Generated Dec 24, 2014 2:31:35 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
 	<class name="com.mastek.topcoders.smartkanteen.bean.UserDetails"
-		table="USER_PROFILE">
+		table="USER_DETAILS">
 		<id name="userDetailsId" type="java.lang.Integer">
 			<column name="USER_DETAILS_ID" />
 			<generator class="identity" />

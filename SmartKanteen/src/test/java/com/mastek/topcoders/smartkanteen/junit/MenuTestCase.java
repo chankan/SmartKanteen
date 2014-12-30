@@ -27,30 +27,23 @@ public class MenuTestCase
 		Session session = DatabaseUtil.getSession();
 
 		Menu menu = new Menu();
-		menu.setItemName("Veg Paneer7 Fried Rice");
-		menu.setDescription("Veg Paneer7 Fried Rice is one of the most famous item in India");
+		menu.setItemName("Veg Paneer Fried Rice");
+		menu.setDescription("Veg Paneer Fried Rice is one of the most famous item in India");
 		menu.setPrepTime(25);
 		menu.setPrice(BigDecimal.valueOf(150.0));
 
 		Caterer caterer = new Caterer();
-		caterer.setCatererId(1);
+		caterer.setCatererId(2);
 
 		MenuService service = new MenuServiceImpl();
-		service.addItemInMenuMaster(menu, caterer);
+		CatererMenuMapping catererMenuMapping = service.addItemInMenuMaster(menu, caterer);
 
-		Menu menuDB = (Menu) session.get(Menu.class, 31);
-
-		Query query = session.createQuery("FROM CatererMenuMapping WHERE  caterer_id= :caterer_id");
-		query.setParameter("caterer_id", 1);
-		List<CatererMenuMapping> catererMenuMappingList = (List<CatererMenuMapping>) query.list();
-
-		session.load(CatererMenuMapping.class, 23);
-		CatererMenuMapping catererMenuMapping = catererMenuMappingList.get(0);
-
-		Assert.assertEquals(menu.getItemName(), menuDB.getItemName());
-		Assert.assertEquals(menu.getDescription(), menuDB.getDescription());
-		Assert.assertEquals(menu.getPrepTime(), menuDB.getPrepTime());
-		Assert.assertEquals(menu.getPrice(), menuDB.getPrice());
+		DatabaseUtil.closeSession(session);
+		
+		Assert.assertEquals(menu.getItemName(), catererMenuMapping.getMenu().getItemName());
+		Assert.assertEquals(menu.getDescription(), catererMenuMapping.getMenu().getDescription());
+		Assert.assertEquals(menu.getPrepTime(), catererMenuMapping.getMenu().getPrepTime());
+		Assert.assertEquals(menu.getPrice(), catererMenuMapping.getMenu().getPrice());
 
 		Assert.assertEquals(caterer.getCatererId(), catererMenuMapping.getCatererId());
 	}
@@ -77,22 +70,6 @@ public class MenuTestCase
 	}
 
 	@Test
-	public void testGetMenuByCaterer()
-	{
-		MenuService service = new MenuServiceImpl();
-		List<Menu> menuList = service.getMenuMasterByCaterer(2);
-		Assert.assertEquals(4, menuList.size());
-	}
-
-	@Test
-	public void getMenuMaster()
-	{
-		MenuService service = new MenuServiceImpl();
-		List<Menu> menuList = service.getMenuMaster();
-		Assert.assertEquals(10, menuList.size());
-	}
-
-	@Test
 	public void testDeleteItemFromMenuMaster() throws ObjectNotFoundException, Exception
 	{
 		boolean result1 = false;
@@ -105,6 +82,8 @@ public class MenuTestCase
 		{
 			result1 = true;
 		}
+		
+		DatabaseUtil.closeSession(session);
 		Assert.assertEquals(result2, result1);
 	}
 
@@ -114,38 +93,19 @@ public class MenuTestCase
 
 		MenuService service = new MenuServiceImpl();
 		Menu menu1 = new Menu();
-		menu1.setItemId(36);
+		menu1.setItemId(1);
 		menu1.setItemName("Veg Biryani");
 		menu1.setDescription("Veg Biryani is one of the most famous items");
 		menu1.setPrepTime(20);
 		service.updateItemInMenuMaster(menu1.getItemId(), menu1.getItemName(), menu1.getDescription(),
 				menu1.getPrice(), menu1.getPrepTime());
+
 		Session session = DatabaseUtil.getSession();
-		Menu menu2 = (Menu) session.get(Menu.class, 36);
+		Menu menu2 = (Menu) session.get(Menu.class, 1);
+		DatabaseUtil.closeSession(session);
+		
 		Assert.assertEquals(menu1.getItemName(), menu2.getItemName());
 		Assert.assertEquals(menu1.getDescription(), menu2.getDescription());
 		Assert.assertEquals(menu1.getPrepTime(), menu2.getPrepTime());
-		session.close();
-	}
-
-	@Test
-	public void testGetInsertedMenuItem()
-	{
-		Session session = DatabaseUtil.getSession();
-		Query query = session.createQuery("FROM Menu");
-		List<Menu> menuList = query.list();
-
-		Menu menu1 = (Menu) menuList.get(0);
-		Menu menu2 = new Menu();
-		menu2.setItemName("Veg Paneer Fried Rice");
-		menu2.setDescription("Veg Paneer Fried Rice is one of the most famous item in India");
-		menu2.setPrepTime(25);
-
-		menu2.setPrice(BigDecimal.valueOf(150));
-
-		Assert.assertEquals(menu2.getItemName(), menu1.getItemName());
-		Assert.assertEquals(menu2.getDescription(), menu1.getDescription());
-		Assert.assertEquals(menu2.getPrepTime(), menu1.getPrepTime());
-		Assert.assertEquals(menu2.getPrice(), menu1.getPrice());
 	}
 }

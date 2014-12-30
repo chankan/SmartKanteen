@@ -1,19 +1,25 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Dec 19, 2014 7:06:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Dec 30, 2014 11:55:11 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-	<class name="com.mastek.topcoders.smartkanteen.bean.OrderMaster"
-		table="ORDER_MASTER">
+	<class name="com.mastek.topcoders.smartkanteen.bean.OrderMaster" table="ORDER_MASTER">
 		<id name="orderId" type="java.lang.Integer">
 			<column name="ORDER_ID" />
 			<generator class="identity" />
 		</id>
-		<property name="totalCost" type="java.math.BigDecimal">
+		<many-to-one name="user" column="USER_ID"
+			class="com.mastek.topcoders.smartkanteen.bean.User" lazy="false" />
+		<many-to-one name="caterer" column="CATERER_ID"
+			class="com.mastek.topcoders.smartkanteen.Caterer" lazy="false" />
+		<property name="totalCost" type="double">
 			<column name="TOTAL_COST" not-null="true" />
 		</property>
 		<property name="orderDate" type="date">
 			<column name="ORDER_DATE" length="8" not-null="true" />
+		</property>
+		<property name="orderCreatedDate" type="date">
+			<column name="ORDER_CREATED_DATE" length="8" not-null="true" />
 		</property>
 		<property name="status" type="string">
 			<column name="STATUS" length="30" not-null="true" />
@@ -21,10 +27,7 @@
 		<property name="remark" type="string">
 			<column name="REMARK" length="200" />
 		</property>
-		<many-to-one name="user" column="USER_ID"
-			class="com.mastek.topcoders.smartkanteen.bean.User" not-null="true"
-			lazy="false" />
-		<set name="orderDetails" cascade="all" inverse="true" lazy="false">
+		<set name="orderDetails" cascade="all" lazy="false" inverse="true">
 			<key column="ORDER_ID" />
 			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.OrderDetails" />
 		</set>
