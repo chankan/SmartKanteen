@@ -2,11 +2,10 @@ package com.mastek.topcoders.smartkanteen.rest;
 
 import java.util.Date;
 
+import javax.ws.rs.core.Response;
+
 import com.mastek.topcoders.smartkanteen.bean.User;
-import com.mastek.topcoders.smartkanteen.bean.UserDetails;
-import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
-import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 
 
 
@@ -15,16 +14,21 @@ public interface IUserResource {
 
 	User getUserById(int userId);
 
-	User authenicateUser(String loginId, String password);
+	
 
-	User createUser(User user, UserDetails userDetails, UserRoleMapping userRoleMapping) throws UserExistException,Exception;
+	User createUser(User user);
 
-	User updateUser(Integer userId, String loginId, String firstName, String lastName, String emailId, String gender,
-			Date dateOfBirth, Integer contactNo, Integer extensionNo, Integer employeeId) throws Exception;
+	User updateUser(User user);
 
-	Boolean deleteUser(User user) throws Exception;
+	Response deleteUser(User user) throws Exception;
 
+	Response login(String loginId, String password);
+	
 	User changePassword(String loginId, String oldPassword, String newPassword)  throws  IncorrectPasswordException,Exception;
 
 	User updateUserRole(int userId, int roleId) throws Exception;
+
+
+
+	Response loginUser(User user);
 }

@@ -86,7 +86,8 @@ public class UserDAO
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
 
-		User userDB = getUserById(user.getUserId());
+	
+		User userDB = getUserByLoginId(user.getLoginId());
 
 		if (userDB != null)
 		{

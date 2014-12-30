@@ -6,7 +6,7 @@
     <class name="com.mastek.topcoders.smartkanteen.bean.Role" table="ROLE">
         <id name="roleId" type="int">
             <column name="ROLE_ID" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="roleName" type="java.lang.String">
             <column name="ROLE_NAME" />
