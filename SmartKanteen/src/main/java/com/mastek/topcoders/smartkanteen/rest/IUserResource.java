@@ -14,21 +14,13 @@ public interface IUserResource {
 
 	User getUserById(int userId);
 
-	
-
 	User createUser(User user);
 
-	User updateUser(User user);
+	User updateUser(String loginId,User user);
 
 	Response deleteUser(User user) throws Exception;
 
-	Response login(String loginId, String password);
-	
-	User changePassword(String loginId, String oldPassword, String newPassword)  throws  IncorrectPasswordException,Exception;
-
-	User updateUserRole(int userId, int roleId) throws Exception;
-
-
+	User changePassword(String loginId, String oldPassword, String newPassword)  ;
 
 	Response loginUser(User user);
 }

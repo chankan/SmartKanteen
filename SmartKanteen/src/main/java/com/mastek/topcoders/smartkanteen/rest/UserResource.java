@@ -51,11 +51,11 @@ public class UserResource implements IUserResource {
 	@PUT
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public User updateUser(User user) {
+	public User updateUser(@PathParam("loginId")String loginId,User user) {
 		try {
 			User updateduser = userService.updateUser(user);
 			if (updateduser != null) {
-				return user;
+				return updateduser;
 			} else {
 				throw new GenericException("User Not Exist");
 			}
@@ -87,7 +87,7 @@ public class UserResource implements IUserResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
 	public User changePassword(@PathParam("loginId") String loginId,
-			@FormParam("") String oldPassword, @FormParam("") String newPassword) {
+			@FormParam("oldPassword") String oldPassword, @FormParam("newPassword") String newPassword) {
 		try 
 		{
 			return userService
@@ -102,25 +102,7 @@ public class UserResource implements IUserResource {
 		}
 	}
 
-	@Override
-	public User updateUserRole(int userId, int roleId) {
-		return null;
-	}
-
-	@Path("/login/form")
-	@POST
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Override
-	public Response login(String loginId, String password) {
-		if (userService.authenicateUser(loginId, password)) {
-			System.out.println("Login Successful");
-			return Response.status(200).entity("Login successful").build();
-
-		} else {
-			System.out.println("Login Failed");
-			throw new GenericException("Login attempt failed. Try again");
-		}
-	}
+	
 
 	@Path("/login")
 	@POST
@@ -141,13 +123,14 @@ public class UserResource implements IUserResource {
 		UserResource userResource = new UserResource();
 		User user = new User();
 		user.setLoginId("vaibhav13099");
-		user.setPassword("123");
-		user.setEmailId("vaibhavk3@gmail.com");
+		user.setPassword("1234");
+		user.setEmailId("vaibhavk123@gmail.com");
+		
 		// user.setEmailId("vaibhav.karanjar@mastek.com");
 		// userResource.createUser(user);
 //		userResource.login(user.getLoginId(), user.getPassword());
 //		userResource.changePassword(user.getLoginId(), "xyz1","abc");
-		userResource.updateUser(user);
+		userResource.updateUser(user.getLoginId(),user);
 	}
 
 }

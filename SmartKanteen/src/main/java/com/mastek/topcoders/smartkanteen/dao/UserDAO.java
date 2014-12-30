@@ -3,6 +3,7 @@ package com.mastek.topcoders.smartkanteen.dao;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -321,5 +322,22 @@ public class UserDAO
 		DatabaseUtil.closeSession(session);
 		return user;
 	}
-
+	
+	public List<Role> getRoles(User user) {
+		Session session = DatabaseUtil.getSession();
+		Query query=session.createQuery("FROM  UserRoleMapping WHERE USER_ID=  :user_Id ");
+		
+		query.setParameter("user_Id", user.getUserId());
+		List<UserRoleMapping> userRoleList = query.list();
+		DatabaseUtil.closeSession(session);
+		Role role;
+		List<Role> roleList = new ArrayList<Role>();
+		for (UserRoleMapping userRoleMapping : userRoleList) {
+			 role=userRoleMapping.getRole();
+			 roleList.add(role);
+		}
+		
+		                                                                                             
+		return  roleList; 
+   }
 }
