@@ -1,9 +1,6 @@
 package com.mastek.topcoders.smartkanteen.dao;
 
-import java.nio.channels.SeekableByteChannel;
 import java.util.List;
-
-import javax.persistence.criteria.Order;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
