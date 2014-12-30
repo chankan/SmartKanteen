@@ -1,12 +1,7 @@
 package com.mastek.topcoders.smartkanteen.rest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -15,72 +10,144 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.hibernate.ObjectNotFoundException;
-
-import com.mastek.topcoders.smartkanteen.bean.Caterer;
-import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
-import com.mastek.topcoders.smartkanteen.bean.Menu;
-import com.mastek.topcoders.smartkanteen.bean.Tag;
 import com.mastek.topcoders.smartkanteen.bean.User;
-import com.mastek.topcoders.smartkanteen.bean.UserDetails;
-import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.rest.exception.GenericException;
-import com.mastek.topcoders.smartkanteen.rest.exception.NotAuthorizedException;
-import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
+import com.mastek.topcoders.smartkanteen.service.UserServiceImpl;
 
+@Path("/utils")
+public class UserResource implements IUserResource {
+	private final UserServiceImpl userService;
 
-public class UserResource implements IUserResource 
-{
+	public UserResource() {
+
+		userService = new UserServiceImpl();
+	}
 
 	@Override
 	public User getUserById(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		User user = userService.getUserById(userId);
+		return user;
+	}
+
+	@Path("/user")
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public User createUser(User user) {
+		try {
+			return userService.createUser(user);
+		} catch (UserExistException uxe) {
+			throw new GenericException("User Already Exist");
+		} catch (Exception e) {
+			throw new GenericException("Something went Wrong");
+		}
+
+	}
+
+	@Path("/user/{loginId}")
+	@PUT
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public User updateUser(User user) {
+		try {
+			User updateduser = userService.updateUser(user);
+			if (updateduser != null) {
+				return user;
+			} else {
+				throw new GenericException("User Not Exist");
+			}
+		} catch (Exception e) {
+			throw new GenericException("Something Went Wrong!!");
+		}
+	}
+
+	@Path("/user")
+	@DELETE
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public Response deleteUser(User user) {
+
+		try {
+			if (userService.deleteUser(user)) {
+				return Response.status(200).entity("User Deleted!!").build();
+			} else {
+				return Response.status(400).entity("Something Went wrong!!")
+						.build();
+			}
+		} catch (Exception e) {
+			throw new GenericException("Something Went Wrong!");
+		}
+	}
+
+	@Path("/user/{loginId}")
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public User changePassword(@PathParam("loginId") String loginId,
+			@FormParam("") String oldPassword, @FormParam("") String newPassword) {
+		try 
+		{
+			return userService
+					.changePassword(loginId, oldPassword, newPassword);
+		} catch (IncorrectPasswordException e)
+		{
+			System.out.println("Incorrect password");
+			throw new GenericException("Incorrect Password!");
+		} catch (Exception e) 
+		{
+			throw new GenericException("Something Went Wrong");
+		}
 	}
 
 	@Override
-	public User authenicateUser(String loginId, String password) {
-		// TODO Auto-generated method stub
+	public User updateUserRole(int userId, int roleId) {
 		return null;
 	}
 
+	@Path("/login/form")
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public User createUser(User user, UserDetails userDetails,
-			UserRoleMapping userRoleMapping) throws UserExistException,
-			Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Response login(String loginId, String password) {
+		if (userService.authenicateUser(loginId, password)) {
+			System.out.println("Login Successful");
+			return Response.status(200).entity("Login successful").build();
+
+		} else {
+			System.out.println("Login Failed");
+			throw new GenericException("Login attempt failed. Try again");
+		}
 	}
 
+	@Path("/login")
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public User updateUser(Integer userId, String loginId, String firstName,
-			String lastName, String emailId, String gender, Date dateOfBirth,
-			Integer contactNo, Integer extensionNo, Integer employeeId)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Response loginUser(User user) {
+		if (userService.authenicateUser(user.getLoginId(), user.getPassword())) {
+			System.out.println("Login Successful");
+			return Response.status(200).entity("Login successful").build();
+
+		} else {
+			System.out.println("Login Failed");
+			throw new GenericException("Login attempt failed. Try again");
+		}
 	}
 
-	@Override
-	public Boolean deleteUser(User user) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public static void main(String[] args) {
+		UserResource userResource = new UserResource();
+		User user = new User();
+		user.setLoginId("vaibhav13099");
+		user.setPassword("123");
+		user.setEmailId("vaibhavk3@gmail.com");
+		// user.setEmailId("vaibhav.karanjar@mastek.com");
+		// userResource.createUser(user);
+//		userResource.login(user.getLoginId(), user.getPassword());
+//		userResource.changePassword(user.getLoginId(), "xyz1","abc");
+		userResource.updateUser(user);
 	}
 
-	@Override
-	public User changePassword(String loginId, String oldPassword,
-			String newPassword) throws IncorrectPasswordException, Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public User updateUserRole(int userId, int roleId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-		
 }

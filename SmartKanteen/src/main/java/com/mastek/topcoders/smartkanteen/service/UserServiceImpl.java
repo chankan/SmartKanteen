@@ -36,7 +36,8 @@ public class UserServiceImpl implements UserService
 		UserRoleMapping userRoleMapping = new UserRoleMapping();
 		userRoleMapping.setRole(role);
 		userRoleMapping.setUser(user);
-
+		
+		user.setAccountCreationDate(new Date());
 		UserDetails userDetails = new UserDetails();
 		userDetails.setUser(user);
 
@@ -132,24 +133,26 @@ public class UserServiceImpl implements UserService
 	{
 		User userDb;
 		UserDetails userDetails, userDetailsDb;
+		UserDAO dao = new UserDAO();
 
-		if (user.getUserId() == null || user.getUserId() == 0)
+		if (user.getLoginId() == null)
 		{
 			System.out.println("User does not exist...");
 			return null;
 		}
-		userDetails = user.getUserDetails();
+		
 
-		userDb = getUserById(user.getUserId());
+		userDb = dao.getUserByLoginId(user.getLoginId());
+		userDetails = userDb.getUserDetails();
 		userDetailsDb = userDb.getUserDetails();
 
 		if (user != null)
 		{
-			userDb.setUserId(user.getUserId());
-			if (user.getLoginId() != null)
-			{
-				userDb.setLoginId(user.getLoginId());
-			}
+//			userDb.setUserId(user.getUserId());
+//			if (user.getLoginId() != null)
+//			{
+//				userDb.setLoginId(user.getLoginId());
+//			}
 
 			if (user.getEmailId() != null)
 			{
@@ -192,7 +195,7 @@ public class UserServiceImpl implements UserService
 			}
 			System.out.println(user.toString() + "\n" + userDetailsDb.toString());
 
-			UserDAO dao = new UserDAO();
+			
 
 			return dao.updateUser(userDb, userDetailsDb);
 		}
