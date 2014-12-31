@@ -12,56 +12,33 @@ var loginRequired = function($location, $q,$rootScope) {
 angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		[ '$resource', function($resource) {
 			var MenuService = $resource('rest/service/caterer/:catererId/menu',{catererId: '@catererId'});
-			// var MenuRestful = $resource('rest/service');
-			/*var MenuService = {
-				restService : $resource('rest/kanteen/menu'),
-				data : [],
-				data1 : [ ],
-				menuIndex : 6,
-
-				getAll : function() {
-					// $http.get('/rest/service/')
-					// .success(function(data, status, headers, config) {
-					// this.data=[{ItemID: 1, ItemName: "Thali", Description:
-					// "Jain Thali",Price: 100,PrepTime: 15},];
-					// }).
-					// error(function(data, status, headers, config) {
-					// this.data=this.data1;
-					// });
-					// return $http.get('rest/service/');
-					return this.restService.get();
-				},
-				get : function(id) {
-					var menu = null;
-					for ( var i = 0; i < this.data.length; i++) {
-						if ((this.data[i]).ItemID == id) {
-							menu = this.data[i];
-						}
-					}
-					return menu;
-				},
-				remove : function(id) {
-					if (id >= 0) {
-						for ( var i = 0; i < this.data.length; i++) {
-							if ((this.data[i]).ItemID == id) {
-								this.data.splice(i, 1);
-							}
-						}
-
-					}
-				},
-				save : function(id, menu) {
-					if (id >= 0) {
-						this.data[id] = menu;
-					} else {
-						menu.ItemID = this.menuIndex++;
-						this.data.push(menu);
-					}
-					return true;
-				}
-			};*/
 			return MenuService;
-		} ]).config(function($routeProvider) {
+		} ]).factory('UserMgr', ['$http', '$location', '$rootScope', function($http, $location, $rootScope) {
+		      return {
+		        login: function(user) {
+		          return $http.post('/user/login', user)
+		            .success(function(data) {
+		              $rootScope.currentUser = data;
+		              $location.path('/');
+		            })
+		            .error(function() {
+		            });
+		        },
+		        signup: function(user) {
+		          return $http.post('/user', user)
+		            .success(function() {
+		              $location.path('/login');
+		            })
+		            .error(function(response) {
+		            });
+		        },
+		        logout: function() {
+		          return $http.get('/user/logout').success(function() {
+		            $rootScope.currentUser = null;
+		          });
+		        }
+		      };
+		    }]).config(function($routeProvider) {
 	$routeProvider.when('/', {
 		controller : 'HomeCtrl',
 		templateUrl : 'view/homepage.html'

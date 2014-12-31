@@ -23,4 +23,6 @@ public interface IUserResource {
 	User changePassword(String loginId, String oldPassword, String newPassword)  ;
 
 	Response loginUser(User user);
+
+	Response logoutUser(User user);
 }

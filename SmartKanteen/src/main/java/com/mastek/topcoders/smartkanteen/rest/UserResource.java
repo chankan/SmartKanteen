@@ -16,7 +16,7 @@ import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.rest.exception.GenericException;
 import com.mastek.topcoders.smartkanteen.service.UserServiceImpl;
 
-@Path("/utils")
+@Path("/user")
 public class UserResource implements IUserResource {
 	private final UserServiceImpl userService;
 
@@ -32,7 +32,7 @@ public class UserResource implements IUserResource {
 		return user;
 	}
 
-	@Path("/user")
+	@Path("/")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -47,7 +47,7 @@ public class UserResource implements IUserResource {
 
 	}
 
-	@Path("/user/{loginId}")
+	@Path("/{loginId}")
 	@PUT
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -64,7 +64,7 @@ public class UserResource implements IUserResource {
 		}
 	}
 
-	@Path("/user")
+	@Path("/")
 	@DELETE
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -82,7 +82,7 @@ public class UserResource implements IUserResource {
 		}
 	}
 
-	@Path("/user/{loginId}")
+	@Path("/{loginId}/changepass")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -119,6 +119,14 @@ public class UserResource implements IUserResource {
 		}
 	}
 
+	@Path("/logout")
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public Response logoutUser(User user) {
+		return null;
+	}
+	
 	public static void main(String[] args) {
 		UserResource userResource = new UserResource();
 		User user = new User();
@@ -126,7 +134,6 @@ public class UserResource implements IUserResource {
 		user.setPassword("1234");
 		user.setEmailId("vaibhavk123@gmail.com");
 		
-		// user.setEmailId("vaibhav.karanjar@mastek.com");
 		// userResource.createUser(user);
 //		userResource.login(user.getLoginId(), user.getPassword());
 //		userResource.changePassword(user.getLoginId(), "xyz1","abc");
