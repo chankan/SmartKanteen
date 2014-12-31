@@ -28,7 +28,7 @@ public class MenuDAO
 	public List<Menu> getMenuMaster()
 	{
 		Session session = DatabaseUtil.getSession();
-		List<Menu> menuMasterList = session.createQuery(" FROM Menu ").list();
+		List<Menu> menuMasterList = session.createCriteria(Menu.class).list();
 		DatabaseUtil.closeSession(session);
 
 		return menuMasterList;
@@ -271,8 +271,7 @@ public class MenuDAO
 	public List<Caterer> getCaterers()
 	{
 		Session session = DatabaseUtil.getSession();
-		Query query = session.createQuery("FROM Caterer");
-		List<Caterer> catererList = query.list();
+		List<Caterer> catererList = session.createCriteria(Caterer.class).list();
 		DatabaseUtil.closeSession(session);
 		return catererList;
 	}
@@ -790,7 +789,7 @@ public class MenuDAO
 	public List<Tag> getTags()
 	{
 		Session session = DatabaseUtil.getSession();
-		List<Tag> tagList = session.createQuery(" FROM Tag ").list();
+		List<Tag> tagList = session.createCriteria(Tag.class).list();
 		DatabaseUtil.closeSession(session);
 
 		return tagList;

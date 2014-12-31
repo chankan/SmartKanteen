@@ -215,7 +215,7 @@ CREATE TABLE  Order_Master
 	order_id			NUMBER	auto_increment	CONSTRAINT	order_pk				PRIMARY KEY,
 	user_id				NUMBER,
 	total_cost			FLOAT					CONSTRAINT	total_cost_nn			NOT NULL,
-	order_date			DATE					CONSTRAINT	order_date_nn			NOT NULL,
+	order_date			DATETIME				CONSTRAINT	order_date_nn			NOT NULL,
 	order_created_date	DATE					CONSTRAINT	order_created_date_nn	NOT NULL,
 	status				VARCHAR2(30)			CONSTRAINT	status_nn				NOT NULL,
 	remark				VARCHAR2(200),

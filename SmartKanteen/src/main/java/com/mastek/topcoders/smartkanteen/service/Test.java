@@ -27,20 +27,10 @@ public class Test
 
 		testingCatererTable();
 
-		<<<<<<< HEAD
 		testingDailyMenuTable();
-		
-		testingTagsTable;*/
 
-		//testingDailyMenuTable();
-		//testCreateOrder();
-		//testCreateUser();
-		//testDeleteUser();
-		testUpdateUser();
-		//testAuthenticateUser();
-		//testGetUserById();
-		//testUpdateUserRole();
-		//testChangePassword();
+		testingTagsTable();*/
+
 	}
 
 	public static void testingMenuTable() throws ObjectNotFoundException, Exception
