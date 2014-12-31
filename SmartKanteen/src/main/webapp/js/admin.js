@@ -87,9 +87,12 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	}).when('/superadmin/caterer', {//SuperAdmin Menu
 		controller : 'AddCatererCtrl',
 		templateUrl : 'view/addCaterer.html'
-	}).when('/login', {//SuperAdmin Menu
+	}).when('/login', {//login Menu
 		controller : 'LoginCtrl',
 		templateUrl : 'view/login.html'
+	}).when('/register', {//login Menu
+		controller : 'RegistrationCtrl',
+		templateUrl : 'view/adduser.html'
 	}).otherwise({
 		redirectTo : '/'
 	});
@@ -151,6 +154,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	$scope.login=function(){
 		$rootScope.currentUser = {userName:$scope.user.name,userRole:"Admin",login:true}
 	};
+}).controller('RegistrationCtrl', function($scope,$rootScope) {
+
 }).controller('HomeCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/33/menu').get();
 }).controller('CatererListCtrl', function($scope, Menus, $resource, $http) {

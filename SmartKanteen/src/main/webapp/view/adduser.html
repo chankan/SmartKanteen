@@ -1,53 +1,57 @@
-<div class="container-fluid" ng-controller="userCtrl">
-	<form role="form">
-
-		<div class="well form-group">
-			<div class="row">
-				<div class="col-md-6" ng-hide="error">
-					<h3 class="text-center">User Registration</h3>
-					<div class="row">
-						<div class="col-md-5">
-							<label>User Name</label>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="login-panel panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">User Registration</h2>
+				</div>
+				<div class="panel-body">
+					<form role="form">
+						<div class="row form-group">
+							<div class="col-md-5 text-right">
+								<label>User Name *</label>
+							</div>
+							<div class="col-md-7">
+								<input type="text" class="form-control" ng-model="user.loginId">
+							</div>
 						</div>
-						<div class="col-md-7">
-							<input type="text" class="form-control" id="loginid"
-								ng-model="user.loginId">
+						<div class="row form-group">
+							<div class="col-md-5 text-right">
+								<label>Password *</label>
+							</div>
+							<div class="col-md-7">
+								<input type="password" class="form-control" ng-model="user.password">
+							</div>
 						</div>
-					</div>
-					
-
-					<div class="row margin-top-10">
-						<div class="col-md-5">
-							<label>Password</label>
+						<div class="row form-group">
+							<div class="col-md-5 text-right">
+								<label>Re-Enter Password *</label>
+							</div>
+							<div class="col-md-7">
+								<input type="password" class="form-control" ng-model="user.password1">
+							</div>
 						</div>
-						<div class="col-md-7">
-							<input type="password" rows="3" class="form-control" cols="22"
-								id="password" ng-model="user.password">
+						<div class="row form-group">
+							<div class="col-md-5 text-right">
+								<label>Email *</label>
+							</div>
+							<div class="col-md-7">
+								<input type="email" class="form-control" id="emailid" ng-model="user.emailId">
+							</div>
 						</div>
-					</div>
-					
-					<div class="row margin-top-10">
-						<div class="col-md-5">
-							<label>Email</label>
-						</div>
-						<div class="col-md-7">
-							<input type="text" class="form-control" id="emailid"
-								ng-model="user.emailId">
-						</div>
-					</div>
-
-				<BR>
-					<div class="row margin-top-10">
-						<div class="col-md-12 text-center">
-							<!-- 							<a href="#/" class="btn">Cancel</a> -->
-							<button class="btn btn-primary" ng-click="save()">Sign
-								Up</button>
-							<!-- 							<button class="btn btn-danger margin-right-20" -->
-							<!-- 								ng-click="remove()" ng-show="(menu.itemId>=0)">Delete</button> -->
-						</div>
-					</div>
+						<div class="row form-group">
+							<div class="col-md-12 text-center">
+								<a href="#/" class="btn">Cancel</a>
+								<button class="btn btn-lg  btn-primary" ng-click="save()">Sign Up</button>
+							</div>
+						</div>					
+					</form>
+				</div>
+				<div class="panel-footer">
+					<span class="pull-right">* All fields are mandatory.</span>
+					<div class="clearfix"></div>
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
 </div>
