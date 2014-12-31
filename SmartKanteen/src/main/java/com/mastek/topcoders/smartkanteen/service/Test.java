@@ -5,17 +5,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.ObjectNotFoundException;
 
 import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping;
+import com.mastek.topcoders.smartkanteen.bean.OrderDetails;
+import com.mastek.topcoders.smartkanteen.bean.OrderMaster;
 import com.mastek.topcoders.smartkanteen.bean.Tag;
 import com.mastek.topcoders.smartkanteen.bean.Role;
 import com.mastek.topcoders.smartkanteen.bean.User;
 import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
+import com.mastek.topcoders.smartkanteen.common.util.OrderStatus;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 
 public class Test
@@ -30,6 +36,8 @@ public class Test
 		testingDailyMenuTable();
 
 		testingTagsTable();*/
+		
+		testingOrderTable();
 
 	}
 
@@ -456,6 +464,54 @@ public class Test
 		System.out.println(tag);
 	}
 
+	public static void testingOrderTable() throws Exception
+	{
+		OrderMaster order = new OrderMaster();
+		OrderDetails orderDetails1 = new OrderDetails();
+		Menu menu1 = new Menu();
+		menu1.setItemId(1);
+		menu1.setPrice(new BigDecimal(100));
+		orderDetails1.setMenu(menu1);
+		orderDetails1.setQuantity(1);
+		
+		OrderDetails orderDetails2 = new OrderDetails();
+		Menu menu2 = new Menu();
+		menu2.setItemId(2);
+		menu2.setPrice(new BigDecimal(80));
+		orderDetails2.setMenu(menu2);
+		orderDetails2.setQuantity(2);
+		
+		OrderDetails orderDetails3 = new OrderDetails();
+		Menu menu3 = new Menu();
+		menu3.setItemId(3);
+		menu3.setPrice(new BigDecimal(40));
+		orderDetails3.setMenu(menu3);
+		orderDetails3.setQuantity(3);
+		
+		Set<OrderDetails> orderDetailsSet = new HashSet<OrderDetails>();
+		orderDetailsSet.add(orderDetails1);
+		orderDetailsSet.add(orderDetails2);
+		orderDetailsSet.add(orderDetails3);
+		
+		order.setOrderDetails(orderDetailsSet);
+		order.setTotalCost(null);
+		order.setOrderDate(new Date());
+		Caterer caterer = new Caterer();
+		caterer.setCatererId(2);
+		order.setCaterer(caterer);
+		order.setOrderCreatedDate(new Date());
+		order.setStatus(OrderStatus.PENDING.getOrderStatus());
+		User user = new User();
+		user.setUserId(1);
+		order.setUser(user);
+		
+		orderDetails1.setOrderMaster(order);
+		orderDetails2.setOrderMaster(order);
+		orderDetails3.setOrderMaster(order);
+		OrderService service = new OrderServiceImpl();
+		service.createOrder(order);
+	}
+	
 	/*public static void  testCreateOrder()
 	{
 		

@@ -2,48 +2,44 @@ package com.mastek.topcoders.smartkanteen.service;
 
 import java.util.List;
 
-import com.mastek.topcoders.smartkanteen.bean.OrderDetails;
 import com.mastek.topcoders.smartkanteen.bean.OrderMaster;
+import com.mastek.topcoders.smartkanteen.common.util.OrderStatus;
 import com.mastek.topcoders.smartkanteen.dao.OrderDAO;
-import com.mastek.topcoders.smartkanteen.dao.UserDAO;
 
 public class OrderServiceImpl implements OrderService
 {
 
 	@Override
-	public void createOrder(OrderMaster order, OrderDetails orderDetails)
+	public OrderMaster createOrder(OrderMaster order) throws Exception
 	{
 		OrderDAO dao = new OrderDAO();
-		dao.createOrder(order, orderDetails);
+		return dao.createOrder(order);
 	}
 
 	@Override
-	public void cancelOrder()
+	public OrderMaster updateOrderStatus(Integer orderId, OrderStatus orderStatus, String remarks) throws Exception
 	{
-		// TODO Auto-generated method stub
-
+		OrderDAO dao = new OrderDAO();
+		return dao.updateOrderStatus(orderId, orderStatus.getOrderStatus(), remarks);
 	}
 
 	@Override
-	public OrderMaster updateOrderStatus(int orderId,String orderStatus)
+	public Boolean cancelOrder(Integer orderId) throws Exception
 	{
-		OrderDAO dao= new OrderDAO();
-		return dao.updateOrderStatus(orderId, orderStatus);
-    }
-
-	@Override
-	public List<OrderMaster> getOrdersByCaterer(Integer catererId)
-	{
-      OrderDAO dao= new OrderDAO();
-       return  dao.getOrderByCaterer(catererId);
+		return null;
 	}
 
+	@Override
+	public List<OrderMaster> getOrdersByCaterer(Integer catererId) throws Exception
+	{
+		OrderDAO dao = new OrderDAO();
+		return dao.getOrderByCaterer(catererId);
+	}
 
 	@Override
-	public List<OrderMaster> getOrdersByUser(Integer userId)
+	public List<OrderMaster> getOrdersByUser(Integer userId) throws Exception
 	{
 		OrderDAO dao = new OrderDAO();
 		return dao.getOrderByUser(userId);
 	}
-
 }

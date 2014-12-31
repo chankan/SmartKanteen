@@ -2,18 +2,18 @@ package com.mastek.topcoders.smartkanteen.service;
 
 import java.util.List;
 
-import com.mastek.topcoders.smartkanteen.bean.OrderDetails;
 import com.mastek.topcoders.smartkanteen.bean.OrderMaster;
+import com.mastek.topcoders.smartkanteen.common.util.OrderStatus;
 
 public interface OrderService
 {
-	void createOrder(OrderMaster order, OrderDetails orderDetails);
+	OrderMaster createOrder(OrderMaster order) throws Exception;
 
-	void cancelOrder();
+	OrderMaster updateOrderStatus(Integer orderId, OrderStatus orderStatus, String remarks) throws Exception;
 
-	 OrderMaster updateOrderStatus(int orderId,String orderStatus);
+	Boolean cancelOrder(Integer orderId) throws Exception;
 
-	 List<OrderMaster> getOrdersByCaterer(Integer catererId);
+	List<OrderMaster> getOrdersByCaterer(Integer catererId) throws Exception;
 
-		List<OrderMaster> getOrdersByUser(Integer userId);
+	List<OrderMaster> getOrdersByUser(Integer userId) throws Exception;
 }

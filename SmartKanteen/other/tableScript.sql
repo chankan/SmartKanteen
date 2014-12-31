@@ -75,48 +75,47 @@ CREATE TABLE  USER_DETAILS
 );
 
 ----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
 CREATE TABLE  Order_Master
 (
 	order_id			NUMBER	auto_increment	CONSTRAINT	order_pk				PRIMARY KEY,
 	user_id				NUMBER,
 	total_cost			FLOAT					CONSTRAINT	total_cost_nn			NOT NULL,
 	order_created_date	DATE					CONSTRAINT	order_created_date_nn	NOT NULL,
-	order_timing        TIME                    CONSTRAINT  order_timing_nn         NOT NULL,             
+	order_date        TIME                    CONSTRAINT  order_timing_nn         NOT NULL,             
 	status				VARCHAR2(30)			CONSTRAINT	status_nn				NOT NULL,
 	remark				VARCHAR2(200),
 	caterer_id           NUMBER,  
 	CONSTRAINT	user_id_fk	FOREIGN KEY	(user_id)	 REFERENCES User(user_id),
     CONSTRAINT  caterer_fk  FOREIGN KEY (caterer_id) REFERENCES Caterer(caterer_id)    
-	);
+);
 
- -----------------------------------------------------------------------------------------
- CREATE TABLE  Order_Details
- (
- 	order_details_id		NUMBER	auto_increment	CONSTRAINT	ordered_details_pk	PRIMARY KEY,
- 	order_id				NUMBER,
- 	item_id					NUMBER,
- 	quantity				NUMBER,
- 	CONSTRAINT	order_fk	FOREIGN KEY	(order_id)	REFERENCES	Order_Master(order_id),
- 	CONSTRAINT	menu_fk		FOREIGN KEY	(item_id)	REFERENCES	MENU_MASTER(item_id)
- );
+-----------------------------------------------------------------------------------------
+CREATE TABLE  Order_Details
+(
+	order_details_id		NUMBER	auto_increment	CONSTRAINT	ordered_details_pk	PRIMARY KEY,
+	order_id				NUMBER,
+	item_id					NUMBER,
+	quantity				NUMBER,
+	CONSTRAINT	order_fk	FOREIGN KEY	(order_id)	REFERENCES	Order_Master(order_id),
+	CONSTRAINT	menu_fk		FOREIGN KEY	(item_id)	REFERENCES	MENU_MASTER(item_id)
+);
  
 
 -------------------------------------------------------------------------------------------
- CREATE TABLE TAGS
- (
- 	TAG_ID		NUMBER			auto_increment	CONSTRAINT	TAGS_PK		PRIMARY KEY,
- 	TAG_NAME	VARCHAR2(30)					CONSTRAINT	TAG_ID_NN	NOT NULL
- );
+CREATE TABLE TAGS
+(
+	TAG_ID		NUMBER			auto_increment	CONSTRAINT	TAGS_PK		PRIMARY KEY,
+	TAG_NAME	VARCHAR2(30)					CONSTRAINT	TAG_ID_NN	NOT NULL
+);
  
 -------------------------------------------------------------------------------------------
- CREATE  TABLE MENU_TAGS_MAPPING
- (
- 	MENU_TAGS_MAPPING_ID	NUMBER	auto_increment	CONSTRAINT	MENU_TAGS_MAPPING_PK	PRIMARY KEY,
- 	ITEM_ID					NUMBER,
- 	TAG_IDS					VARCHAR2(100),
- 	CONSTRAINT	MENU_MASTER_FK	FOREIGN KEY	(ITEM_ID)	REFERENCES	MENU_MASTER(ITEM_ID)
- );
+CREATE  TABLE MENU_TAGS_MAPPING
+(
+	MENU_TAGS_MAPPING_ID	NUMBER	auto_increment	CONSTRAINT	MENU_TAGS_MAPPING_PK	PRIMARY KEY,
+	ITEM_ID					NUMBER,
+	TAG_IDS					VARCHAR2(100),
+	CONSTRAINT	MENU_MASTER_FK	FOREIGN KEY	(ITEM_ID)	REFERENCES	MENU_MASTER(ITEM_ID)
+);
 
 --------------------------------------------------------------------------------------------
 CREATE TABLE ROLE 
@@ -133,7 +132,9 @@ CREATE TABLE  USER_ROLE_MAPPING
 	user_id					NUMBER,
 	CONSTRAINT	role_fk		FOREIGN KEY	(role_id)	REFERENCES	role(role_id),
 	CONSTRAINT	user_role_fk		FOREIGN KEY	(user_id)	REFERENCES	user(user_id)
-);----------------------------------------------------------------------
+);
+
+----------------------------------------------------------------------
 CREATE TABLE CATERER  
 (
 	CATERER_ID		NUMBER			auto_increment	CONSTRAINT	caterer_pk		PRIMARY KEY,
