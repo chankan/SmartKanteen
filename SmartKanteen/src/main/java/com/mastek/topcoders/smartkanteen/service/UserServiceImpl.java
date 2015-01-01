@@ -1,18 +1,27 @@
 package com.mastek.topcoders.smartkanteen.service;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import com.mastek.topcoders.smartkanteen.bean.Role;
 import com.mastek.topcoders.smartkanteen.bean.User;
 import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
+import com.mastek.topcoders.smartkanteen.bean.UserSession;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.dao.UserDAO;
 
 public class UserServiceImpl implements UserService
 {
+	private static HashMap<String, UserSession> userSessionMap=new HashMap<String, UserSession>();
+	private static Random rnd=new Random(System.currentTimeMillis());
+	
 	public User getUserById(int userId)
 	{
 		UserDAO dao = new UserDAO();
@@ -288,5 +297,60 @@ public class UserServiceImpl implements UserService
 	{
 		UserDAO dao = new UserDAO();
 		return dao.changePassword(loginId, oldPassword, newPassword);
+	}
+	
+	public UserSession loginUser(User user) throws Exception {
+		UserDAO dao = new UserDAO();
+		User dbUser = dao.getUserByLoginId(user.getLoginId());
+		UserSession userSession;
+		if (dbUser != null) {
+			String currPass = passwordEncryption(user.getPassword());
+			if (currPass != null && dbUser.getPassword().equals(currPass)
+					&& dbUser.getLoginId().equals(user.getLoginId())) {
+				String sessionId = getRandomSession();
+				if (userSessionMap.containsKey(sessionId)) {
+					sessionId = getRandomSession();
+					if (userSessionMap.containsKey(sessionId)) {
+						throw new Exception("Session Id generation failed.");
+					}
+				}
+				user.setPassword("");
+				user.setUserId(dbUser.getUserId());
+				userSession = new UserSession();
+				userSession.setSessionId(sessionId);
+				userSession.setUser(user);
+				userSession.setRole(3);
+				userSessionMap.put(sessionId, userSession);
+			} else {
+				throw new Exception("Failed to authenticate.");
+			}
+		} else {
+			throw new Exception("Failed to login.");
+		}
+		return userSession;
+	}
+
+	private String passwordEncryption(String input) {
+
+		String md5 = null;
+
+		if (null == input || "".equalsIgnoreCase(input.trim()))
+			return null;
+
+		try {
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			digest.update(input.getBytes(), 0, input.length());
+			md5 = new BigInteger(1, digest.digest()).toString(16);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return md5;
+	}
+
+	private String getRandomSession() {
+		String sessionId;
+		sessionId = "" + System.currentTimeMillis();
+		sessionId += rnd.nextLong();
+		return sessionId;
 	}
 }

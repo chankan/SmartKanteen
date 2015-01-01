@@ -1,10 +1,10 @@
 var loginRequired = function($location, $q,$rootScope) {  
     var deferred = $q.defer();
-    if(!$rootScope.currentUser || !$rootScope.currentUser.login) {
-        deferred.reject()
-        $location.path('/login');
+    if($rootScope.userSession && $rootScope.userSession.login) {
+    	deferred.resolve();
     } else {
-        deferred.resolve()
+    	deferred.reject()
+    	$location.path('/login');
     }
     return deferred.promise;
 }
@@ -16,26 +16,25 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		} ]).factory('UserMgr', ['$http', '$location', '$rootScope', function($http, $location, $rootScope) {
 		      return {
 		        login: function(user) {
-		          return $http.post('/user/login', user)
+		        	user.loginId=user.name;
+		          return $http.post('rest/user/login', user)
 		            .success(function(data) {
-		              $rootScope.currentUser = data;
+		              $rootScope.userSession = data;
+		              $rootScope.userSession.login=true;
 		              $location.path('/');
-		            })
-		            .error(function() {
-		            });
+		            }).error(function(response) {$rootScope.userSession =null});
 		        },
 		        signup: function(user) {
-		          return $http.post('/user', user)
+		          return $http.post('rest/user/signup', user)
 		            .success(function() {
 		              $location.path('/login');
-		            })
-		            .error(function(response) {
-		            });
+		            }).error(function(response) {});
 		        },
 		        logout: function() {
-		          return $http.get('/user/logout').success(function() {
-		            $rootScope.currentUser = null;
-		          });
+		        	 $rootScope.userSession =null
+		          //return $http.get('user/logout').success(function() {
+		        //	  $rootScope.userSession =null
+		          //});
 		        }
 		      };
 		    }]).config(function($routeProvider) {
@@ -44,7 +43,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		templateUrl : 'view/homepage.html'
 	}).when('/todaymenus', {
 		controller : 'CatererListCtrl',
-		templateUrl : 'view/catererlist.html'
+		templateUrl : 'view/catererlist.html',
+		resolve: { loginRequired: loginRequired }	
 	}).when('/caterer/:catererId', {
 		controller : 'CatererMenuCtrl',
 		templateUrl : 'view/caterermenulist.html'
@@ -53,7 +53,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		templateUrl : 'view/menulist.html'
 	}).when('/dailymenu', {
 		controller : 'DailyMenuCtrl',
-		templateUrl : 'view/todaysmenulist.html'//UserMenu End
+		templateUrl : 'view/todaysmenulist.html',//UserMenu End
+		resolve: { loginRequired: loginRequired }
 	}).when('/user', {
 		controller : 'userCtrl',
 		templateUrl : 'view/adduser.html'//UserMenu End
@@ -73,7 +74,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	}).otherwise({
 		redirectTo : '/'
 	});
-}).controller('MenuCtrl', function($scope, Menus) {
+}).controller('MenuCtrl', function($scope, Menus, UserMgr) {
 	
 	
 	var userMenu = [ {
@@ -87,29 +88,13 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		url : "#/new"
 	}, ];
 
-	$scope.loginMenu = [ {
-		name : "Register Now!!",
-		url : "#/user"
-	}, {
-		name : "Logout",
-		url : "#/logout"
-	}, ];
-	
 	var adminMenu = [ 
 	                 {name : "Home", url : "#/"},
 	                 {name : "Master Menu",url : "#/admin/menu"},
 	                 {name : "Today's Menu",url : "#/todaymenus"},
 	                 {name : "Order", url : "#/new"	},
 	                 ];
-	
-	$scope.loginMenu = [ {
-		name : "Register Now!!",
-		url : "#/user"
-	}, {
-		name : "Logout",
-		url : "#/logout"
-	}, ];
-	
+		
 	var superAdminMenu = [ 
 	                 {name : "Home", url : "#/"},
 	                 {name : "Caterers", url : "#/superadmin/caterer"},
@@ -117,7 +102,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	
 	$scope.loginMenu = [ {
 		name : "Register Now!!",
-		url : "#/user"
+		url : "#/register"
 	}, {
 		name : "Log In",
 		url : "#/login"
@@ -125,16 +110,22 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	
 //$scope.mainMenu=superAdminMenu;
 	$scope.mainMenu=adminMenu;
-//	
-}).controller('LoginCtrl', function($scope,$rootScope) {
+	
+	$scope.logout=function(){
+		UserMgr.logout();
+	};
+}).controller('LoginCtrl', function($scope,$rootScope,UserMgr) {
 	$scope.user={name:"",password:""};
 	$scope.login=function(){
-		$rootScope.currentUser = {userName:$scope.user.name,userRole:"Admin",login:true}
+		UserMgr.login($scope.user);
 	};
-}).controller('RegistrationCtrl', function($scope,$rootScope) {
+}).controller('RegistrationCtrl', function($scope,$rootScope,UserMgr) {
+	$scope.user={userId:-1, loginId:"aa", password:"aa", emailId:"aa@aa.com"};
+	$scope.errorMessage="";
+	$scope.signup=function(){UserMgr.signup($scope.user)};
 
 }).controller('HomeCtrl', function($scope, Menus, $resource, $http) {
-	$scope.menudata = $resource('rest/service/caterer/33/menu').get();
+
 }).controller('CatererListCtrl', function($scope, Menus, $resource, $http) {
 	$scope.catererData = $resource('rest/service/caterer/').get();
 }).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams) {

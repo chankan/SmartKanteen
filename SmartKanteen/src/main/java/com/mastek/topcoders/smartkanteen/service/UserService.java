@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mastek.topcoders.smartkanteen.bean.Role;
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserSession;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 
@@ -23,4 +24,6 @@ public interface UserService
 			Exception;
 
 	User updateUserRole(User user, List<Role> roleList) throws Exception;
+
+	UserSession loginUser(User user) throws Exception;
 }

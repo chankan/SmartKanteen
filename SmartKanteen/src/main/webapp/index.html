@@ -15,16 +15,16 @@
 			<div class="navbar-header">
 				<a href="#/" class="navbar-brand">SmartKanteen</a>
 			</div>
-			<div ng-show="currentUser">
+			<div ng-show="userSession">
 				<ul class="nav navbar-nav"  ng-repeat="cMenu in mainMenu">
 					<li class="active"><a href="{{cMenu.url}}">{{cMenu.name}}</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="">{{currentUser.userName}}</a></li>
-					<li class="active"><a href="#/logout">Log Out</a></li>
+					<li class="active"><a href="">{{userSession.user.loginId}}</a></li>
+					<li class="active"><a href="#" ng-Click="logout()">Log Out</a></li>
 				</ul>
 			</div>
-			<div ng-hide="currentUser">
+			<div ng-hide="userSession">
 				<ul class="nav navbar-nav navbar-right"   ng-repeat="cMenu in loginMenu | orderBy:'name'">
 					<li class="active"><a href="{{cMenu.url}}">{{cMenu.name}}</a></li>
 				</ul>		

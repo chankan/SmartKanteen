@@ -1,5 +1,6 @@
 package com.mastek.topcoders.smartkanteen.rest;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -11,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserSession;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.rest.exception.GenericException;
@@ -32,9 +34,10 @@ public class UserResource implements IUserResource {
 		return user;
 	}
 
-	@Path("/")
+	@Path("/signup")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Override
 	public User createUser(User user) {
 		try {
@@ -108,15 +111,16 @@ public class UserResource implements IUserResource {
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response loginUser(User user) {
-		if (userService.authenicateUser(user.getLoginId(), user.getPassword())) {
-			System.out.println("Login Successful");
-			return Response.status(200).entity("Login successful").build();
-
-		} else {
-			System.out.println("Login Failed");
-			throw new GenericException("Login attempt failed. Try again");
-		}
+	public UserSession loginUser(User user) throws Exception {
+		return userService.loginUser(user);
+//		if (userService.authenicateUser(user.getLoginId(), user.getPassword())) {
+//			System.out.println("Login Successful");
+//			return Response.status(200).entity("Login successful").build();
+//
+//		} else {
+//			System.out.println("Login Failed");
+//			throw new GenericException("Login attempt failed. Try again");
+//		}
 	}
 
 	@Path("/logout")

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.ws.rs.core.Response;
 
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserSession;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
 
 
@@ -22,7 +23,7 @@ public interface IUserResource {
 
 	User changePassword(String loginId, String oldPassword, String newPassword)  ;
 
-	Response loginUser(User user);
+	UserSession loginUser(User user) throws Exception;
 
 	Response logoutUser(User user);
 }

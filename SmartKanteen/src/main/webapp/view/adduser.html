@@ -8,6 +8,11 @@
 				<div class="panel-body">
 					<form role="form">
 						<div class="row form-group">
+							<div class="col-md-12 text-center">
+								<label>{{errorMessage}}</label>
+							</div>
+						</div>
+						<div class="row form-group">
 							<div class="col-md-5 text-right">
 								<label>User Name *</label>
 							</div>
@@ -28,7 +33,7 @@
 								<label>Re-Enter Password *</label>
 							</div>
 							<div class="col-md-7">
-								<input type="password" class="form-control" ng-model="user.password1">
+								<input type="password" class="form-control" ng-model="repassword">
 							</div>
 						</div>
 						<div class="row form-group">
@@ -42,7 +47,7 @@
 						<div class="row form-group">
 							<div class="col-md-12 text-center">
 								<a href="#/" class="btn">Cancel</a>
-								<button class="btn btn-lg  btn-primary" ng-click="save()">Sign Up</button>
+								<button class="btn btn-lg  btn-primary" ng-Click="signup()">Sign Up</button>
 							</div>
 						</div>					
 					</form>
