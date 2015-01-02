@@ -11,9 +11,11 @@ public interface OrderService
 
 	OrderMaster updateOrderStatus(Integer orderId, OrderStatus orderStatus, String remarks) throws Exception;
 
-	Boolean cancelOrder(Integer orderId) throws Exception;
+	OrderMaster cancelOrder(Integer orderId, String remarks) throws Exception;
 
 	List<OrderMaster> getOrdersByCaterer(Integer catererId) throws Exception;
 
 	List<OrderMaster> getOrdersByUser(Integer userId) throws Exception;
+	
+	List<OrderMaster> getOrders() throws Exception;
 }

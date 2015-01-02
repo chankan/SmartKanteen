@@ -24,9 +24,10 @@ public class OrderServiceImpl implements OrderService
 	}
 
 	@Override
-	public Boolean cancelOrder(Integer orderId) throws Exception
+	public OrderMaster cancelOrder(Integer orderId, String remarks) throws Exception
 	{
-		return null;
+		OrderDAO dao = new OrderDAO();
+		return dao.cancelOrder(orderId, remarks);
 	}
 
 	@Override
@@ -41,5 +42,12 @@ public class OrderServiceImpl implements OrderService
 	{
 		OrderDAO dao = new OrderDAO();
 		return dao.getOrderByUser(userId);
+	}
+	
+	@Override
+	public List<OrderMaster> getOrders() throws Exception
+	{
+		OrderDAO dao = new OrderDAO();
+		return dao.getOrders();
 	}
 }

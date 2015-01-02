@@ -37,17 +37,20 @@ public class MenuDAO
 	public List<Menu> getMenuMaster(Integer catererId)
 	{
 		Session session = DatabaseUtil.getSession();
-		Query query = session.createQuery("FROM Caterer WHERE catererId= :catererID");
+		Criteria criteria = session.createCriteria(Caterer.class);
+		criteria.add(Restrictions.eq("catererId", catererId));
+
+		/*Query query = session.createQuery("FROM Caterer WHERE catererId= :catererID");
 		query.setParameter("catererID", catererId);
-		List<Caterer> catererList = query.list();
+		List<Caterer> catererList = query.list();*/
+
+		List<Caterer> catererList = criteria.list();
 
 		List<Menu> menuList = new ArrayList<Menu>();
-		
+
 		if (catererList != null && catererList.size() == 1)
 		{
 			Caterer caterer = catererList.get(0);
-
-			
 
 			for (CatererMenuMapping catererMenuMapping : caterer.getCatererMenuMapping())
 			{

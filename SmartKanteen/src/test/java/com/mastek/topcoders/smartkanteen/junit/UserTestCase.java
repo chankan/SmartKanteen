@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.mastek.topcoders.smartkanteen.bean.User;
 import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
+import com.mastek.topcoders.smartkanteen.common.util.PasswordEncryption;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.dao.UserDAO;
 import com.mastek.topcoders.smartkanteen.service.UserService;
@@ -113,7 +114,7 @@ public class UserTestCase
 	}
 
 	@Test
-	public void testAuthenicateUser()
+	public void testAuthenicateUser() throws Exception
 	{
 		UserService service = new UserServiceImpl();
 		Boolean result = service.authenicateUser("tarul", "123456");
@@ -148,7 +149,7 @@ public class UserTestCase
 			e.printStackTrace();
 		}
 		UserDAO dao = new UserDAO();
-		String password = dao.passwordEncryption("rahul123");
+		String password = PasswordEncryption.encryptPassword("rahul123");
 		Assert.assertEquals(password, user.getPassword());
 	}
 }

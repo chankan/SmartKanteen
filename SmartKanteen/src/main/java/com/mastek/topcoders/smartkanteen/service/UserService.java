@@ -11,8 +11,10 @@ import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 public interface UserService
 {
 	User getUserById(int userId);
+	
+	List<User> getUsers() throws Exception;
 
-	Boolean authenicateUser(String loginId, String password);
+	Boolean authenicateUser(String loginId, String password) throws Exception;
 
 	User createUser(User user) throws UserExistException, Exception;
 

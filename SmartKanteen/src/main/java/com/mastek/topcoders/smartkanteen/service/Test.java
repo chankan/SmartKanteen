@@ -28,7 +28,6 @@ public class Test
 {
 	public static void main(String[] args) throws Exception
 	{
-
 		/*testingMenuTable();
 
 		testingCatererTable();
@@ -38,7 +37,6 @@ public class Test
 		testingTagsTable();*/
 		
 		testingOrderTable();
-
 	}
 
 	public static void testingMenuTable() throws ObjectNotFoundException, Exception
@@ -466,6 +464,13 @@ public class Test
 
 	public static void testingOrderTable() throws Exception
 	{
+		testCreateOrder();
+		
+		testCancelOrder();
+	}
+	
+	public static void testCreateOrder() throws Exception
+	{
 		OrderMaster order = new OrderMaster();
 		OrderDetails orderDetails1 = new OrderDetails();
 		Menu menu1 = new Menu();
@@ -510,6 +515,12 @@ public class Test
 		orderDetails3.setOrderMaster(order);
 		OrderService service = new OrderServiceImpl();
 		service.createOrder(order);
+	}
+	
+	public static void testCancelOrder() throws Exception
+	{
+		OrderService service = new OrderServiceImpl();
+		service.cancelOrder(2, "Item not available");
 	}
 	
 	/*public static void  testCreateOrder()
@@ -652,7 +663,7 @@ public class Test
 		}
 	}
 
-	public static void testAuthenticateUser()
+	public static void testAuthenticateUser() throws Exception
 	{
 		UserServiceImpl service = new UserServiceImpl();
 		Boolean result = service.authenicateUser("Radha", "123456");

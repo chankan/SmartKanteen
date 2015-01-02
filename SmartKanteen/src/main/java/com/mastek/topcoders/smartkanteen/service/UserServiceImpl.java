@@ -1,8 +1,5 @@
 package com.mastek.topcoders.smartkanteen.service;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +11,15 @@ import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
 import com.mastek.topcoders.smartkanteen.bean.UserSession;
 import com.mastek.topcoders.smartkanteen.common.util.IncorrectPasswordException;
+import com.mastek.topcoders.smartkanteen.common.util.PasswordEncryption;
 import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 import com.mastek.topcoders.smartkanteen.dao.UserDAO;
 
 public class UserServiceImpl implements UserService
 {
-	private static HashMap<String, UserSession> userSessionMap=new HashMap<String, UserSession>();
-	private static Random rnd=new Random(System.currentTimeMillis());
-	
+	private static HashMap<String, UserSession> userSessionMap = new HashMap<String, UserSession>();
+	private static Random rnd = new Random(System.currentTimeMillis());
+
 	public User getUserById(int userId)
 	{
 		UserDAO dao = new UserDAO();
@@ -29,11 +27,16 @@ public class UserServiceImpl implements UserService
 		return user;
 	}
 
-	public Boolean authenicateUser(String loginId, String password)
+	public List<User> getUsers() throws Exception
+	{
+		UserDAO dao = new UserDAO();
+		return dao.getUsers();
+	}
+
+	public Boolean authenicateUser(String loginId, String password) throws Exception
 	{
 		UserDAO dao = new UserDAO();
 		return dao.authenticateUser(loginId, password);
-
 	}
 
 	public User createUser(User user) throws UserExistException, Exception
@@ -72,72 +75,81 @@ public class UserServiceImpl implements UserService
 
 		if (user != null)
 		{
-			user.setUserId(userId);
-			if (loginId != null)
-			{
-				user.setLoginId(loginId);
-			}
-
-			if (emailId != null)
-			{
-				user.setEmailId(emailId);
-			}
-
-			if (emailId != null)
-			{
-				user.setEmailId(emailId);
-			}
-
-			if (emailId != null)
-			{
-				user.setEmailId(emailId);
-			}
-
-			if (firstName != null)
-			{
-				userDetails.setFirstName(firstName);
-			}
-
-			if (lastName != null)
-			{
-				userDetails.setLastName(lastName);
-			}
-
-			if (gender != null)
-			{
-				userDetails.setGender(gender);
-			}
-
-			if (lastName != null)
-			{
-				userDetails.setLastName(lastName);
-			}
-
-			if (dateOfBirth != null)
-			{
-				userDetails.setDateOfBirth(dateOfBirth);
-			}
-
-			if (contactNo != null && contactNo != 0)
-			{
-				userDetails.setContactNo(contactNo);
-			}
-
-			if (extensionNo != null && extensionNo != 0)
-			{
-				userDetails.setExtensionNo(extensionNo);
-			}
-
-			if (employeeId != null && employeeId != 0)
-			{
-				userDetails.setEmployeeId(employeeId);
-			}
+			setUserDetails(user, userDetails, userId, loginId, firstName, lastName, emailId, gender, dateOfBirth,
+					contactNo, extensionNo, employeeId);
 
 			UserDAO dao = new UserDAO();
 
 			return dao.updateUser(user, userDetails);
 		}
 		return null;
+	}
+
+	private void setUserDetails(User user, UserDetails userDetails, Integer userId, String loginId, String firstName,
+			String lastName, String emailId, String gender, Date dateOfBirth, Long contactNo, Integer extensionNo,
+			Integer employeeId)
+	{
+		user.setUserId(userId);
+
+		if (loginId != null)
+		{
+			user.setLoginId(loginId);
+		}
+
+		if (emailId != null)
+		{
+			user.setEmailId(emailId);
+		}
+
+		if (emailId != null)
+		{
+			user.setEmailId(emailId);
+		}
+
+		if (emailId != null)
+		{
+			user.setEmailId(emailId);
+		}
+
+		if (firstName != null)
+		{
+			userDetails.setFirstName(firstName);
+		}
+
+		if (lastName != null)
+		{
+			userDetails.setLastName(lastName);
+		}
+
+		if (gender != null)
+		{
+			userDetails.setGender(gender);
+		}
+
+		if (lastName != null)
+		{
+			userDetails.setLastName(lastName);
+		}
+
+		if (dateOfBirth != null)
+		{
+			userDetails.setDateOfBirth(dateOfBirth);
+		}
+
+		if (contactNo != null && contactNo != 0)
+		{
+			userDetails.setContactNo(contactNo);
+		}
+
+		if (extensionNo != null && extensionNo != 0)
+		{
+			userDetails.setExtensionNo(extensionNo);
+		}
+
+		if (employeeId != null && employeeId != 0)
+		{
+			userDetails.setEmployeeId(employeeId);
+		}
 	}
 
 	/*	public User updateUser(User user) throws Exception
@@ -230,7 +242,6 @@ public class UserServiceImpl implements UserService
 
 		if (user != null)
 		{
-
 			if (user.getEmailId() != null)
 			{
 				userDb.setEmailId(user.getEmailId());
@@ -238,45 +249,16 @@ public class UserServiceImpl implements UserService
 
 			if (userDetails != null)
 			{
-				if (userDetails.getFirstName() != null)
-				{
-					userDetailsDb.setFirstName(userDetails.getFirstName());
-				}
-
-				if (userDetails.getLastName() != null)
-				{
-					userDetailsDb.setLastName(userDetails.getLastName());
-				}
-
-				if (userDetails.getGender() != null)
-				{
-					userDetailsDb.setGender(userDetails.getGender());
-				}
-
-				if (userDetails.getDateOfBirth() != null)
-				{
-					userDetailsDb.setDateOfBirth(userDetails.getDateOfBirth());
-				}
-
-				if (userDetails.getContactNo() != null && userDetails.getContactNo() != 0)
-				{
-					userDetailsDb.setContactNo(userDetails.getContactNo());
-				}
-
-				if (userDetails.getExtensionNo() != null && userDetails.getExtensionNo() != 0)
-				{
-					userDetailsDb.setExtensionNo(userDetails.getExtensionNo());
-				}
-
-				if (userDetails.getEmployeeId() != null && userDetails.getEmployeeId() != 0)
-				{
-					userDetailsDb.setEmployeeId(userDetails.getEmployeeId());
-				}
+				setUserDetails(userDb, userDetailsDb, userDb.getUserId(), userDb.getLoginId(),
+						userDetails.getFirstName(), userDetails.getLastName(), user.getEmailId(),
+						userDetails.getGender(), userDetails.getDateOfBirth(), userDetails.getContactNo(),
+						userDetails.getExtensionNo(), userDetails.getEmployeeId());
 			}
-			System.out.println(user.toString() + "\n" + userDetailsDb.toString());
+			System.out.println(user + "\n" + userDetailsDb);
 
 			return dao.updateUser(userDb, userDetailsDb);
 		}
+
 		return null;
 	}
 
@@ -286,68 +268,63 @@ public class UserServiceImpl implements UserService
 		return dao.deleteUser(user);
 	}
 
-	public User updateUserRole(User user, List<Role> roleList) throws Exception
-	{
-		UserDAO dao = new UserDAO();
-		return dao.updateUserRole(user, roleList);
-	}
-
 	public User changePassword(String loginId, String oldPassword, String newPassword)
 			throws IncorrectPasswordException, Exception
 	{
 		UserDAO dao = new UserDAO();
 		return dao.changePassword(loginId, oldPassword, newPassword);
 	}
-	
-	public UserSession loginUser(User user) throws Exception {
+
+	public User updateUserRole(User user, List<Role> roleList) throws Exception
+	{
+		UserDAO dao = new UserDAO();
+		return dao.updateUserRole(user, roleList);
+	}
+
+	public UserSession loginUser(User user) throws Exception
+	{
 		UserDAO dao = new UserDAO();
 		User dbUser = dao.getUserByLoginId(user.getLoginId());
 		UserSession userSession;
-		if (dbUser != null) {
-			String currPass = passwordEncryption(user.getPassword());
+		if (dbUser != null)
+		{
+			String currPass = PasswordEncryption.encryptPassword(user.getPassword());
+			
 			if (currPass != null && dbUser.getPassword().equals(currPass)
-					&& dbUser.getLoginId().equals(user.getLoginId())) {
+					&& dbUser.getLoginId().equals(user.getLoginId()))
+			{
 				String sessionId = getRandomSession();
-				if (userSessionMap.containsKey(sessionId)) {
+				
+				if (userSessionMap.containsKey(sessionId))
+				{
 					sessionId = getRandomSession();
-					if (userSessionMap.containsKey(sessionId)) {
+					if (userSessionMap.containsKey(sessionId))
+					{
 						throw new Exception("Session Id generation failed.");
 					}
 				}
-				user.setPassword("");
+				
 				user.setUserId(dbUser.getUserId());
 				userSession = new UserSession();
 				userSession.setSessionId(sessionId);
 				userSession.setUser(user);
 				userSession.setRole(3);
 				userSessionMap.put(sessionId, userSession);
-			} else {
+			}
+			else
+			{
 				throw new Exception("Failed to authenticate.");
 			}
-		} else {
+		}
+		else
+		{
 			throw new Exception("Failed to login.");
 		}
 		return userSession;
 	}
 
-	private String passwordEncryption(String input) {
-
-		String md5 = null;
-
-		if (null == input || "".equalsIgnoreCase(input.trim()))
-			return null;
-
-		try {
-			MessageDigest digest = MessageDigest.getInstance("MD5");
-			digest.update(input.getBytes(), 0, input.length());
-			md5 = new BigInteger(1, digest.digest()).toString(16);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return md5;
-	}
-
-	private String getRandomSession() {
+	private String getRandomSession()
+	{
 		String sessionId;
 		sessionId = "" + System.currentTimeMillis();
 		sessionId += rnd.nextLong();

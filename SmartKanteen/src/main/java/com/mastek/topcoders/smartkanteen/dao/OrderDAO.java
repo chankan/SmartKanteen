@@ -3,12 +3,14 @@ package com.mastek.topcoders.smartkanteen.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.mastek.topcoders.smartkanteen.bean.OrderMaster;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
+import com.mastek.topcoders.smartkanteen.common.util.OrderStatus;
 
 public class OrderDAO
 {
@@ -65,6 +67,42 @@ public class OrderDAO
 		return order;
 	}
 
+	public OrderMaster cancelOrder(Integer orderId, String remarks) throws ObjectNotFoundException, Exception
+	{
+		Session session = DatabaseUtil.getSession();
+		Transaction tx = null;
+		OrderMaster order = getOrderById(orderId);
+
+		if (order != null)
+		{
+			try
+			{
+				tx = session.beginTransaction();
+				order.setRemark(remarks);
+				order.setStatus(OrderStatus.CANCELLED.getOrderStatus());
+				
+				System.out.println("In ORDER DAO" +order);
+				session.update(order);
+				
+				tx.commit();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				tx.rollback();
+				DatabaseUtil.closeSession(session);
+				throw e;
+			}
+		}
+		else
+		{
+			throw new ObjectNotFoundException(order, "Order not found");
+		}
+
+		DatabaseUtil.closeSession(session);
+		return order;
+	}
+
 	public OrderMaster getOrderById(Integer orderId)
 	{
 		Session session = DatabaseUtil.getSession();
@@ -106,6 +144,27 @@ public class OrderDAO
 			Criteria criteria = session.createCriteria(OrderMaster.class);
 			criteria.add(Restrictions.eq("user_id", userId));
 
+			orderMasterList = criteria.list();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			DatabaseUtil.closeSession(session);
+			throw e;
+		}
+
+		DatabaseUtil.closeSession(session);
+		return orderMasterList;
+	}
+	
+	public List<OrderMaster> getOrders() throws Exception
+	{
+		List<OrderMaster> orderMasterList = null;
+		Session session = DatabaseUtil.getSession();
+
+		try
+		{
+			Criteria criteria = session.createCriteria(OrderMaster.class);
 			orderMasterList = criteria.list();
 		}
 		catch (Exception e)
