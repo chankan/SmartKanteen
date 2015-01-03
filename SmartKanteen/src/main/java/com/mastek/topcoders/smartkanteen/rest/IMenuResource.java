@@ -14,7 +14,7 @@ public interface IMenuResource {
 	
 	/*Methods related to caterer*/
 	
-		List<Caterer> getCaterers();
+		List<Caterer> getCaterers(String userSession) throws Exception;
 		
 		Caterer getCaterer(Integer catererId);
 		

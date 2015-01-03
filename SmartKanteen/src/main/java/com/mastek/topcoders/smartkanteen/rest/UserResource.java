@@ -127,8 +127,9 @@ public class UserResource implements IUserResource {
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response logoutUser(User user) {
-		return null;
+	public String logoutUser(UserSession user) {
+		userService.logoutUser(user);
+		return "User logout";
 	}
 	
 	public static void main(String[] args) {

@@ -10,6 +10,10 @@ import com.mastek.topcoders.smartkanteen.common.util.UserExistException;
 
 public interface UserService
 {
+	public static final String ROLE_SUPERADMIN="SuperAdmin";
+	public static final String ROLE_ADMIN="Admin";
+	public static final String ROLE_USER="User";
+	
 	User getUserById(int userId);
 	
 	List<User> getUsers() throws Exception;
@@ -28,4 +32,6 @@ public interface UserService
 	User updateUserRole(User user, List<Role> roleList) throws Exception;
 
 	UserSession loginUser(User user) throws Exception;
+
+	void logoutUser(UserSession userSession);
 }

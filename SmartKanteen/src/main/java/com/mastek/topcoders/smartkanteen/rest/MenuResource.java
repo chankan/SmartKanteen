@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -14,7 +15,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.ObjectNotFoundException;
 
@@ -25,26 +25,32 @@ import com.mastek.topcoders.smartkanteen.bean.Tag;
 import com.mastek.topcoders.smartkanteen.rest.exception.GenericException;
 import com.mastek.topcoders.smartkanteen.rest.exception.NotAuthorizedException;
 import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
-import com.sun.org.apache.regexp.internal.recompile;
+import com.mastek.topcoders.smartkanteen.service.UserService;
+import com.mastek.topcoders.smartkanteen.service.UserServiceImpl;
 
 @Path("/service")
 public class MenuResource implements IMenuResource 
 {
 
 	private final MenuServiceImpl menuService;
+	private final UserService userService;
 	private String role = "admin";
 
 	public MenuResource() 
 	{
 		menuService = new MenuServiceImpl();
+		userService = new UserServiceImpl();
 	}
 
 	@Path("/caterer")
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public List<Caterer> getCaterers()
+	public List<Caterer> getCaterers(@HeaderParam("userSession") String userSession) throws Exception
 	{
+		if(!userService.authenicateUser(userSession, UserService.ROLE_USER)){
+			throw new GenericException("Not authorized");
+		}
 		List<Caterer> caterer;
 		caterer = menuService.getCaterers();
 		if(!caterer.isEmpty())

@@ -25,5 +25,5 @@ public interface IUserResource {
 
 	UserSession loginUser(User user) throws Exception;
 
-	Response logoutUser(User user);
+	String logoutUser(UserSession user);
 }

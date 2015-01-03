@@ -9,6 +9,33 @@ var loginRequired = function($location, $q,$rootScope) {
     return deferred.promise;
 }
 
+function getMenuList(role){
+	var mainMenu;
+	var userMenu = [ 
+	                 {name : "Home", url : "#/"	}, 
+	                 {name : "Today's Menu",url : "#/todaymenus"},
+	                 {name : "My Order",url : "#/new"},
+	                 ];
+
+	var adminMenu = [ 
+	                 {name : "Home", url : "#/"},
+	                 {name : "Master Menu",url : "#/admin/menu"},
+	                 {name : "Today's Menu",url : "#/todaymenus"},
+	                 {name : "Order", url : "#/new"	},
+	                 ];
+		
+	var superAdminMenu = [ 
+	                 {name : "Home", url : "#/"},
+	                 {name : "Caterers", url : "#/superadmin/caterer"},
+	                 {name : "Master Menu",url : "#/admin/menu"}
+	                 ];
+	
+	if(role==3){mainMenu=userMenu}
+	else if(role==2){mainMenu=adminMenu}
+	else if(role==1){mainMenu=superAdminMenu}
+	return mainMenu;
+}
+
 angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		[ '$resource', function($resource) {
 			var MenuService = $resource('rest/service/caterer/:catererId/menu',{catererId: '@catererId'});
@@ -21,6 +48,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		            .success(function(data) {
 		              $rootScope.userSession = data;
 		              $rootScope.userSession.login=true;
+		              $rootScope.userSession.mainMenu=getMenuList($rootScope.userSession.role);
+		              $http.defaults.headers.common['userSession']= $rootScope.userSession.sessionId;
 		              $location.path('/');
 		            }).error(function(response) {$rootScope.userSession =null});
 		        },
@@ -32,6 +61,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		        },
 		        logout: function() {
 		        	 $rootScope.userSession =null
+		        	 $http.defaults.headers.common['userSession']= null;
 		          //return $http.get('user/logout').success(function() {
 		        //	  $rootScope.userSession =null
 		          //});
@@ -75,31 +105,6 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		redirectTo : '/'
 	});
 }).controller('MenuCtrl', function($scope, Menus, UserMgr) {
-	
-	
-	var userMenu = [ {
-		name : "Home",
-		url : "#/"
-	}, {
-		name : "Today's Menu",
-		url : "#/todaymenus"
-	}, {
-		name : "My Order",
-		url : "#/new"
-	}, ];
-
-	var adminMenu = [ 
-	                 {name : "Home", url : "#/"},
-	                 {name : "Master Menu",url : "#/admin/menu"},
-	                 {name : "Today's Menu",url : "#/todaymenus"},
-	                 {name : "Order", url : "#/new"	},
-	                 ];
-		
-	var superAdminMenu = [ 
-	                 {name : "Home", url : "#/"},
-	                 {name : "Caterers", url : "#/superadmin/caterer"},
-	                 {name : "Master Menu",url : "#/admin/menu"}	                 ];
-	
 	$scope.loginMenu = [ {
 		name : "Register Now!!",
 		url : "#/register"
@@ -107,9 +112,6 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		name : "Log In",
 		url : "#/login"
 	}, ];
-	
-//$scope.mainMenu=superAdminMenu;
-	$scope.mainMenu=adminMenu;
 	
 	$scope.logout=function(){
 		UserMgr.logout();

@@ -19,7 +19,12 @@ public class UserServiceImpl implements UserService
 {
 	private static HashMap<String, UserSession> userSessionMap = new HashMap<String, UserSession>();
 	private static Random rnd = new Random(System.currentTimeMillis());
-
+	private static final HashMap<String,Integer> roleNameIdMap=new HashMap<String, Integer>(3);
+	static{
+		roleNameIdMap.put("superadmin", 1);
+		roleNameIdMap.put("admin", 2);
+		roleNameIdMap.put("user", 3);
+	}
 	public User getUserById(int userId)
 	{
 		UserDAO dao = new UserDAO();
@@ -33,10 +38,20 @@ public class UserServiceImpl implements UserService
 		return dao.getUsers();
 	}
 
-	public Boolean authenicateUser(String loginId, String password) throws Exception
+	public Boolean authenicateUser(String sessionId, String roleName) throws Exception
 	{
-		UserDAO dao = new UserDAO();
-		return dao.authenticateUser(loginId, password);
+		if(userSessionMap.containsKey(sessionId) && roleName !=null){
+			UserSession userSession=userSessionMap.get(sessionId);
+			roleName=roleName.trim().toLowerCase();
+			if(roleNameIdMap.containsKey(roleName)){
+				int roleId=roleNameIdMap.get(roleName);
+				if(roleId==userSession.getRole()){
+					return true;
+				}
+			}
+			
+		}
+		return false;
 	}
 
 	public User createUser(User user) throws UserExistException, Exception
@@ -275,6 +290,11 @@ public class UserServiceImpl implements UserService
 		return dao.changePassword(loginId, oldPassword, newPassword);
 	}
 
+	public void logoutUser(UserSession userSession) {
+		if (userSessionMap.containsKey(userSession.getSessionId())) {
+			userSessionMap.remove(userSession.getSessionId());
+		}
+	}
 	public User updateUserRole(User user, List<Role> roleList) throws Exception
 	{
 		UserDAO dao = new UserDAO();
@@ -308,7 +328,14 @@ public class UserServiceImpl implements UserService
 				userSession = new UserSession();
 				userSession.setSessionId(sessionId);
 				userSession.setUser(user);
-				userSession.setRole(3);
+				if(dbUser.getUserRoleMappingSet() !=null && dbUser.getUserRoleMappingSet().size()>0){
+					UserRoleMapping rolMap=dbUser.getUserRoleMappingSet().iterator().next();
+					userSession.setRole(rolMap.getRole().getRoleId());
+				}
+				else{
+					userSession.setRole(3);
+				}
+				
 				userSessionMap.put(sessionId, userSession);
 			}
 			else

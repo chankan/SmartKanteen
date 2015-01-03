@@ -16,7 +16,7 @@
 				<a href="#/" class="navbar-brand">SmartKanteen</a>
 			</div>
 			<div ng-show="userSession">
-				<ul class="nav navbar-nav"  ng-repeat="cMenu in mainMenu">
+				<ul class="nav navbar-nav"  ng-repeat="cMenu in userSession.mainMenu">
 					<li class="active"><a href="{{cMenu.url}}">{{cMenu.name}}</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
