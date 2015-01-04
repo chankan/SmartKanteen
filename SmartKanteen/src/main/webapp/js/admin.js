@@ -1,13 +1,48 @@
-var loginRequired = function($location, $q,$rootScope) {  
+var loginRequired = function( $location, $q,$rootScope ) {  
     var deferred = $q.defer();
     if($rootScope.userSession && $rootScope.userSession.login) {
-    	deferred.resolve();
+    		deferred.resolve();
     } else {
     	deferred.reject()
     	$location.path('/login');
     }
     return deferred.promise;
 }
+
+var superAdminRoleRequired = function( $location, $q,$rootScope ) {  
+    var deferred = $q.defer();
+    if($rootScope.userSession && $rootScope.userSession.login) {
+    	if($rootScope.userSession.role==1){
+    		deferred.resolve();
+    	}
+    	else{
+        	deferred.reject()
+        	$location.path('/unauthorized');
+    	}
+    } else {
+    	deferred.reject()
+    	$location.path('/login');
+    }
+    return deferred.promise;
+}
+
+var adminRoleRequired = function( $location, $q,$rootScope ) {  
+	var deferred = $q.defer();
+	if($rootScope.userSession && $rootScope.userSession.login) {
+		if($rootScope.userSession.role==2){
+			deferred.resolve();
+		}
+		else{
+			deferred.reject()
+			$location.path('/unauthorized');
+		}
+	} else {
+		deferred.reject()
+		$location.path('/login');
+	}
+	return deferred.promise;
+}
+
 
 function getMenuList(role){
 	var mainMenu;
@@ -36,11 +71,16 @@ function getMenuList(role){
 	return mainMenu;
 }
 
-angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
-		[ '$resource', function($resource) {
+angular.module('canteen', [ 'ngRoute', 'ngResource' ])
+		.factory('CatererRes',[ '$resource', function($resource) {
+			var service = $resource('rest/service/caterer');
+			return service;
+		} ])
+		.factory('Menus',[ '$resource', function($resource) {
 			var MenuService = $resource('rest/service/caterer/:catererId/menu',{catererId: '@catererId'});
 			return MenuService;
-		} ]).factory('UserMgr', ['$http', '$location', '$rootScope', function($http, $location, $rootScope) {
+		} ])
+		.factory('UserMgr', ['$http', '$location', '$rootScope', function($http, $location, $rootScope) {
 		      return {
 		        login: function(user) {
 		        	user.loginId=user.name;
@@ -77,7 +117,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		resolve: { loginRequired: loginRequired }	
 	}).when('/caterer/:catererId', {
 		controller : 'CatererMenuCtrl',
-		templateUrl : 'view/caterermenulist.html'
+		templateUrl : 'view/caterermenulist.html',
+		resolve: {  loginRequired: loginRequired }	
 	}).when('/menulist', {
 		controller : 'ListCtrl',
 		templateUrl : 'view/menulist.html'
@@ -94,7 +135,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 		resolve: { loginRequired: loginRequired }
 	}).when('/superadmin/caterer', {//SuperAdmin Menu
 		controller : 'AddCatererCtrl',
-		templateUrl : 'view/addCaterer.html'
+		templateUrl : 'view/addCaterer.html',
+		resolve: { loginRequired: superAdminRoleRequired }	
 	}).when('/login', {//login Menu
 		controller : 'LoginCtrl',
 		templateUrl : 'view/login.html'
@@ -263,7 +305,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 	var catererId = 2;
 	$scope.displayMenuList=true;
 	$scope.get=function(){
-		Menus.get({catererId:catererId}, function(response){if(response){$scope.menudata=response.menu;$scope.displayMenuList=true;}}, function(){$scope.menudata=[];$scope.displayMenuList=true;});
+		Menus.get({catererId:catererId}, function(response){if(response){$scope.menudata=response.menu;$scope.displayMenuList=true;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
 	};
 	$scope.update=function(cMenu){
 		$scope.menu=cMenu;
@@ -280,27 +322,19 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ]).factory('Menus',
 //	$scope.displayMenuList=true;
 	
 })
-.controller('AddCatererCtrl', function($scope, $location, $resource, $routeParams) {
-	//var catererId = 3;
+.controller('AddCatererCtrl', function($scope, $location, CatererRes) {
+	$scope.displayList=true;
 	$scope.get=function(){
-		
-		$scope.catererdata = $resource('rest/service/caterer').get();
-//		if($scope.catererdata){
-//			$scope.displayMenuList=true;
-//		}
+		CatererRes.get({},function(response){if(response){$scope.catererdata=response.caterer;$scope.displayList=true;}}, function(){$scope.catererdata=[];$scope.displayList=true;});
 	};
 	$scope.update=function(cCaterer){
 		$scope.caterer=cCaterer;
-		//$scope.displayMenuList=false;
+		$scope.displayList=false;
 	};
 	$scope.save = function() {
-		var result = $resource('rest/service/caterer').save($scope.caterer);
-		if (result) {
-			$scope.get();
-		}
+		CatererRes.save($scope.caterer,function(){$scope.get();},function(response){$scope.errormessage=response.data});
 	};
-//	$scope.get();
-//	$scope.displayMenuList=true;
+	$scope.get();
 	
 })
 .controller('EditCtrl', function($scope, $location, $routeParams, Menus) {
