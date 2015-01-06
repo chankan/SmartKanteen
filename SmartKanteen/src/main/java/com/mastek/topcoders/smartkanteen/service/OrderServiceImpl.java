@@ -8,7 +8,6 @@ import com.mastek.topcoders.smartkanteen.dao.OrderDAO;
 
 public class OrderServiceImpl implements OrderService
 {
-
 	@Override
 	public OrderMaster createOrder(OrderMaster order) throws Exception
 	{
@@ -42,6 +41,13 @@ public class OrderServiceImpl implements OrderService
 	{
 		OrderDAO dao = new OrderDAO();
 		return dao.getOrderByUser(userId);
+	}
+	
+	@Override
+	public List<OrderMaster> getOrdersByUserByCaterer(Integer userId, Integer catererId) throws Exception
+	{
+		OrderDAO dao = new OrderDAO();
+		return dao.getOrdersByUserByCaterer(userId, catererId);
 	}
 	
 	@Override

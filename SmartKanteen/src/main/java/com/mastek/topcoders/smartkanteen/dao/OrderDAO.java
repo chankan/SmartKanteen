@@ -80,10 +80,10 @@ public class OrderDAO
 				tx = session.beginTransaction();
 				order.setRemark(remarks);
 				order.setStatus(OrderStatus.CANCELLED.getOrderStatus());
-				
-				System.out.println("In ORDER DAO" +order);
+
+				System.out.println("In ORDER DAO" + order);
 				session.update(order);
-				
+
 				tx.commit();
 			}
 			catch (Exception e)
@@ -156,7 +156,31 @@ public class OrderDAO
 		DatabaseUtil.closeSession(session);
 		return orderMasterList;
 	}
-	
+
+	public List<OrderMaster> getOrdersByUserByCaterer(Integer userId, Integer catererId) throws Exception
+	{
+		List<OrderMaster> orderMasterList = null;
+		Session session = DatabaseUtil.getSession();
+
+		try
+		{
+			Criteria criteria = session.createCriteria(OrderMaster.class);
+			criteria.add(Restrictions.eq("user_id", userId));
+			criteria.add(Restrictions.eq("caterer_Id", catererId));
+
+			orderMasterList = criteria.list();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			DatabaseUtil.closeSession(session);
+			throw e;
+		}
+
+		DatabaseUtil.closeSession(session);
+		return orderMasterList;
+	}
+
 	public List<OrderMaster> getOrders() throws Exception
 	{
 		List<OrderMaster> orderMasterList = null;

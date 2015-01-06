@@ -22,21 +22,20 @@ import com.mastek.topcoders.smartkanteen.bean.Caterer;
 import com.mastek.topcoders.smartkanteen.bean.DailyMenu;
 import com.mastek.topcoders.smartkanteen.bean.Menu;
 import com.mastek.topcoders.smartkanteen.bean.Tag;
+import com.mastek.topcoders.smartkanteen.common.util.Constants;
 import com.mastek.topcoders.smartkanteen.rest.exception.GenericException;
-import com.mastek.topcoders.smartkanteen.rest.exception.NotAuthorizedException;
+import com.mastek.topcoders.smartkanteen.service.MenuService;
 import com.mastek.topcoders.smartkanteen.service.MenuServiceImpl;
 import com.mastek.topcoders.smartkanteen.service.UserService;
 import com.mastek.topcoders.smartkanteen.service.UserServiceImpl;
 
 @Path("/service")
-public class MenuResource implements IMenuResource 
+public class MenuResource implements IMenuResource
 {
-
-	private final MenuServiceImpl menuService;
+	private final MenuService menuService;
 	private final UserService userService;
-	private String role = "admin";
 
-	public MenuResource() 
+	public MenuResource()
 	{
 		menuService = new MenuServiceImpl();
 		userService = new UserServiceImpl();
@@ -48,45 +47,43 @@ public class MenuResource implements IMenuResource
 	@Override
 	public List<Caterer> getCaterers(@HeaderParam("userSession") String userSession) throws Exception
 	{
-		if(!userService.authenicateUser(userSession, UserService.ROLE_USER)){
-			throw new GenericException("Not authorized");
+		if (!userService.authenicateUser(userSession, UserService.ROLE_USER))
+		{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
 		}
+
 		List<Caterer> caterer;
 		caterer = menuService.getCaterers();
-		if(!caterer.isEmpty())
+
+		if (!caterer.isEmpty())
 		{
 			return caterer;
 		}
 		else
-		{	
-			
-			throw new GenericException("No Data present");
+		{
+			throw new GenericException(Constants.NO_DATA_PRESENT_MSG);
 		}
-
 	}
 
 	@Path("/caterer")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Caterer addCaterer(Caterer caterer)
+	public Caterer addCaterer(@HeaderParam("userSession") String userSession, Caterer caterer) throws Exception
 	{
-		role = "superadmin";
-		if (role.equalsIgnoreCase("superAdmin"))
+		if (!userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
 		{
-			try
-			{	Caterer addedcaterer = menuService.addCaterer(caterer);
-			return addedcaterer;
-			} 
-			catch (Exception e)
-			{
-				throw new GenericException("Something Went Wrong!!");
-			}
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
 		}
-		else
+
+		try
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to Add Caterer!!!");
+			Caterer addedcaterer = menuService.addCaterer(caterer);
+			return addedcaterer;
+		}
+		catch (Exception e)
+		{
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
 		}
 	}
 
@@ -94,88 +91,81 @@ public class MenuResource implements IMenuResource
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Caterer getCaterer(@PathParam("catererId") Integer catererId)
+	public Caterer getCaterer(@HeaderParam("userSession") String userSession, @PathParam("catererId") Integer catererId)
+			throws Exception
 	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN)
+				|| !userService.authenicateUser(userSession, UserService.ROLE_USER))
+		{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
 
-		if (role.equalsIgnoreCase("superAdmin")
-				|| role.equalsIgnoreCase("user"))
+		try
 		{
 			Caterer caterer = menuService.getCaterer(catererId);
 			return caterer;
-		} else
-		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to Access other Caterer's Data!!!");
 		}
-
+		catch (Exception e)
+		{
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
+		}
 	}
 
 	@Path("/caterer/{catererId}/")
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Caterer updateCaterer(@PathParam("catererId") Integer catererId, 
-			Caterer caterer) 
+	public Caterer updateCaterer(@HeaderParam("userSession") String userSession,
+			@PathParam("catererId") Integer catererId, Caterer caterer) throws Exception
 	{
-
-		if (role.equalsIgnoreCase("superAdmin"))
+		if (!userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
 		{
-			try
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
+
+		try
+		{
+			Caterer updatedcaterer = menuService.updateCaterer(caterer);
+			if (!updatedcaterer.equals(null))
 			{
-				Caterer updatedcaterer=menuService.updateCaterer(caterer);
-				if (!updatedcaterer.equals(null))
-				{
-					return updatedcaterer;
-				} 
-				else
-				{
-					throw new GenericException("Nothing to Update!");
-				}
-			} 
-			catch (Exception e)
+				return updatedcaterer;
+			}
+			else
 			{
-				throw new GenericException("Something Went Wrong!!");
+				throw new GenericException(Constants.NOTHING_TO_UPDATE_MSG);
 			}
 		}
-		else
+		catch (Exception e)
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to Add Caterer!!!");
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
 		}
 	}
 
 	@Path("caterer/{catererId}")
 	@DELETE
-	@Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,
-		MediaType.APPLICATION_XML })
+	@Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Override
-	public Response deleteCaterer(@PathParam("catererId") Integer catererId)
+	public Response deleteCaterer(@HeaderParam("userSession") String userSession,
+			@PathParam("catererId") Integer catererId) throws Exception
 	{
-		if (role.equalsIgnoreCase("superAdmin"))
+		if (!userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
 		{
-			try
-			{
-				if (menuService.deleteCaterer(catererId))
-				{
-					return Response
-							.status(200)
-							.entity("Caterer with Id " + catererId
-									+ " is deleted!!").build();
-				} else
-				{
-					return Response.status(404)
-							.entity("No Such Caterer Exist!!").build();
-				}
-			}
-			catch (Exception e)
-			{
-				return Response.status(404).entity("No Such Caterer Exist!!")
-						.build();
-			}
-		} 
-		else 
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
+
+		try
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to Add Caterer!!!");
+			if (menuService.deleteCaterer(catererId))
+			{
+				return Response.status(200).entity("Caterer with Id " + catererId + " is deleted!!").build();
+			}
+			else
+			{
+				return Response.status(404).entity(Constants.CATERER_NOT_FOUND_MSG).build();
+			}
+		}
+		catch (Exception e)
+		{
+			return Response.status(404).entity(Constants.CATERER_NOT_FOUND_MSG).build();
 		}
 	}
 
@@ -183,77 +173,72 @@ public class MenuResource implements IMenuResource
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public List<Menu> getMenuMasterByCaterer(@PathParam("catererId") Integer catererId)
+	public List<Menu> getMenuMasterByCaterer(@HeaderParam("userSession") String userSession,
+			@PathParam("catererId") Integer catererId) throws Exception
 	{
 		List<Menu> menu;
 		menu = menuService.getMenuMasterByCaterer(catererId);
-		if(!menu.isEmpty())
+		if (!menu.isEmpty())
 		{
 			return menu;
-		}	
-		else
-		{	
-			
-			throw new GenericException("No Data present");
 		}
-
+		else
+		{
+			throw new GenericException(Constants.NO_DATA_PRESENT_MSG);
+		}
 	}
 
 	@Path("/caterer/{catererId}/menu/")
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Menu addUpdateItemInMenuMaster(Menu menuMaster,
-			@PathParam("catererId") int catererId) 
+	public Menu addUpdateItemInMenuMaster(@HeaderParam("userSession") String userSession, Menu menuMaster,
+			@PathParam("catererId") Integer catererId) throws Exception
 	{
-		if (!menuMaster.equals(null))
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN))
 		{
-			if (role.equalsIgnoreCase("admin"))
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
+
+		if (menuMaster != null)
+		{
+			if (MenuValidation.validate(menuMaster))
 			{
-				if (MenuValidation.validate(menuMaster)) 
+				if (menuMaster.getItemId() == null)
 				{
-					if (menuMaster.getItemId() == null) 
+					Caterer caterer = new Caterer();
+					caterer.setCatererId(catererId);
+					try
 					{
-						Caterer caterer = new Caterer();
-						caterer.setCatererId(catererId);
-						try 
-						{
-							menuService
-							.addItemInMenuMaster(menuMaster, caterer);
-							return menuMaster;
-						} 
-						catch (Exception e)
-						{
-							throw new GenericException("Something Went Wrong!!");
-						}
+						menuService.addItemInMenuMaster(menuMaster, caterer);
+						return menuMaster;
 					}
-					else 
+					catch (Exception e)
 					{
-						try
-						{
-							menuService.updateItemInMenuMaster(menuMaster);
-							return menuMaster;
-						} 
-						catch (Exception e)
-						{
-							throw new GenericException("Something Went Wrong!!");
-						}
+						throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
 					}
-				} 
+				}
 				else
 				{
-					throw new GenericException(
-							"Menu Constraints Not Followed!!");
+					try
+					{
+						menuService.updateItemInMenuMaster(menuMaster);
+						return menuMaster;
+					}
+					catch (Exception e)
+					{
+						throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
+					}
 				}
 			}
 			else
 			{
-				throw new NotAuthorizedException("You Don't Have Permission!!!");
+				throw new GenericException(Constants.CONSTRAINT_VOILATION_MSG);
 			}
-		} 
+		}
 		else
 		{
-			throw new GenericException("Please Enter Required fields!");
+			throw new GenericException(Constants.ENTER_REQUIRED_FIELDS_MSG);
 		}
 	}
 
@@ -261,35 +246,28 @@ public class MenuResource implements IMenuResource
 	@DELETE
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Override
-	public Response deleteItemFromMenuMaster(@PathParam("itemId") Integer itemId)
+	public Response deleteItemFromMenuMaster(@HeaderParam("userSession") String userSession,
+			@PathParam("itemId") Integer itemId) throws Exception
 	{
-		if (role.equalsIgnoreCase("Admin"))
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN))
 		{
-			try
-			{
-				if (menuService.deleteItemFromMenuMaster(itemId)) 
-				{
-					return Response.status(200)
-							.entity("Menu with Id " + itemId + " is deleted!!")
-							.build();
-				}
-				else 
-				{
-					return Response.status(402).entity("No Such Menu Exist!!")
-							.build();
-				}
-			}
-			catch (Exception e)
-			{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
 
-				return Response.status(402).entity("No Such Menu Exist!!")
-						.build();
-			}
-		} 
-		else
+		try
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to delete item!!!");
+			if (menuService.deleteItemFromMenuMaster(itemId))
+			{
+				return Response.status(200).entity("Menu with Id " + itemId + " is deleted!!").build();
+			}
+			else
+			{
+				return Response.status(402).entity(Constants.MENU_NOT_FOUND_MSG).build();
+			}
+		}
+		catch (Exception e)
+		{
+			return Response.status(402).entity(Constants.MENU_NOT_FOUND_MSG).build();
 		}
 	}
 
@@ -297,21 +275,20 @@ public class MenuResource implements IMenuResource
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public List<Menu> getDailyMenu(@PathParam("date") DateParam menuDate,
-			@PathParam("catererId") Integer catererId) 
+	public List<Menu> getDailyMenu(@HeaderParam("userSession") String userSession,
+			@PathParam("date") DateParam menuDate, @PathParam("catererId") Integer catererId) throws Exception
 	{
 		List<Menu> dailymenu;
 		Date date = menuDate.getDate();
 		dailymenu = menuService.getDailyMenu(date, catererId);
-		if(!dailymenu.isEmpty())
+		if (!dailymenu.isEmpty())
 		{
 			return dailymenu;
 		}
 		else
 		{
-			throw new GenericException("No data Present!");
+			throw new GenericException(Constants.NO_DATA_PRESENT_MSG);
 		}
-		
 	}
 
 	@Path("/caterer/{catererId}/menu/{date}")
@@ -319,59 +296,49 @@ public class MenuResource implements IMenuResource
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public DailyMenu addDailyMenu(List<Menu> menu,
-			@PathParam("catererId") Integer catererId,
-			@PathParam("date") DateParam menuDate) 
+	public DailyMenu addDailyMenu(@HeaderParam("userSession") String userSession, List<Menu> menu,
+			@PathParam("catererId") Integer catererId, @PathParam("date") DateParam menuDate) throws Exception
 	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN))
+		{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
+
 		DailyMenu dailyMenu = null;
 		Date date = menuDate.getDate();
-		if (role.equalsIgnoreCase("Admin")) 
+		try
 		{
-			try 
-			{
-				dailyMenu = menuService.addDailyMenu(catererId, date, menu);
-				return dailyMenu;
-			}
-			catch (Exception e)
-			{
-				throw new GenericException("Something Went Wrong!!");
-			}
+			dailyMenu = menuService.addDailyMenu(catererId, date, menu);
+			return dailyMenu;
 		}
-		else
+		catch (Exception e)
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to add daily Menu!!!");
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
 		}
 	}
 
 	@Path("/caterer/{catererId}/menu/{date}")
 	@PUT
-	@Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML,
-		MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public DailyMenu updateDailyMenu(List<Menu> menuList,
-			@PathParam("catererId") Integer catererId,
-			@PathParam("date") DateParam menuDate) 
+	public DailyMenu updateDailyMenu(@HeaderParam("userSession") String userSession, List<Menu> menuList,
+			@PathParam("catererId") Integer catererId, @PathParam("date") DateParam menuDate) throws Exception
 	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN))
+		{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
+
 		DailyMenu dailyMenu = null;
 		Date date = menuDate.getDate();
-		if (role.equalsIgnoreCase("Admin"))
+		try
 		{
-			try 
-			{
-				dailyMenu = menuService.updateDailyMenu(catererId, date,
-						menuList);
-				return dailyMenu;
-			} 
-			catch (Exception e)
-			{
-				throw new GenericException("Something Went Wrong!!");
-			}
-		} 
-		else
+			dailyMenu = menuService.updateDailyMenu(catererId, date, menuList);
+			return dailyMenu;
+		}
+		catch (Exception e)
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to update daily Menu!!!");
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
 		}
 	}
 
@@ -379,37 +346,29 @@ public class MenuResource implements IMenuResource
 	@DELETE
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response deleteDailyMenu(@PathParam("catererId") Integer catererId,
-			@PathParam("date") DateParam menuDate)
+	public Response deleteDailyMenu(@HeaderParam("userSession") String userSession,
+			@PathParam("catererId") Integer catererId, @PathParam("date") DateParam menuDate) throws Exception
 	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN))
+		{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
 
 		Date date = menuDate.getDate();
-		if (role.equalsIgnoreCase("Admin"))
+		try
 		{
-			try
+			if (menuService.deleteDailyMenu(catererId, date))
 			{
-				if (menuService.deleteDailyMenu(catererId, date))
-				{
-					return Response.status(200)
-							.entity("Daily Menu for 23 december is deleted!!")
-							.build();
-				} 
-				else
-				{
-					return Response.status(200)
-							.entity("No Menu for 20 december").build();
-				}
-
+				return Response.status(200).entity("Daily Menu for 23 december is deleted!!").build();
 			}
-			catch (Exception e) 
+			else
 			{
-				throw new GenericException("Something Went Wrong!!");
+				return Response.status(200).entity("No Menu for 20 december").build();
 			}
 		}
-		else
+		catch (Exception e)
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to delete daily Menu!!!");
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
 		}
 	}
 
@@ -417,9 +376,16 @@ public class MenuResource implements IMenuResource
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public List<Tag> getTags() {
-		List<Tag> taglist=null;
-		taglist=menuService.getTags();
+	public List<Tag> getTags(@HeaderParam("userSession") String userSession) throws Exception
+	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN)
+				|| !userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
+		{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
+
+		List<Tag> taglist = null;
+		taglist = menuService.getTags();
 		return taglist;
 	}
 
@@ -427,24 +393,23 @@ public class MenuResource implements IMenuResource
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Tag addTag(Tag tag) {
-		Tag addedtag = null;
-		if (role.equalsIgnoreCase("Admin"))
+	public Tag addTag(@HeaderParam("userSession") String userSession, Tag tag) throws Exception
+	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN)
+				|| !userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
 		{
-			try
-			{
-				addedtag = menuService.addTag(tag);
-				return addedtag;
-			} 
-			catch (Exception e)
-			{
-				throw new GenericException("Something Went Wrong!!");
-			}
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
 		}
-		else
+
+		Tag addedtag = null;
+		try
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to AddTag!!!");
+			addedtag = menuService.addTag(tag);
+			return addedtag;
+		}
+		catch (Exception e)
+		{
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
 		}
 	}
 
@@ -452,66 +417,61 @@ public class MenuResource implements IMenuResource
 	@PUT
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Tag updateTag(Tag tag) {
-		Tag updatedtag = null;
-		if (role.equalsIgnoreCase("Admin"))
+	public Tag updateTag(@HeaderParam("userSession") String userSession, Tag tag) throws Exception
+	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN)
+				|| !userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
 		{
-			try
-			{
-				updatedtag = menuService.updateTag(tag);
-				return updatedtag;
-			} 
-			catch (Exception e)
-			{
-				throw new GenericException("Something Went Wrong!!");
-			}
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
 		}
-		else
+
+		Tag updatedtag = null;
+		try
 		{
-			throw new NotAuthorizedException(
-					"You Don't Have Permission to AddTag!!!");
-		} 
+			updatedtag = menuService.updateTag(tag);
+			return updatedtag;
+		}
+		catch (Exception e)
+		{
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
+		}
 	}
 
 	@Path("/tag")
 	@DELETE
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response deleteTag(Tag tag) {
-		if (role.equalsIgnoreCase("Admin"))
+	public Response deleteTag(@HeaderParam("userSession") String userSession, Tag tag) throws Exception
+	{
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN)
+				|| !userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
 		{
-			try
-			{
-				if(menuService.deleteTag(tag))
-				{
-					return Response.status(200)
-							.entity("Tag "+tag.getTagName()+" is deleted")
-							.build();
-				}
-				else
-				{
-					throw new GenericException("Something went wrong!!");
-				}
-			}
-			catch(ObjectNotFoundException hib )
-			{
-				throw new GenericException("This Tag is not Present!");
-			}
-			catch (Exception e) {
-				throw new GenericException("Something went wrong!!");
-			}
-
-		}
-		else
-		{
-			throw new NotAuthorizedException("You Don't Have Permission to delete a tag");
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
 		}
 
-
-
+		try
+		{
+			if (menuService.deleteTag(tag))
+			{
+				return Response.status(200).entity("Tag " + tag.getTagName() + " is deleted").build();
+			}
+			else
+			{
+				throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
+			}
+		}
+		catch (ObjectNotFoundException hib)
+		{
+			throw new GenericException(Constants.TAG_NOT_FOUND_MSG);
+		}
+		catch (Exception e)
+		{
+			throw new GenericException(Constants.SOMETHING_WENT_WRONG_MSG);
+		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception
+	{
 		MenuResource resource = new MenuResource();
 
 		Menu menu = new Menu();
@@ -519,8 +479,6 @@ public class MenuResource implements IMenuResource
 		List<Menu> menuList = new ArrayList<Menu>();
 		menuList.add(menu);
 		// Date date =new DateParam("20141218").getDate();
-		resource.addDailyMenu(menuList, 10, new DateParam("20141218"));
+		resource.addDailyMenu("", menuList, 10, new DateParam("20141218"));
 	}
-
-
 }

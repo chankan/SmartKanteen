@@ -17,5 +17,7 @@ public interface OrderService
 
 	List<OrderMaster> getOrdersByUser(Integer userId) throws Exception;
 	
+	List<OrderMaster> getOrdersByUserByCaterer(Integer userId, Integer catererId) throws Exception;
+	
 	List<OrderMaster> getOrders() throws Exception;
 }
