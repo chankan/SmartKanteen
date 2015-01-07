@@ -20,7 +20,7 @@ import com.mastek.topcoders.smartkanteen.service.OrderServiceImpl;
 import com.mastek.topcoders.smartkanteen.service.UserService;
 import com.mastek.topcoders.smartkanteen.service.UserServiceImpl;
 
-@Path("/service")
+@Path("/order")
 public class OrderResource implements IOrderResource
 {
 	private final OrderService orderService;
@@ -32,7 +32,7 @@ public class OrderResource implements IOrderResource
 		userService = new UserServiceImpl();
 	}
 
-	@Path("/order/user/{userId}/caterer/{catererId}")
+	@Path("/user/{userId}/caterer/{catererId}")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -55,7 +55,7 @@ public class OrderResource implements IOrderResource
 		}
 	}
 
-	@Path("/order/caterer/{catererId}/orderId/{orderId}")
+	@Path("/caterer/{catererId}Id/{orderId}")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -78,7 +78,7 @@ public class OrderResource implements IOrderResource
 		}
 	}
 
-	@Path("/order/user/{userId}/orderId/{orderId}")
+	@Path("/user/{userId}Id/{orderId}")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -102,7 +102,7 @@ public class OrderResource implements IOrderResource
 		}
 	}
 
-	@Path("/order/caterer/{catererId}")
+	@Path("/caterer/{catererId}")
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -125,7 +125,7 @@ public class OrderResource implements IOrderResource
 		}
 	}
 
-	@Path("/order/user/{userId}")
+	@Path("/user/{userId}")
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -148,7 +148,7 @@ public class OrderResource implements IOrderResource
 		}
 	}
 
-	@Path("/order/user/{userId}/caterer/{catererId}")
+	@Path("/user/{userId}/caterer/{catererId}")
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
@@ -171,7 +171,7 @@ public class OrderResource implements IOrderResource
 		}
 	}
 
-	@Path("/order")
+	@Path("")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Override
