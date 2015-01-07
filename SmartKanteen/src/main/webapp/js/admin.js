@@ -318,8 +318,30 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 //			$scope.get();
 //		}
 	};
+	
+	$scope.add=function(){
+			//var dMenu={"menu":[{"itemId" : "6"}, {"itemId" : "7"}, {itemId : "8"}]};
+			var selectedMenu=[];
+				angular.forEach($scope.menudata, function(value,key,obj){if(obj.dailyMenu){selectedMenu.push({"itemId":obj.itemId})}});
+					$resource('rest/service/caterer/2/menu/20150110').save({"menu":selectedMenu});
+	};	
 	$scope.get();
 //	$scope.displayMenuList=true;
+	
+//	var catererId = 2;
+//	$scope.adminMenuList=true;
+//	$scope.menudata=[];
+//	$scope.get=function(){
+//		Menus.get({catererId:catererId}, function(response){if(response){$scope.menudata=response.menu;$scope.displayMenuList=true;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
+//	};
+//	$scope.add=function(){
+////		var dMenu={"menu":[{"itemId" : "6"}, {"itemId" : "7"}, {itemId : "8"}]};
+//		var selectedMenu=[];
+//		angular.forEach($scope.menudata, function(value,key,obj){if(obj.dailyMenu){selectedMenu.push({itemId:obj.itemId})}});
+//		$resource('rest/service/caterer/2/menu/20150108').save(selectedMenu);
+//		
+//	};
+//	$scope.get();
 	
 })
 .controller('AddCatererCtrl', function($scope, $location, CatererRes) {
