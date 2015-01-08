@@ -568,7 +568,7 @@ INSERT INTO User(user_id, login_id, password, email_id, account_creation_date) V
 --INSERT SCRIPTS FOR USER_DETAILS--
 -----------------------------------
 INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (1, 'Tarul', 'Yadav', 'F', '1985-08-22', 9619123456, 5678, 11050, 1);
-INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (2, 'Rahul', 'Panchal', 'M', '1985-08-22', 9619123456, 5678, 11050, 2);
+INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (2, 'Kanchan', 'Thombare', 'M', '1985-08-22', 9619123456, 5678, 11050, 2);
 
 
 ---------------------------------

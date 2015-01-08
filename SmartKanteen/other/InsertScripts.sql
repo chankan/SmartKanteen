@@ -77,11 +77,11 @@ INSERT INTO DAILY_MENU_MAPPING(DAILY_MENU_MAPPING_ID, ITEM_ID, DAILY_MENU_ID) VA
 INSERT INTO DAILY_MENU_MAPPING(DAILY_MENU_MAPPING_ID, ITEM_ID, DAILY_MENU_ID) VALUES (7, 8, 2);
 
 
---- Insert Scripts for USER ----
+--- Insert Scripts for USER , Password = 123456----
 --------------------------------------------------------------------
-INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (1, 'tarul', 'tarul', 'tarul.yadav@mastek.com', SYSDATE);
-INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (2, 'rahul', 'rahul', 'rahul.panchal@mastek.com', SYSDATE);
-INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (3, 'vaibhav', 'vaibhav', 'vaibhav.karanjkar@mastek.com', SYSDATE);
+INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (1, 'tarul', 'e10adc3949ba59abbe56e057f20f883e', 'tarul.yadav@mastek.com', SYSDATE);
+INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (2, 'rahul', 'e10adc3949ba59abbe56e057f20f883e', 'rahul.panchal@mastek.com', SYSDATE);
+INSERT INTO USER(USER_ID, LOGIN_ID, PASSWORD, EMAIL_ID, ACCOUNT_CREATION_DATE) VALUES (3, 'vaibhav', 'e10adc3949ba59abbe56e057f20f883e', 'vaibhav.karanjkar@mastek.com', SYSDATE);
 
 
 --- Insert Scripts for USER_DETAILS ----
