@@ -128,7 +128,7 @@ public class MenuResource implements IMenuResource
 			if (catererId == -1 && caterer.getCatererId() == -1)
 			{
 				Caterer addedcaterer = menuService.addCaterer(caterer);
-				
+
 				if (!addedcaterer.equals(null))
 				{
 					return addedcaterer;
@@ -141,7 +141,7 @@ public class MenuResource implements IMenuResource
 			else if (catererId != -1 && caterer.getCatererId() != -1)
 			{
 				Caterer updatedcaterer = menuService.updateCaterer(caterer);
-				
+
 				if (!updatedcaterer.equals(null))
 				{
 					return updatedcaterer;
@@ -355,7 +355,17 @@ public class MenuResource implements IMenuResource
 		Date date = menuDate.getDate();
 		try
 		{
-			dailyMenu = menuService.updateDailyMenu(catererId, date, menuList);
+			List<Menu> dailyMenuList = menuService.getDailyMenu(date, catererId);
+
+			if (dailyMenuList != null && dailyMenuList.size() > 0)
+			{
+				dailyMenu = menuService.updateDailyMenu(catererId, date, menuList);
+			}
+			else
+			{
+				dailyMenu = menuService.addDailyMenu(catererId, date, menuList);
+			}
+
 			return dailyMenu;
 		}
 		catch (Exception e)
