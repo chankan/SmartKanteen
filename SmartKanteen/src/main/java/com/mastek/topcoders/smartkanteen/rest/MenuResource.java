@@ -303,7 +303,8 @@ public class MenuResource implements IMenuResource
 		List<Menu> dailymenu;
 		Date date = menuDate.getDate();
 		dailymenu = menuService.getDailyMenu(date, catererId);
-		if (!dailymenu.isEmpty())
+
+		if (dailymenu != null && !dailymenu.isEmpty())
 		{
 			return dailymenu;
 		}
