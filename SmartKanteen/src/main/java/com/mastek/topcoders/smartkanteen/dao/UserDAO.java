@@ -1,8 +1,5 @@
 package com.mastek.topcoders.smartkanteen.dao;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.mastek.topcoders.smartkanteen.bean.Role;
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserCatererMapping;
 import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
@@ -28,7 +26,7 @@ public class UserDAO
 	{
 		Session session = DatabaseUtil.getSession();
 		User user = null;
-	
+
 		try
 		{
 			user = (User) session.get(User.class, userId);
@@ -37,7 +35,7 @@ public class UserDAO
 		{
 			e.printStackTrace();
 		}
-		
+
 		DatabaseUtil.closeSession(session);
 		return user;
 	}
@@ -46,7 +44,7 @@ public class UserDAO
 	{
 		Session session = DatabaseUtil.getSession();
 		List<User> userList = null;
-		
+
 		try
 		{
 			Criteria criteria = session.createCriteria(User.class);
@@ -58,7 +56,7 @@ public class UserDAO
 			DatabaseUtil.closeSession(session);
 			throw e;
 		}
-		
+
 		DatabaseUtil.closeSession(session);
 		return userList;
 	}
@@ -72,14 +70,14 @@ public class UserDAO
 			Criteria criteria = session.createCriteria(User.class);
 			criteria.add(Restrictions.eq("loginId", loginId));
 			criteria.add(Restrictions.eq("password", PasswordEncryption.encryptPassword(password)));
-			
+
 			/*Query query = session.createQuery("FROM User WHERE loginId= :loginId AND password= :pwd");
 			query.setParameter("loginId", loginId);
 			query.setParameter("pwd", passwordEncryption(password));
 			List<User> userList = query.list();*/
 
 			List<User> userList = criteria.list();
-			
+
 			if (userList != null && userList.size() == 1)
 			{
 				result = true;
@@ -91,11 +89,11 @@ public class UserDAO
 			DatabaseUtil.closeSession(session);
 			throw e;
 		}
-		
+
 		DatabaseUtil.closeSession(session);
 		return result;
 	}
-	
+
 	public User createUser(User user, UserDetails userDetails, UserRoleMapping userRoleMapping)
 			throws UserExistException, Exception
 	{
@@ -132,7 +130,7 @@ public class UserDAO
 		DatabaseUtil.closeSession(session);
 		return user;
 	}
-	
+
 	public User updateUser(User user, UserDetails userDetails) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
@@ -160,7 +158,7 @@ public class UserDAO
 		DatabaseUtil.closeSession(session);
 		return user;
 	}
-	
+
 	public Boolean deleteUser(User user) throws Exception
 	{
 		boolean result = false;
@@ -198,7 +196,7 @@ public class UserDAO
 		DatabaseUtil.closeSession(session);
 		return result;
 	}
-	
+
 	public User changePassword(String loginId, String oldPassword, String newPassword)
 			throws IncorrectPasswordException, Exception
 	{
@@ -233,7 +231,7 @@ public class UserDAO
 		DatabaseUtil.closeSession(session);
 		return user;
 	}
-	
+
 	public User updateUserRole(User user, List<Role> roleList) throws Exception
 	{
 		Session session = DatabaseUtil.getSession();
@@ -273,7 +271,7 @@ public class UserDAO
 		}
 		return null;
 	}
-	
+
 	public Boolean deleteUserRole(User user)
 	{
 		boolean result;
@@ -311,7 +309,7 @@ public class UserDAO
 		DatabaseUtil.closeSession(session);
 		return result;
 	}
-	
+
 	public User getUserByLoginId(String loginId)
 	{
 		User user = null;
@@ -320,13 +318,13 @@ public class UserDAO
 		{
 			Criteria criteria = session.createCriteria(User.class);
 			criteria.add(Restrictions.eq("loginId", loginId));
-			
+
 			/*Query query = session.createQuery("FROM User WHERE loginId= :login_id");
 			query.setParameter("login_id", loginId);
 			List<User> userList = query.list();*/
 
 			List<User> userList = criteria.list();
-			
+
 			if (userList != null && userList.size() == 1)
 			{
 				user = userList.get(0);
@@ -358,5 +356,22 @@ public class UserDAO
 		}
 
 		return roleList;
+	}
+
+	public UserCatererMapping getUserCatererMapping(Integer userId) throws Exception
+	{
+		Session session = DatabaseUtil.getSession();
+		Criteria criteria = session.createCriteria(UserCatererMapping.class);
+		criteria.add(Restrictions.eq("userId", userId));
+
+		List<UserCatererMapping> userCatererMappingList = criteria.list();
+		DatabaseUtil.closeSession(session);
+
+		if (userCatererMappingList != null && userCatererMappingList.size() == 1)
+		{
+			return userCatererMappingList.get(0);
+		}
+
+		return null;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.mastek.topcoders.smartkanteen.bean.Role;
 import com.mastek.topcoders.smartkanteen.bean.User;
+import com.mastek.topcoders.smartkanteen.bean.UserCatererMapping;
 import com.mastek.topcoders.smartkanteen.bean.UserDetails;
 import com.mastek.topcoders.smartkanteen.bean.UserRoleMapping;
 import com.mastek.topcoders.smartkanteen.bean.UserSession;
@@ -19,12 +20,14 @@ public class UserServiceImpl implements UserService
 {
 	private static HashMap<String, UserSession> userSessionMap = new HashMap<String, UserSession>();
 	private static Random rnd = new Random(System.currentTimeMillis());
-	private static final HashMap<String,Integer> roleNameIdMap=new HashMap<String, Integer>(3);
-	static{
-		roleNameIdMap.put("superadmin", 1);
-		roleNameIdMap.put("admin", 2);
-		roleNameIdMap.put("user", 3);
+	private static final HashMap<String, Integer> roleNameIdMap = new HashMap<String, Integer>(3);
+	static
+	{
+		roleNameIdMap.put(UserService.ROLE_SUPERADMIN, 1);
+		roleNameIdMap.put(UserService.ROLE_ADMIN, 2);
+		roleNameIdMap.put(UserService.ROLE_USER, 3);
 	}
+
 	public User getUserById(int userId)
 	{
 		UserDAO dao = new UserDAO();
@@ -40,16 +43,19 @@ public class UserServiceImpl implements UserService
 
 	public Boolean authenicateUser(String sessionId, String roleName) throws Exception
 	{
-		if(userSessionMap.containsKey(sessionId) && roleName !=null){
-			UserSession userSession=userSessionMap.get(sessionId);
-			roleName=roleName.trim().toLowerCase();
-			if(roleNameIdMap.containsKey(roleName)){
-				int roleId=roleNameIdMap.get(roleName);
-				if(roleId==userSession.getRole()){
+		if (userSessionMap.containsKey(sessionId) && roleName != null)
+		{
+			UserSession userSession = userSessionMap.get(sessionId);
+			roleName = roleName.trim().toLowerCase();
+			if (roleNameIdMap.containsKey(roleName))
+			{
+				int roleId = roleNameIdMap.get(roleName);
+				if (roleId == userSession.getRole())
+				{
 					return true;
 				}
 			}
-			
+
 		}
 		return false;
 	}
@@ -290,11 +296,14 @@ public class UserServiceImpl implements UserService
 		return dao.changePassword(loginId, oldPassword, newPassword);
 	}
 
-	public void logoutUser(UserSession userSession) {
-		if (userSessionMap.containsKey(userSession.getSessionId())) {
+	public void logoutUser(UserSession userSession)
+	{
+		if (userSessionMap.containsKey(userSession.getSessionId()))
+		{
 			userSessionMap.remove(userSession.getSessionId());
 		}
 	}
+
 	public User updateUserRole(User user, List<Role> roleList) throws Exception
 	{
 		UserDAO dao = new UserDAO();
@@ -306,15 +315,16 @@ public class UserServiceImpl implements UserService
 		UserDAO dao = new UserDAO();
 		User dbUser = dao.getUserByLoginId(user.getLoginId());
 		UserSession userSession;
+		System.out.println(dbUser);
 		if (dbUser != null)
 		{
 			String currPass = PasswordEncryption.encryptPassword(user.getPassword());
-			
+
 			if (currPass != null && dbUser.getPassword().equals(currPass)
 					&& dbUser.getLoginId().equals(user.getLoginId()))
 			{
 				String sessionId = getRandomSession();
-				
+
 				if (userSessionMap.containsKey(sessionId))
 				{
 					sessionId = getRandomSession();
@@ -323,19 +333,32 @@ public class UserServiceImpl implements UserService
 						throw new Exception("Session Id generation failed.");
 					}
 				}
-				
+
 				user.setUserId(dbUser.getUserId());
 				userSession = new UserSession();
 				userSession.setSessionId(sessionId);
 				userSession.setUser(user);
-				if(dbUser.getUserRoleMappingSet() !=null && dbUser.getUserRoleMappingSet().size()>0){
-					UserRoleMapping rolMap=dbUser.getUserRoleMappingSet().iterator().next();
+				
+				if (dbUser.getUserRoleMappingSet() != null && dbUser.getUserRoleMappingSet().size() > 0)
+				{
+					UserRoleMapping rolMap = dbUser.getUserRoleMappingSet().iterator().next();
 					userSession.setRole(rolMap.getRole().getRoleId());
 				}
-				else{
+				else
+				{
 					userSession.setRole(3);
 				}
 				
+				//Fetch User Caterer Mapping
+				if(userSession.getRole() == roleNameIdMap.get(UserService.ROLE_ADMIN))
+				{
+					System.out.println(true);
+					UserCatererMapping userCatererMapping = dao.getUserCatererMapping(userSession.getUser().getUserId());
+					System.out.println(userCatererMapping);
+					userSession.setUserCatererMapping(userCatererMapping);
+				}
+				
+				System.out.println("Logged in user ============>> "+userSession);
 				userSessionMap.put(sessionId, userSession);
 			}
 			else

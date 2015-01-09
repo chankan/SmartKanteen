@@ -47,7 +47,8 @@ public class MenuResource implements IMenuResource
 	@Override
 	public List<Caterer> getCaterers(@HeaderParam("userSession") String userSession) throws Exception
 	{
-		if (!userService.authenicateUser(userSession, UserService.ROLE_USER))
+		if (!userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN)
+				|| !userService.authenicateUser(userSession, UserService.ROLE_USER))
 		{
 			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
 		}
@@ -124,14 +125,35 @@ public class MenuResource implements IMenuResource
 
 		try
 		{
-			Caterer updatedcaterer = menuService.updateCaterer(caterer);
-			if (!updatedcaterer.equals(null))
+			if (catererId == -1 && caterer.getCatererId() == -1)
 			{
-				return updatedcaterer;
+				Caterer addedcaterer = menuService.addCaterer(caterer);
+				
+				if (!addedcaterer.equals(null))
+				{
+					return addedcaterer;
+				}
+				else
+				{
+					throw new GenericException(Constants.INTERNAL_ERROR_MSG);
+				}
+			}
+			else if (catererId != -1 && caterer.getCatererId() != -1)
+			{
+				Caterer updatedcaterer = menuService.updateCaterer(caterer);
+				
+				if (!updatedcaterer.equals(null))
+				{
+					return updatedcaterer;
+				}
+				else
+				{
+					throw new GenericException(Constants.NOTHING_TO_UPDATE_MSG);
+				}
 			}
 			else
 			{
-				throw new GenericException(Constants.NOTHING_TO_UPDATE_MSG);
+				throw new GenericException(Constants.INTERNAL_ERROR_MSG);
 			}
 		}
 		catch (Exception e)

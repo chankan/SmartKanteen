@@ -8,7 +8,7 @@ package com.mastek.topcoders.smartkanteen.bean;
 public class MenuTagsMapping implements java.io.Serializable
 {
 	private Integer menuTagsMappingId;
-	private Menu menu;
+	private Integer itemId;
 	private String tags;
 
 	public Integer getMenuTagsMappingId()
@@ -21,14 +21,14 @@ public class MenuTagsMapping implements java.io.Serializable
 		this.menuTagsMappingId = menuTagsMappingId;
 	}
 
-	public Menu getMenu()
+	public Integer getItemId()
 	{
-		return menu;
+		return itemId;
 	}
 
-	public void setMenu(Menu menu)
+	public void setItemId(Integer itemId)
 	{
-		this.menu = menu;
+		this.itemId = itemId;
 	}
 
 	public String getTags()
@@ -44,6 +44,7 @@ public class MenuTagsMapping implements java.io.Serializable
 	@Override
 	public String toString()
 	{
-		return "MenuTagsMapping [menuTagsMappingId=" + menuTagsMappingId + ", tags=" + tags + "]";
+		return "MenuTagsMapping [menuTagsMappingId=" + menuTagsMappingId + ", itemId=" + itemId + ", tags=" + tags
+				+ "]";
 	}
 }

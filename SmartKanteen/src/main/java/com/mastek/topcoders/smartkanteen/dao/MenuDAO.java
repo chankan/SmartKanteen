@@ -82,7 +82,7 @@ public class MenuDAO
 
 			if (menuTagsMapping != null)
 			{
-				menuTagsMapping.setMenu(menuMaster);
+				menuTagsMapping.setItemId(menuMaster.getItemId());
 				session.save(menuMaster.getMenuTagsMapping());
 			}
 
@@ -190,7 +190,7 @@ public class MenuDAO
 				}
 				else if (menuTagsMappingList == null || menuTagsMappingList.size() == 0)
 				{
-					menuTagsMapping.setMenu(menuMaster);
+					menuTagsMapping.setItemId(menuMaster.getItemId());
 					session.saveOrUpdate(menuTagsMapping);
 				}
 			}
@@ -221,7 +221,7 @@ public class MenuDAO
 			menuMaster.setItemId(itemId);
 
 			MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-			menuTagsMapping.setMenu(menuMaster);
+			menuTagsMapping.setItemId(itemId);
 
 			Criteria criteria = session.createCriteria(MenuTagsMapping.class);
 			criteria.add(Restrictions.eq("menu", menuMaster));
@@ -964,7 +964,7 @@ public class MenuDAO
 
 	public MenuTagsMapping addMenuTags(MenuTagsMapping menuTagsMapping) throws HibernateException, Exception
 	{
-		Menu menu = menuTagsMapping.getMenu();
+		Integer itemId = menuTagsMapping.getItemId();
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = session.beginTransaction();
 
@@ -972,7 +972,7 @@ public class MenuDAO
 
 		try
 		{
-			Menu menuDB = (Menu) session.load(Menu.class, menu.getItemId());
+			Menu menuDB = (Menu) session.load(Menu.class, itemId);
 
 			if (menuDB != null)
 			{

@@ -54,7 +54,7 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-		menuTagsMapping.setMenu(menu);
+		menuTagsMapping.setItemId(menu.getItemId());
 		menuTagsMapping.setTags(tags);
 
 		menu.setMenuTagsMapping(menuTagsMapping);
@@ -76,7 +76,7 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-		menuTagsMapping.setMenu(menuMaster);
+		menuTagsMapping.setItemId(menuMaster.getItemId());
 		menuTagsMapping.setTags(tags);
 
 		menuMaster.setMenuTagsMapping(menuTagsMapping);
@@ -97,7 +97,7 @@ public class MenuServiceImpl implements MenuService
 		MenuDAO dao = new MenuDAO();
 
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-		menuTagsMapping.setMenu(menuMaster);
+		menuTagsMapping.setItemId(menuMaster.getItemId());
 		menuTagsMapping.setTags(tags);
 
 		menuMaster.setMenuTagsMapping(menuTagsMapping);
@@ -162,7 +162,7 @@ public class MenuServiceImpl implements MenuService
 	public MenuTagsMapping addMenuTags(Menu menu, String tags) throws HibernateException, Exception
 	{
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-		menuTagsMapping.setMenu(menu);
+		menuTagsMapping.setItemId(menu.getItemId());
 		menuTagsMapping.setTags(tags);
 
 		MenuDAO dao = new MenuDAO();
@@ -173,7 +173,7 @@ public class MenuServiceImpl implements MenuService
 	public MenuTagsMapping updateMenuTags(Menu menu, String tags) throws HibernateException, Exception
 	{
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-		menuTagsMapping.setMenu(menu);
+		menuTagsMapping.setItemId(menu.getItemId());
 		menuTagsMapping.setTags(tags);
 
 		MenuDAO dao = new MenuDAO();
@@ -184,7 +184,7 @@ public class MenuServiceImpl implements MenuService
 	public Boolean deleteMenuTags(Menu menu) throws HibernateException, Exception
 	{
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
-		menuTagsMapping.setMenu(menu);
+		menuTagsMapping.setItemId(menu.getItemId());
 
 		MenuDAO dao = new MenuDAO();
 		return dao.deleteMenuTags(menuTagsMapping);

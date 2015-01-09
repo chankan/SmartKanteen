@@ -20,5 +20,8 @@
 		<property name="prepTime" type="java.lang.Integer">
 			<column name="PREP_TIME" precision="3" scale="0" />
 		</property>
+		<many-to-one name="menuTagsMapping" column="ITEM_ID"
+			class="com.mastek.topcoders.smartkanteen.bean.MenuTagsMapping"
+			insert="false" update="false" lazy="false" />
 	</class>
 </hibernate-mapping>

@@ -268,3 +268,13 @@ CREATE TABLE  USER_ROLE_MAPPING
 	CONSTRAINT	role_fk		FOREIGN KEY	(role_id)	REFERENCES	role(role_id),
 	CONSTRAINT	user_role_fk		FOREIGN KEY	(user_id)	REFERENCES	user(user_id)
 );
+
+----------------------------------------------------------------------------
+CREATE TABLE  USER_CATERER_MAPPING
+(
+	user_caterer_mapping_id	NUMBER	auto_increment	CONSTRAINT	user_role_mapping_pk	PRIMARY KEY,
+	user_id					NUMBER,
+	caterer_id				NUMBER,
+	CONSTRAINT	user_caterer_mapping_user_fk		FOREIGN KEY	(user_id)		REFERENCES	USER(user_id),
+	CONSTRAINT	user_caterer_mapping_caterer_fk		FOREIGN KEY	(caterer_id)	REFERENCES	CATERER(caterer_id)
+);
