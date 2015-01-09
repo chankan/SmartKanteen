@@ -5,6 +5,10 @@
 				<div class="panel-body">
 					<h4>Menu Master</h4>
 					<a href="" ng-click="displayMenuList=!displayMenuList;menu=null;">{{(displayMenuList)?"Add new Menu":"View Menu List"}}</a>
+					<div  ng-show="dailyMenuMap">
+					<input type="text" ng-model="dailyMenuDate" />
+					 <input type="button" value="Add Daily Menu" ng-Click="add()" />
+					 </div>
 				</div>
 			</div>
 		</div>
@@ -20,21 +24,19 @@
 						<th style="width: 20%">Description</th>
 						<th style="width: 20%">Price</th>
 						<th style="width: 10%">Preparation time</th>
-						<th style="width: 5%">Breakfast</th>
-						<th style="width: 5%">Lunch</th>
+						<th style="width: 5%"  ng-show="dailyMenuMap">DailyMenu</th>
 						
 <!-- 						<th style="width: 10%">Remove</th> -->
 					</tr>
 				</thead>
 				<tbody ng-show="menudata.length > 0">
-					<tr ng-repeat="menu in menudata |orderBy:'itemName'">
+					<tr ng-repeat="menu in menudata |orderBy:['!dailyMenu','itemName']">
 						<td><a href="" ng-click="update(menu)">{{menu.itemId}}</a></td>
 						<td>{{menu.itemName}}</td>
 						<td>{{menu.description}}</td>
 						<td>{{menu.price}}</td>
 						<td>{{menu.prepTime}}</td>
-						<td><input type="checkbox" ></td>
-						<td><input type="checkbox" ></td>
+						<td  ng-show="dailyMenuMap"><input type="checkbox" ng-model="menu.dailyMenu"/></td>
 <!-- 						<td><a href="" ng-click="remove(menu.itemID)">remove</a></td> -->
 					</tr>
 				</tbody>
