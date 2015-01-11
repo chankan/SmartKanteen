@@ -86,7 +86,7 @@ public class Test
 		menuMaster.setPrice(new BigDecimal(40));
 		MenuTagsMapping menuTagsMapping = new MenuTagsMapping();
 		menuTagsMapping.setMenuTagsMappingId(1);
-		menuTagsMapping.setMenu(menuMaster);
+//		menuTagsMapping.setMenu(menuMaster);
 		menuTagsMapping.setTags("3,4,13");
 		menuMaster.setMenuTagsMapping(menuTagsMapping);
 		service.addItemInMenuMaster(menuMaster);
