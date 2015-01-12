@@ -84,7 +84,7 @@ angular.module('canteen', [ 'ngRoute', 'ngResource','mgcrea.ngStrap'])
 			var TagService = $resource('rest/service/tag');
 			return TagService;
 		} ])
-		.factory('UserMgr', ['$http', '$rootScope', function($http, $rootScope) {
+		.factory('UserMgr', ['$http', '$rootScope', '$location', function($http, $rootScope, $location) {
 		      return {
 		        login: function(user,successCallback,failuerCallBack) {
 		        	user.loginId=user.name;
@@ -201,8 +201,8 @@ angular.module('canteen', [ 'ngRoute', 'ngResource','mgcrea.ngStrap'])
 }).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams, TagService) {
 	var catererId = $routeParams.catererId;
 	var dailyMenuDate = $routeParams.dailyMenuDate;
-	$scope.selectedIcons=[];
-	$scope.tages = [{"value":"Gear","label":" Gear"},{"value":"Globe","label":" Globe"},{"value":"Heart","label":"Heart"},{"value":"Camera","label":" Camera"}];
+	//$scope.selectedIcons=[];
+	//$scope.tages = [{"value":"Gear","label":" Gear"},{"value":"Globe","label":" Globe"},{"value":"Heart","label":"Heart"},{"value":"Camera","label":" Camera"}];
 			
 //	$scope.menudata = $resource('rest/service/caterer/'+catererId+'/menu').get();
 	$scope.get=function(){
