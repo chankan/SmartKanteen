@@ -16,12 +16,12 @@ var superAdminRoleRequired = function( $location, $q,$rootScope ) {
     		deferred.resolve();
     	}
     	else{
+    		$location.path('/unauthorized');
         	deferred.reject()
-        	$location.path('/unauthorized');
     	}
     } else {
-    	deferred.reject()
     	$location.path('/login');
+    	deferred.reject()
     }
     return deferred.promise;
 }
@@ -55,7 +55,7 @@ function getMenuList(role){
 	var adminMenu = [ 
 	                 {name : "Home", url : "#/"},
 	                 {name : "Master Menu",url : "#/admin/menu"},
-	                 {name : "Today's Menu",url : "#/todaymenus"},
+	                 {name : "Today's Menu",url : "#/admin/dailymenu"},
 	                 {name : "Order", url : "#/new"	},
 	                 ];
 		
@@ -71,18 +71,22 @@ function getMenuList(role){
 	return mainMenu;
 }
 
-angular.module('canteen', [ 'ngRoute', 'ngResource' ])
+angular.module('canteen', [ 'ngRoute', 'ngResource','mgcrea.ngStrap'])
 		.factory('CatererRes',[ '$resource', function($resource) {
 			var service = $resource('rest/service/caterer');
 			return service;
 		} ])
 		.factory('Menus',[ '$resource', function($resource) {
-			var MenuService = $resource('rest/service/caterer/:catererId/menu',{catererId: '@catererId'});
+			var MenuService = $resource('rest/service/caterer/:catererId/menu/:menuDate',{catererId: '@catererId', menuDate:'@menuDate'});
 			return MenuService;
 		} ])
-		.factory('UserMgr', ['$http', '$location', '$rootScope', function($http, $location, $rootScope) {
+		.factory('TagService',[ '$resource', function($resource) {
+			var TagService = $resource('rest/service/tag');
+			return TagService;
+		} ])
+		.factory('UserMgr', ['$http', '$rootScope', function($http, $rootScope) {
 		      return {
-		        login: function(user) {
+		        login: function(user,successCallback,failuerCallBack) {
 		        	user.loginId=user.name;
 		          return $http.post('rest/user/login', user)
 		            .success(function(data) {
@@ -90,8 +94,12 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 		              $rootScope.userSession.login=true;
 		              $rootScope.userSession.mainMenu=getMenuList($rootScope.userSession.role);
 		              $http.defaults.headers.common['userSession']= $rootScope.userSession.sessionId;
-		              $location.path('/');
-		            }).error(function(response) {$rootScope.userSession =null});
+		              successCallback();
+		            }).error(function(response) {
+		            	$rootScope.userSession =null
+		            	$http.defaults.headers.common['userSession']=null;
+		            	failuerCallBack();
+		            });
 		        },
 		        signup: function(user) {
 		          return $http.post('rest/user/signup', user)
@@ -119,6 +127,10 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 		controller : 'CatererMenuCtrl',
 		templateUrl : 'view/caterermenulist.html',
 		resolve: {  loginRequired: loginRequired }	
+	}).when('/caterer/:catererId/menu/:dailyMenuDate', {
+		controller : 'CatererMenuCtrl',
+		templateUrl : 'view/caterermenulist.html',
+		resolve: {  loginRequired: loginRequired }	
 	}).when('/menulist', {
 		controller : 'ListCtrl',
 		templateUrl : 'view/menulist.html'
@@ -133,6 +145,10 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 		controller : 'AddMenuCtrl',
 		templateUrl : 'view/catererMenuUpdate.html',
 		resolve: { loginRequired: loginRequired }
+	}).when('/admin/dailymenu', {//Admin Menu
+		controller : 'AddDailyMenuCtrl',
+		templateUrl : 'view/catererMenuUpdate.html',
+		resolve: { loginRequired: loginRequired }
 	}).when('/superadmin/caterer', {//SuperAdmin Menu
 		controller : 'AddCatererCtrl',
 		templateUrl : 'view/addCaterer.html',
@@ -140,6 +156,9 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 	}).when('/login', {//login Menu
 		controller : 'LoginCtrl',
 		templateUrl : 'view/login.html'
+	}).when('/unauthorized', {//login Menu
+		controller : 'StaticCtrl',
+		templateUrl : 'view/unauthorized.html'
 	}).when('/register', {//login Menu
 		controller : 'RegistrationCtrl',
 		templateUrl : 'view/adduser.html'
@@ -158,11 +177,16 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 	$scope.logout=function(){
 		UserMgr.logout();
 	};
-}).controller('LoginCtrl', function($scope,$rootScope,UserMgr) {
+}).controller('LoginCtrl', function($scope,$rootScope, $alert, $location,UserMgr) {
 	$scope.user={name:"",password:""};
+	var myAlert = {title: 'Login Failed:', content: '', placement: 'top', type: 'danger', show: false,container:'#alerts-container'};
+
 	$scope.login=function(){
-		UserMgr.login($scope.user);
+		UserMgr.login($scope.user,function(){ $location.path('/');},function(){myAlert.content='Username or Password is not proper.';myAlert.show=true;$alert(myAlert)});
+		$scope.user={name:"",password:""};
 	};
+}).controller('StaticCtrl', function($scope) {
+
 }).controller('RegistrationCtrl', function($scope,$rootScope,UserMgr) {
 	$scope.user={userId:-1, loginId:"aa", password:"aa", emailId:"aa@aa.com"};
 	$scope.errorMessage="";
@@ -170,11 +194,22 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 
 }).controller('HomeCtrl', function($scope, Menus, $resource, $http) {
 
-}).controller('CatererListCtrl', function($scope, Menus, $resource, $http) {
+}).controller('CatererListCtrl', function($scope, Menus, $resource, $http, $filter) {
+	var cDate = new Date();
+	$scope.todaysDate= $filter('date')(cDate, "yyyyMMdd");
 	$scope.catererData = $resource('rest/service/caterer/').get();
-}).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams) {
+}).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams, TagService) {
 	var catererId = $routeParams.catererId;
-	$scope.menudata = $resource('rest/service/caterer/'+catererId+'/menu').get();
+	var dailyMenuDate = $routeParams.dailyMenuDate;
+	$scope.selectedIcons=[];
+	$scope.tages = [{"value":"Gear","label":" Gear"},{"value":"Globe","label":" Globe"},{"value":"Heart","label":"Heart"},{"value":"Camera","label":" Camera"}];
+			
+//	$scope.menudata = $resource('rest/service/caterer/'+catererId+'/menu').get();
+	$scope.get=function(){
+		Menus.get({catererId:catererId,menuDate:dailyMenuDate}, function(response){if(response){$scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
+		$scope.tages=TagService.get();
+	};
+	$scope.get();
 }).controller('ListCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/1/menu').get();
 	// $scope.menus =[{itemID: 1, itemName: "Thali", description: "Jain
@@ -318,12 +353,21 @@ angular.module('canteen', [ 'ngRoute', 'ngResource' ])
 //			$scope.get();
 //		}
 	};
-	
+	$scope.get();
+})
+.controller('AddDailyMenuCtrl', function($scope, $location, $resource, $routeParams, Menus) {
+	var catererId = 2;
+	$scope.displayMenuList=true;
+	$scope.dailyMenuMap=true;
+	$scope.get=function(){
+		Menus.get({catererId:catererId}, function(response){if(response){$scope.menudata=response.menu;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
+	};
 	$scope.add=function(){
-			//var dMenu={"menu":[{"itemId" : "6"}, {"itemId" : "7"}, {itemId : "8"}]};
-			var selectedMenu=[];
-				angular.forEach($scope.menudata, function(value,key,obj){if(obj.dailyMenu){selectedMenu.push({"itemId":obj.itemId})}});
-					$resource('rest/service/caterer/2/menu/20150110').save({"menu":selectedMenu});
+		var selectedMenu=[];
+		angular.forEach($scope.menudata, function(value,key){if(value.dailyMenu){this.push({"itemId":value.itemId});} },selectedMenu);
+//		$resource('rest/service/caterer/2/menu/20150112').save({"menu":selectedMenu});
+		Menus.save({catererId:catererId,menuDate:$scope.dailyMenuDate}, {"menu":selectedMenu}, function(response){if(response){$scope.menudata=response.menuList;}}, function(){$scope.menudata=[];});
+
 	};	
 	$scope.get();
 //	$scope.displayMenuList=true;

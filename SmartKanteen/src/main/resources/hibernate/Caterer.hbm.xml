@@ -14,13 +14,13 @@
 		<property name="catererDetails" type="java.lang.String">
 			<column name="CATERER_DETAILS" length="200" />
 		</property>
-		<set name="catererMenuMapping" cascade="all" inverse="true" lazy="false">
-			<key column="CATERER_ID" />
-			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping" />
-		</set>
-		<set name="menuList" cascade="all" inverse="true" lazy="false">
-			<key column="CATERER_ID" />
-			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.DailyMenu" />
-		</set>
+<!-- 		<set name="catererMenuMapping" cascade="all" inverse="true" lazy="false"> -->
+<!-- 			<key column="CATERER_ID" /> -->
+<!-- 			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.CatererMenuMapping" /> -->
+<!-- 		</set> -->
+<!-- 		<set name="menuList" cascade="all" inverse="true" lazy="false"> -->
+<!-- 			<key column="CATERER_ID" /> -->
+<!-- 			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.DailyMenu" /> -->
+<!-- 		</set> -->
 	</class>
 </hibernate-mapping>

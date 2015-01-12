@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService
 		if (userSessionMap.containsKey(sessionId) && roleName != null)
 		{
 			UserSession userSession = userSessionMap.get(sessionId);
-			roleName = roleName.trim().toLowerCase();
+			roleName = roleName.trim();
 			if (roleNameIdMap.containsKey(roleName))
 			{
 				int roleId = roleNameIdMap.get(roleName);
