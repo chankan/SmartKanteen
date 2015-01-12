@@ -7,23 +7,16 @@
                     <form role="form">
                         <fieldset>
                             <div class="form-group col-lg-3 col-xs-12">
+                                <label>By Date:&nbsp;</label><input class="form-control" ng-model="dailyMenuDate" data-date-type="string" data-date-format="MMM dd, yyyy" data-model-date-format="yyyyMMdd" name="date" bs-datepicker type="text" ng-change="get()">
+                            </div>
+                            <div class="form-group col-lg-3 col-xs-12">
                                 <label>By keyword:&nbsp;</label><input class="form-control"  ng-model="search"  placeholder="Enter word to filter" autofocus="" type="text">
                             </div>
                             <div class="form-group col-lg-3 col-xs-12">
-								<label>By Category:&nbsp;</label>
-								<button type="button" class="btn btn-default" ng-model="selectedIcons" data-html="false" data-container="body" data-multiple="1" data-animation="am-flip-x" ng-options="tag1.tagId as tag1.tagName for tag1 in tages.tag" data-iconCheckmark="glyphicon glyphicon-ok" bs-select >
-									Action <span class="caret"></span>
+								<label>By Category:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+								<button type="button" class="btn btn-default" data-all-none-buttons="true" data-allText="All" data-noneText="None" ng-model="selectedTags.tag" data-html="1" max-length="7" data-multiple="1" data-animation="am-flip-x" ng-options="tag1.tagId as tag1.tagName for tag1 in tags.tag" data-iconCheckmark="glyphicon glyphicon-ok" bs-select >
+									Category <span class="caret"></span>
 								</button>
-								
-<!-- 									<div class="panel panel-primary"> -->
-<!-- 										<div class="panel-body"> -->
-<!-- 										<button class="btn btn-primary btn-sm" type="button">dddd</button> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!--                                     <input  name="remember" value="Remember Me" type="checkbox">Remember Me -->
-<!--                                     <input  name="remember" value="Remember Me" type="checkbox">Remember Me -->
-<!--                                     <input  name="remember" value="Remember Me" type="checkbox">Remember Me -->
-                                
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
                             
@@ -33,8 +26,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div ng-repeat="menu in menudata| filter:search | orderBy:'menu.itemName'">
+	<div class="row" ng-show="menudata.length>0">
+		<div ng-repeat="menu in menudata| filter:search | filter:selectedTags:strict | orderBy:'menu.itemName'">
 			<div class="col-lg-3 col-md-3">
 				<div class="panel panel-primary" >
 					<div class="panel-heading" data-animation="am-fade-and-scale" data-type="info" data-title="{{(menu.description)?menu.description:'No detail present'}}" bs-tooltip>
@@ -63,5 +56,8 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="row" ng-hide="menudata.length>0">
+		<h3>No Menu present for Selected date</h3>
 	</div>
 </div>

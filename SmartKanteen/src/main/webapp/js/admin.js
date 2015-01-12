@@ -71,7 +71,7 @@ function getMenuList(role){
 	return mainMenu;
 }
 
-angular.module('canteen', [ 'ngRoute', 'ngResource','mgcrea.ngStrap'])
+angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStrap'])
 		.factory('CatererRes',[ '$resource', function($resource) {
 			var service = $resource('rest/service/caterer');
 			return service;
@@ -128,6 +128,10 @@ angular.module('canteen', [ 'ngRoute', 'ngResource','mgcrea.ngStrap'])
 		templateUrl : 'view/caterermenulist.html',
 		resolve: {  loginRequired: loginRequired }	
 	}).when('/caterer/:catererId/menu/:dailyMenuDate', {
+		controller : 'CatererMenuCtrl',
+		templateUrl : 'view/caterermenulist.html',
+		resolve: {  loginRequired: loginRequired }	
+	}).when('/caterer/:catererId/menu', {
 		controller : 'CatererMenuCtrl',
 		templateUrl : 'view/caterermenulist.html',
 		resolve: {  loginRequired: loginRequired }	
@@ -198,16 +202,17 @@ angular.module('canteen', [ 'ngRoute', 'ngResource','mgcrea.ngStrap'])
 	var cDate = new Date();
 	$scope.todaysDate= $filter('date')(cDate, "yyyyMMdd");
 	$scope.catererData = $resource('rest/service/caterer/').get();
-}).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams, TagService) {
+}).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams, TagService, $select, $filter) {
 	var catererId = $routeParams.catererId;
-	var dailyMenuDate = $routeParams.dailyMenuDate;
-	//$scope.selectedIcons=[];
-	//$scope.tages = [{"value":"Gear","label":" Gear"},{"value":"Globe","label":" Globe"},{"value":"Heart","label":"Heart"},{"value":"Camera","label":" Camera"}];
-			
-//	$scope.menudata = $resource('rest/service/caterer/'+catererId+'/menu').get();
+	if($routeParams.dailyMenuDate){
+		$scope.dailyMenuDate = $routeParams.dailyMenuDate;
+	}
+	else{
+		$scope.dailyMenuDate =$filter('date')(new Date(), "yyyyMMdd");
+	}
 	$scope.get=function(){
-		Menus.get({catererId:catererId,menuDate:dailyMenuDate}, function(response){if(response){$scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
-		$scope.tages=TagService.get();
+		Menus.get({catererId:catererId,menuDate:$scope.dailyMenuDate}, function(response){if(response){ angular.forEach(response.menu, function(value,key){if(value.menuTagsMapping.tags){value.tag=value.menuTagsMapping.tags.split(',');} }); $scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
+		$scope.tags=TagService.get();
 	};
 	$scope.get();
 }).controller('ListCtrl', function($scope, Menus, $resource, $http) {
