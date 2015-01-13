@@ -207,6 +207,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.catererData = $resource('rest/service/caterer/').get();
 }).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams, TagService, $select, $filter) {
 	var catererId = $routeParams.catererId;
+	$scope.menuStyle=1;
 	if($routeParams.dailyMenuDate){
 		$scope.dailyMenuDate = $routeParams.dailyMenuDate;
 	}

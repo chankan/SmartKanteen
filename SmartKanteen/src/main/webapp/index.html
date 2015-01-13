@@ -25,8 +25,8 @@
 					<li class="active"><a href="{{cMenu.url}}">{{cMenu.name}}</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="">{{userSession.user.loginId}}</a></li>
-					<li class="active"><a href="#" ng-Click="logout()">Log Out</a></li>
+					<li class="active"><a href=""><i class="glyphicon glyphicon-user"></i>&nbsp;{{userSession.user.loginId}}</a></li>
+					<li class="active"><a href="#" ng-Click="logout()"><i class="glyphicon glyphicon-off"></i>&nbsp;Log Out</a></li>
 				</ul>
 			</div>
 			<div ng-hide="userSession">

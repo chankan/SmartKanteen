@@ -12,11 +12,18 @@
                             <div class="form-group col-lg-3 col-xs-12">
                                 <label>By keyword:&nbsp;</label><input class="form-control"  ng-model="search"  placeholder="Enter word to filter" autofocus="" type="text">
                             </div>
-                            <div class="form-group col-lg-3 col-xs-12">
+                            <div class="form-group col-lg-4 col-xs-12">
 								<label>By Category:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 								<button type="button" class="btn btn-default" data-all-none-buttons="true" data-allText="All" data-noneText="None" ng-model="selectedTags.tag" data-html="1" max-length="7" data-multiple="1" data-animation="am-flip-x" ng-options="tag1.tagId as tag1.tagName for tag1 in tags.tag" data-iconCheckmark="glyphicon glyphicon-ok" bs-select >
 									Category <span class="caret"></span>
 								</button>
+                            </div>
+                            <div class="form-group col-lg-2 col-xs-12">
+								<label>View As:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+								<div class="btn-group btn-group-lg" role="group" >
+									<button type="button" class="btn btn-default" ng-class="(menuStyle==1)?'active':''" ng-click="menuStyle=1;"><i class="glyphicon glyphicon-th"></i></button>
+									<button type="button" class="btn btn-default" ng-class="(menuStyle==2)?'active':''" ng-click="menuStyle=2;"><i class="glyphicon glyphicon-th-list"></i></button>
+								</div>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
                             
@@ -27,32 +34,67 @@
 		</div>
 	</div>
 	<div class="row" ng-show="menudata.length>0">
-		<div ng-repeat="menu in menudata| filter:search | filter:selectedTags:strict | orderBy:'menu.itemName'">
-			<div class="col-lg-3 col-md-3">
-				<div class="panel panel-primary" >
-					<div class="panel-heading" data-animation="am-fade-and-scale" data-type="info" data-title="{{(menu.description)?menu.description:'No detail present'}}" bs-tooltip>
-						<div class="row">
+				<div ng-show="menuStyle==2" class="panel panel-primary">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+						<div class="panel-body">
 							<div class="col-xs-3">
-								<i class="larg glyphicon glyphicon-glass"></i>
-								<div>&nbsp;</div>
-<!-- 								<div>Rs.{{menu.price}}</div> -->
+								<i class="glyphicon glyphicon-glass"></i>&nbsp;&nbsp;<b>Menu Name</b>
 							</div>
-							<div class="col-xs-9 text-right">
-								<div class=""><b>{{menu.itemName}} </b></div>
-<!-- 								<div>Prep Time: {{menu.prepTime}}</div> -->
+							<div class="col-xs-6">
+								Menu Description
+							</div>
+							<div class="col-xs-3">
+								Menu Price
 							</div>
 						</div>
 					</div>
-					<a href="#">
-						<div class="panel-footer">
-							<span class="pull-left">Rs.:{{menu.price}}</span> 
-							<span class="pull-right">
-								<i class="glyphicon glyphicon-shopping-cart"></i>
-<!-- 								<input type="checkbox" ng-model="menu.dailyMenu" ng-show="adminMenuList"/> -->
-							</span>
-							<div class="clearfix"></div>
+				</div>
+			</div>
+		<div ng-repeat="menu in menudata| filter:search | filter:selectedTags:strict | orderBy:'menu.itemName'">
+			<div ng-show="menuStyle==1">
+				<div class="col-lg-3 col-md-3">
+					<div class="panel panel-primary" >
+						<div class="panel-heading" data-animation="am-fade-and-scale" data-type="info" data-title="{{(menu.description)?menu.description:'No detail present'}}" bs-tooltip>
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="larg glyphicon glyphicon-glass"></i>
+									<div>&nbsp;</div>
+	<!-- 								<div>Rs.{{menu.price}}</div> -->
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class=""><b>{{menu.itemName}} </b></div>
+	<!-- 								<div>Prep Time: {{menu.prepTime}}</div> -->
+								</div>
+							</div>
 						</div>
-					</a>
+						<a href="#">
+							<div class="panel-footer">
+								<span class="pull-left">Rs.:{{menu.price}}</span> 
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-shopping-cart"></i>
+								</span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div ng-show="menuStyle==2" class="panel panel-primary">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+						<div class="panel-body">
+							<div class="col-xs-3">
+								<i class="glyphicon glyphicon-glass"></i>&nbsp;&nbsp;<b>{{menu.itemName}} </b>
+							</div>
+							<div class="col-xs-6">
+								{{menu.description}} 
+							</div>
+							<div class="col-xs-3">
+								<b>Rs:&nbsp;&nbsp;{{menu.price}} </b>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
