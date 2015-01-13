@@ -46,11 +46,15 @@ var adminRoleRequired = function( $location, $q,$rootScope ) {
 
 function getMenuList(role){
 	var mainMenu;
-	var userMenu = [ 
+	var normalMenu = [ 
 	                 {name : "Home", url : "#/"	}, 
 	                 {name : "Today's Menu",url : "#/todaymenus"},
-	                 {name : "My Order",url : "#/new"},
 	                 ];
+	var userMenu = [ 
+	                {name : "Home", url : "#/"	}, 
+	                {name : "Today's Menu",url : "#/todaymenus"},
+	                {name : "My Order",url : "#/new"},
+	                ];
 
 	var adminMenu = [ 
 	                 {name : "Home", url : "#/"},
@@ -68,6 +72,7 @@ function getMenuList(role){
 	if(role==3){mainMenu=userMenu}
 	else if(role==2){mainMenu=adminMenu}
 	else if(role==1){mainMenu=superAdminMenu}
+	else{mainMenu=normalMenu}
 	return mainMenu;
 }
 
@@ -95,7 +100,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		              if( $rootScope.userSession.userCatererMapping && $rootScope.userSession.userCatererMapping.caterer){
 		            	  $rootScope.userSession.catererId=$rootScope.userSession.userCatererMapping.caterer.catererId;
 		              }
-		              $rootScope.userSession.mainMenu=getMenuList($rootScope.userSession.role);
+		              $rootScope.mainMenu=getMenuList($rootScope.userSession.role);
 		              $http.defaults.headers.common['userSession']= $rootScope.userSession.sessionId;
 		              successCallback();
 		            }).error(function(response) {
@@ -125,7 +130,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	}).when('/todaymenus', {
 		controller : 'CatererListCtrl',
 		templateUrl : 'view/catererlist.html',
-		resolve: { loginRequired: loginRequired }	
+//		resolve: { loginRequired: loginRequired }	
 	}).when('/caterer/:catererId', {
 		controller : 'CatererMenuCtrl',
 		templateUrl : 'view/caterermenulist.html',
@@ -133,7 +138,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	}).when('/caterer/:catererId/menu/:dailyMenuDate', {
 		controller : 'CatererMenuCtrl',
 		templateUrl : 'view/caterermenulist.html',
-		resolve: {  loginRequired: loginRequired }	
+//		resolve: {  loginRequired: loginRequired }	
 	}).when('/caterer/:catererId/menu', {
 		controller : 'CatererMenuCtrl',
 		templateUrl : 'view/caterermenulist.html',
@@ -184,6 +189,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.logout=function(){
 		UserMgr.logout();
 	};
+	$scope.mainMenu=getMenuList();
 }).controller('LoginCtrl', function($scope,$rootScope, $alert, $location,UserMgr) {
 	$scope.user={name:"",password:""};
 	var myAlert = {title: 'Login Failed:', content: '', placement: 'top', type: 'danger', show: false,container:'#alerts-container'};

@@ -47,8 +47,8 @@ public class MenuResource implements IMenuResource
 	@Override
 	public List<Caterer> getCaterers(@HeaderParam("userSession") String userSession) throws Exception
 	{
-		if (userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN) || userService.authenicateUser(userSession, UserService.ROLE_USER))
-		{
+//		if (userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN) || userService.authenicateUser(userSession, UserService.ROLE_USER))
+//		{
 			List<Caterer> caterer;
 			caterer = menuService.getCaterers();
 			
@@ -60,10 +60,10 @@ public class MenuResource implements IMenuResource
 			{
 				throw new GenericException(Constants.NO_DATA_PRESENT_MSG);
 			}
-		}
-		else{
-			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
-		}
+//		}
+//		else{
+//			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+//		}
 	}
 
 	@Path("/caterer")
