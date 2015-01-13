@@ -92,6 +92,9 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		            .success(function(data) {
 		              $rootScope.userSession = data;
 		              $rootScope.userSession.login=true;
+		              if( $rootScope.userSession.userCatererMapping && $rootScope.userSession.userCatererMapping.caterer){
+		            	  $rootScope.userSession.catererId=$rootScope.userSession.userCatererMapping.caterer.catererId;
+		              }
 		              $rootScope.userSession.mainMenu=getMenuList($rootScope.userSession.role);
 		              $http.defaults.headers.common['userSession']= $rootScope.userSession.sessionId;
 		              successCallback();
@@ -341,24 +344,27 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		}
 	};
 		})
-.controller('AddMenuCtrl', function($scope, $location, $resource, $routeParams, Menus) {
-	var catererId = 2;
-	$scope.displayMenuList=true;
-	$scope.get=function(){
-		Menus.get({catererId:catererId}, function(response){if(response){$scope.menudata=response.menu;$scope.displayMenuList=true;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
-	};
-	$scope.update=function(cMenu){
-		$scope.menu=cMenu;
-		$scope.displayMenuList=false;
-	};
-	$scope.save = function() {
-		Menus.save({catererId:catererId},$scope.menu,function(){$scope.get();},function(response){$scope.errormessage=response.data});
-//		var result = $resource('rest/service/caterer/'+catererId+'/menu/').save($scope.menu);
-//		if (result) {
-//			$scope.get();
-//		}
-	};
-	$scope.get();
+.controller('AddMenuCtrl', function($scope, $location, $resource, $routeParams, $rootScope, Menus) {
+//	var catererId = 2;
+	if($rootScope.userSession  && $rootScope.userSession.catererId){
+		$scope.catererId=$rootScope.userSession.catererId
+		$scope.displayMenuList=true;
+		$scope.get=function(){
+			Menus.get({catererId:$scope.catererId}, function(response){if(response){$scope.menudata=response.menu;$scope.displayMenuList=true;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
+		};
+		$scope.update=function(cMenu){
+			$scope.menu=cMenu;
+			$scope.displayMenuList=false;
+		};
+		$scope.save = function() {
+			Menus.save({catererId:catererId},$scope.menu,function(){$scope.get();},function(response){$scope.errormessage=response.data});
+		};
+		$scope.get();
+	}
+	else{
+		$scope.catererId=-1;
+	}
+	
 })
 .controller('AddDailyMenuCtrl', function($scope, $location, $resource, $routeParams, Menus) {
 	var catererId = 2;
