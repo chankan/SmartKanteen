@@ -3,149 +3,150 @@
 ----------------------------------------
 ------------ Page 1 ---------------
 ------------ Beverages ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (1, 'Tea/Filter Coffee', '', 6.50, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (2, 'Nescoffee(Classic)', '', 7.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (3, 'Lemon Juice / Kokam Juice', '', 6.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (4, 'Butter Milk', '', 9.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (5, 'Sweet Lassi', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (6, 'WaterMelon Juice', '', 20.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (7, 'Sweet Lime Juice', '', 20.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (8, 'Pineapple Juice', '', 20.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (9, 'Chikku Milkshake', '', 20.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (10, 'Banana Milkshake', '', 20.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (11, 'Butter Scotch Milkshake', '', 20.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (12, 'Strawberry Milkshake', '', 20.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (13, 'Seasonal Fresh Fruit Milkshake', '', 25.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (14, 'Cold Coffee', '', 20.00, 200);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (1, 'Tea/Filter Coffee', '100ml', 6.50, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (2, 'Nescoffee(Classic)', '100ml', 7.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (3, 'Lemon Juice / Kokam Juice', '200ml', 6.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (4, 'Butter Milk', '200ml', 9.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (5, 'Sweet Lassi', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (6, 'WaterMelon Juice', '200ml', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (7, 'Sweet Lime Juice', '200ml', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (8, 'Pineapple Juice', '200ml', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (9, 'Chikku Milkshake', '200ml', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (10, 'Banana Milkshake', '200ml', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (11, 'Butter Scotch Milkshake', '200ml', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (12, 'Strawberry Milkshake', '200ml', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (13, 'Seasonal Fresh Fruit Milkshake', '200ml', 25.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (14, 'Cold Coffee', '200ml', 20.00, null);
+
 
 ------------ Page 1 -----------
 ------------ From the Pantry ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (15, 'Bread Butter', '', 12.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (16, 'Toast Butter', '', 12.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (17, 'Bun Maska', '', 15.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (18, 'Veg Sandwich', '', 14.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (19, 'Veg Sandwich Grill', '', 20.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (20, 'Cheese Sandwich', '', 15.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (21, 'Cheese Sandwich Grill', '', 23.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (22, 'Veg Cheese Sandwich', '', 20.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (23, 'Veg Cheese Sandwich Grill', '', 28.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (24, 'Omlet Sandwich', '', 13.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (25, 'Omlet Cheese Sandwich', '', 20.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (26, 'Double Omlet Grill Sandwich', '', 25.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (27, 'Omlet Cheese Grill Sandwich', '', 32.00, 2);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (28, 'Spinach Sandwich', '', 15.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (29, 'Coleslaw Sandwich', '', 15.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (30, 'Veg Burger', '', 16.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (31, 'Veg Roll', '', 16.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (32, 'Maggi Noodles(with vegetables)', '', 20.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (33, 'Cornflakes with Milk', '', 20.00, 1);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (15, 'Bread Butter', '2 slice', 12.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (16, 'Toast Butter', '2 slice', 12.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (17, 'Bun Maska', null, 15.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (18, 'Veg Sandwich', '2 slice', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (19, 'Veg Sandwich Grill', '2 slice', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (20, 'Cheese Sandwich', '2 slice', 15.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (21, 'Cheese Sandwich Grill', '2 slice', 23.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (22, 'Veg Cheese Sandwich', '2 slice', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (23, 'Veg Cheese Sandwich Grill', '2 slice', 28.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (24, 'Omlet Sandwich', '2 slice', 13.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (25, 'Omlet Cheese Sandwich', '2 slice', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (26, 'Double Omlet Grill Sandwich', '2 slice', 25.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (27, 'Omlet Cheese Grill Sandwich', '2 slice', 32.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (28, 'Spinach Sandwich', '2 slice', 15.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (29, 'Coleslaw Sandwich', '2 slice', 15.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (30, 'Veg Burger', null, 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (31, 'Veg Roll', null, 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (32, 'Maggi Noodles(with vegetables)', '1 plate', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (33, 'Cornflakes with Milk', '1 portion', 20.00, null);
 
 
 ------------ Page 3 -----------
 ------------ Soups ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (34, 'Tomato Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (35, 'Veg Clear Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (36, 'Spinach Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (37, 'Lentil Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (38, 'Veg Manchow Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (39, 'Veg Hot and Sour Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (40, 'Sweet Corn Veg Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (41, 'American Corn Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (42, 'Cream of Veg Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (43, 'Lemon and Coriander Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (44, 'French Onion Soup', '', 16.00, 200);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (45, 'Cream of Mushroom Soup', '', 16.00, 200);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (34, 'Tomato Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (35, 'Veg Clear Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (36, 'Spinach Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (37, 'Lentil Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (38, 'Veg Manchow Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (39, 'Veg Hot and Sour Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (40, 'Sweet Corn Veg Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (41, 'American Corn Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (42, 'Cream of Veg Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (43, 'Lemon and Coriander Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (44, 'French Onion Soup', '200ml', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (45, 'Cream of Mushroom Soup', '200ml', 16.00, null);
 
 ------------ Page 3 -----------
 ------------ Salads ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (46, 'Green Salad', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (47, 'Macroni Salad', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (48, 'Tossed Salad', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (49, 'Sprouts Salad', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (50, 'Ameriacn Corn Salad', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (51, 'Mini Fruit Plate', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (52, 'Fruit and Sprouts Plate', '', 17.00, 100);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (46, 'Green Salad', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (47, 'Macroni Salad', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (48, 'Tossed Salad', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (49, 'Sprouts Salad', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (50, 'Ameriacn Corn Salad', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (51, 'Mini Fruit Plate', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (52, 'Fruit and Sprouts Plate', '100gm', 17.00, null);
 
 ------------ Page 3 -----------
 ------------ Desserts ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (53, 'Gulab Jamun', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (54, 'Paysam/Sabudana Kheer', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (55, 'Semiya Kheer/ Rice Kheer', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (56, 'Sheera', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (57, 'Doodhi Halwa', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (58, 'Gajar Halwa', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (59, 'Fruit salad', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (60, 'Bread Custard', '', 14.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (61, 'Custard with Jelly', '', 14.00, 1);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (53, 'Gulab Jamun', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (54, 'Paysam/Sabudana Kheer', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (55, 'Semiya Kheer/ Rice Kheer', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (56, 'Sheera', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (57, 'Doodhi Halwa', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (58, 'Gajar Halwa', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (59, 'Fruit salad', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (60, 'Bread Custard', '1 plate', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (61, 'Custard with Jelly', '1 plate', 14.00, null);
 
 ------------ Page 4 ------------
 ------------ Snacks ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (62, 'Potato Vada (2 pcs)', '', 14.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (63, 'Upma', '', 14.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (64, 'Poha', '', 14.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (65, 'Punjabi Samosa (2 pcs)', '', 16.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (66, 'Pattice (2 pcs)', '', 16.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (67, 'Veg Kachori (2 pcs)', '', 16.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (68, 'Sabudana Vada (2 pcs)', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (69, 'Bhajia', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (70, 'Medu Vada', '', 18.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (71, 'Steam Idli', '', 14.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (72, 'Misal', '', 16.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (73, 'Vada Pav (2)', '', 16.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (74, 'Veg Cutlet', '', 16.00, 130);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (75, 'Veg Burger', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (76, 'Veg Roll', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (77, 'Bread Pakoda', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (78, 'Dahi Vada', '', 19.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (79, 'Macroni', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (80, 'Hakka Noodles', '', 19.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (81, 'Ragda Pattice', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (82, 'Bhel Puri', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (83, 'Sev Puri', '', 16.00, 100);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (84, 'Dahi Batata Puri', '', 18.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (85, 'Samosa Chat', '', 12.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (86, 'Sada Dosa', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (87, 'Uttappa', '', 16.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (88, 'Onion Uttappa/Tomato Uttapa', '', 18.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (89, 'Masala Uttappa', '', 18.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (90, 'Cheese Uttappa', '', 20.00, 140);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (62, 'Potato Vada (2 pcs)', '120gm', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (63, 'Upma', '100gm', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (64, 'Poha', '100gm', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (65, 'Punjabi Samosa (2 pcs)', '150gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (66, 'Pattice (2 pcs)', '150gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (67, 'Veg Kachori (2 pcs)', '150gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (68, 'Sabudana Vada (2 pcs)', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (69, 'Bhajia', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (70, 'Medu Vada', '120gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (71, 'Steam Idli', '150gm', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (72, 'Misal', '150gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (73, 'Vada Pav (2)', '150gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (74, 'Veg Cutlet', '130gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (75, 'Veg Burger', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (76, 'Veg Roll', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (77, 'Bread Pakoda', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (78, 'Dahi Vada', '150gm', 19.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (79, 'Macroni', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (80, 'Hakka Noodles', '120gm', 19.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (81, 'Ragda Pattice', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (82, 'Bhel Puri', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (83, 'Sev Puri', '100gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (84, 'Dahi Batata Puri', '120gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (85, 'Samosa Chat', '120gm', 12.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (86, 'Sada Dosa', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (87, 'Uttappa', '120gm', 16.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (88, 'Onion Uttappa/Tomato Uttapa', '150gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (89, 'Masala Uttappa', '150gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (90, 'Cheese Uttappa', '140gm', 20.00, null);
 
 ------------ Page 5 ------------
 ------------ Snacks ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (91, 'Masala Dosa', '', 18.00, 180);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (92, 'Tomato Omlette', '', 18.00, 180);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (93, 'Mysore Sada Dosa', '', 18.00, 130);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (94, 'Mysore Masala Dosa', '', 18.00, 190);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (95, 'Chinese Sada Dosa', '', 18.00, 130);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (96, 'Chinese Masala Dosa', '', 18.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (97, 'Corn And Capsicum Masala Dosa', '', 20.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (98, 'Paneer Chilly Masala Dosa', '', 20.00, 150);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (99, 'Egg Burgee Dosa', '', 20.00, 150);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (91, 'Masala Dosa', '180gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (92, 'Tomato Omlette', '180gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (93, 'Mysore Sada Dosa', '130gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (94, 'Mysore Masala Dosa', '190gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (95, 'Chinese Sada Dosa', '130gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (96, 'Chinese Masala Dosa', '150gm', 18.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (97, 'Corn And Capsicum Masala Dosa', '150gm', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (98, 'Paneer Chilly Masala Dosa', '150gm', 20.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (99, 'Egg Burgee Dosa', '150gm', 20.00, null);
 
 ------------ Page 5 ------------
 ------------ Egg Varieties ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (100, 'Boiled Egg', '', 7.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (101, 'Single Omlet', '', 10.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (102, 'Double Omlet', '', 19.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (103, 'Single Burgee', '', 12.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (104, 'Double Burgee', '', 21.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (100, 'Boiled Egg', null, 7.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (101, 'Single Omlet', null, 10.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (102, 'Double Omlet', null, 19.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (103, 'Single Burgee', null, 12.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (104, 'Double Burgee', null, 21.00, null);
 
 ------------ Page 2 ------------
 ------------ A'La Carte Items ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (105, 'Bhaji', '', 14.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (106, 'Special Bhaji(Lunch Bhaji)', '', 19.00, 120);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (107, 'Dal Rice Papad', '', 23.00, 225);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (108, 'Rasam Rice Papad', '', 25.00, 225);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (109, 'Sambar Rice Papad', '', 25.00, 225);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (110, 'Curd Rice Papad', '', 25.00, 225);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (111, 'Chapati', '', 2.50, 30);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (112, 'Roasted Papad', '', 2.50, 1);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (105, 'Bhaji', '120gm', 14.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (106, 'Special Bhaji(Lunch Bhaji)', '120gm', 19.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (107, 'Dal Rice Papad', '225gm', 23.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (108, 'Rasam Rice Papad', '225gm', 25.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (109, 'Sambar Rice Papad', '225gm', 25.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (110, 'Curd Rice Papad', '225gm', 25.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (111, 'Chapati', '30gm', 2.50, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (112, 'Roasted Papad', '1 pc', 2.50, null);
 
 ------------ Page 3 ------------
 ------------ A'La Carte Items ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (113, 'Curd', '', 8.00, 80);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (114, 'Raita', '', 8.00, null);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (115, 'Dal', '', 10.00, 100);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (113, 'Curd', '80gm', 8.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (114, 'Raita', null, 8.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (115, 'Dal', '100gm', 10.00, null);
 
 ------------ Page 2 ------------
 ------------ Lunch ------------
@@ -157,16 +158,16 @@ INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUE
 
 ------------ Page 4 ------------
 ------------ Others ------------
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) values (121, 'Mineral Water', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (122, 'Cold Drinks', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (123, 'Frooti', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (124, 'Tetrapack Juices', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (125, 'Tetrapack Shakes', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (126, 'Lays Wafers', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (127, 'Biscuits', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (128, 'Chocolates', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (129, 'Banana Chips', 'MRP', 00.00, 1);
-INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (130, 'Potato Wafer', 'MRP', 00.00, 1);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) values (121, 'Mineral Water', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (122, 'Cold Drinks', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (123, 'Frooti', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (124, 'Tetrapack Juices', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (125, 'Tetrapack Shakes', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (126, 'Lays Wafers', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (127, 'Biscuits', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (128, 'Chocolates', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (129, 'Banana Chips', 'MRP', 00.00, null);
+INSERT INTO Menu_Master(item_id, item_name, description, price, prep_time) VALUES (130, 'Potato Wafer', 'MRP', 00.00, null);
 
 
 ---------------------------------
