@@ -3,11 +3,20 @@
 		<div class="col-lg-12">
 			<div class="panel panel-primary">
 				<div class="panel-body">
-					<h4>Menu Master</h4>
-					<a href="" ng-click="displayMenuList=!displayMenuList;menu=null;">{{(displayMenuList)?"Add new Menu":"View Menu List"}}</a>
+					<div ng-hide="dailyMenuMap">
+						<h4>Menu Master</h4>
+						<a href="" ng-click="displayMenuList=!displayMenuList;menu=null;">{{(displayMenuList)?"Add new Menu":"View Menu List"}}</a>
+					</div>
 					<div  ng-show="dailyMenuMap">
-					<input type="text" ng-model="dailyMenuDate" />
-					 <input type="button" value="Add Daily Menu" ng-Click="add()" />
+						<h4>Daily Menu Mapper</h4>
+						<form class="form-inline">
+						<div class="form-group">
+							<label >Daily Menu date :</label>
+							<input class="form-control" ng-model="dailyMenuDate" placeholder="Select Date" data-date-type="string" data-date-format="MMM dd, yyyy" data-model-date-format="yyyyMMdd" name="date" bs-datepicker type="text" >
+						 	<input type="button" class="btn btn-default" value="Add Daily Menu" ng-Click="add()" />
+						
+						</div>
+						</form>
 					 </div>
 				</div>
 			</div>
@@ -15,15 +24,16 @@
 	</div>
 
 	<div class="row" ng-show="displayMenuList">
+		<div id="alerts-container"></div>
 		<div class="col-md-12 ">
-			<table class="table table-bordered" style="width: 100%">
+			<table class="table table-bordered table-striped" style="width: 100%">
 				<thead class="">
 					<tr>
 						<th style="width: 20%">Id</th>
 						<th style="width: 20%">Name</th>
 						<th style="width: 20%">Description</th>
 						<th style="width: 20%">Price</th>
-						<th style="width: 10%">Preparation time</th>
+<!-- 						<th style="width: 10%">Preparation time</th> -->
 						<th style="width: 5%"  ng-show="dailyMenuMap">DailyMenu</th>
 						
 <!-- 						<th style="width: 10%">Remove</th> -->
@@ -35,7 +45,7 @@
 						<td>{{menu.itemName}}</td>
 						<td>{{menu.description}}</td>
 						<td>{{menu.price}}</td>
-						<td>{{menu.prepTime}}</td>
+<!-- 						<td>{{menu.prepTime}}</td> -->
 						<td  ng-show="dailyMenuMap"><input type="checkbox" ng-model="menu.dailyMenu"/></td>
 <!-- 						<td><a href="" ng-click="remove(menu.itemID)">remove</a></td> -->
 					</tr>

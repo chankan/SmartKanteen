@@ -357,8 +357,15 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 			$scope.displayMenuList=false;
 		};
 		$scope.save = function() {
-			Menus.save({catererId:catererId},$scope.menu,function(){$scope.get();},function(response){$scope.errormessage=response.data});
+			if($scope.menu.itemId >0){
+				$scope.menu.menuTagsMapping=null;
+			}
+			Menus.save({catererId:$scope.catererId},$scope.menu,function(){$scope.get();},function(response){$scope.errormessage=response.data});
 		};
+		$scope.cancel=function(){
+			$scope.menu=null;
+			$scope.displayMenuList=true;
+		}
 		$scope.get();
 	}
 	else{
@@ -366,38 +373,27 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	}
 	
 })
-.controller('AddDailyMenuCtrl', function($scope, $location, $resource, $routeParams, Menus) {
-	var catererId = 2;
-	$scope.displayMenuList=true;
-	$scope.dailyMenuMap=true;
-	$scope.get=function(){
-		Menus.get({catererId:catererId}, function(response){if(response){$scope.menudata=response.menu;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
-	};
-	$scope.add=function(){
-		var selectedMenu=[];
-		angular.forEach($scope.menudata, function(value,key){if(value.dailyMenu){this.push({"itemId":value.itemId});} },selectedMenu);
-//		$resource('rest/service/caterer/2/menu/20150112').save({"menu":selectedMenu});
-		Menus.save({catererId:catererId,menuDate:$scope.dailyMenuDate}, {"menu":selectedMenu}, function(response){if(response){$scope.menudata=response.menuList;}}, function(){$scope.menudata=[];});
-
-	};	
-	$scope.get();
-//	$scope.displayMenuList=true;
-	
+.controller('AddDailyMenuCtrl', function($scope, $location, $resource, $routeParams, $rootScope, Menus, $alert) {
 //	var catererId = 2;
-//	$scope.adminMenuList=true;
-//	$scope.menudata=[];
-//	$scope.get=function(){
-//		Menus.get({catererId:catererId}, function(response){if(response){$scope.menudata=response.menu;$scope.displayMenuList=true;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
-//	};
-//	$scope.add=function(){
-////		var dMenu={"menu":[{"itemId" : "6"}, {"itemId" : "7"}, {itemId : "8"}]};
-//		var selectedMenu=[];
-//		angular.forEach($scope.menudata, function(value,key,obj){if(obj.dailyMenu){selectedMenu.push({itemId:obj.itemId})}});
-//		$resource('rest/service/caterer/2/menu/20150108').save(selectedMenu);
-//		
-//	};
-//	$scope.get();
+	if($rootScope.userSession  && $rootScope.userSession.catererId){
+		$scope.catererId=$rootScope.userSession.catererId
+		$scope.displayMenuList=true;
+		$scope.dailyMenuMap=true;
+		var message = {title: 'Daily Menu Mapping:', content: '', placement: 'top', type: 'danger', show: true, container:'#alerts-container'};
+		$scope.get=function(){
+			Menus.get({catererId:$scope.catererId}, function(response){if(response){$scope.menudata=response.menu;}}, function(){$scope.menudata=[];$scope.displayMenuList=false;});
+		};
+		$scope.add=function(){
+			var selectedMenu=[];
+			angular.forEach($scope.menudata, function(value,key){if(value.dailyMenu){this.push({"itemId":value.itemId});} },selectedMenu);
+			Menus.save({catererId:$scope.catererId,menuDate:$scope.dailyMenuDate}, {"menu":selectedMenu}, function(response){if(response){ message.content=(" Daily menu added for date :"+$scope.dailyMenuDate); message.type='success';$alert(message); /*$scope.menudata=response.menuList;*/}}, function(){ message.content=(" Failed to add Daily menu for date :"+$scope.dailyMenuDate); message.type='danger';$alert(message);/*$scope.menudata=[];*/});
 	
+		};	
+		$scope.get();
+	}
+	else{
+		$scope.catererId=-1;
+	}
 })
 .controller('AddCatererCtrl', function($scope, $location, CatererRes) {
 	$scope.displayList=true;
