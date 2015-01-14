@@ -14,7 +14,7 @@
                             </div>
                             <div class="form-group col-lg-4 col-xs-12">
 								<label>By Category:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-								<button type="button" class="btn btn-default" data-all-none-buttons="true" data-allText="All" data-noneText="None" ng-model="selectedTags.tag" data-html="1" max-length="7" data-multiple="1" data-animation="am-flip-x" ng-options="tag1.tagId as tag1.tagName for tag1 in tags.tag" data-iconCheckmark="glyphicon glyphicon-ok" bs-select >
+								<button type="button" class="btn btn-default" ng-model="selectedTags.tag" data-html="1" max-length="7" data-multiple="1" data-animation="am-flip-x" ng-options="tag1.tagId as tag1.tagName for tag1 in tags.tag" data-iconCheckmark="glyphicon glyphicon-ok" bs-select >
 									Category <span class="caret"></span>
 								</button>
                             </div>
@@ -51,7 +51,7 @@
 					</div>
 				</div>
 			</div>
-		<div ng-repeat="menu in menudata| filter:search | filter:selectedTags:strict | orderBy:'menu.itemName'">
+		<div ng-repeat="menu in menudata| filter:search | filter:customFliter | orderBy:'menu.itemName'">
 			<div ng-show="menuStyle==1">
 				<div class="col-lg-3 col-md-3">
 					<div class="panel panel-primary" >

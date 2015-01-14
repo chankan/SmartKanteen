@@ -214,6 +214,17 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 }).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams, TagService, $select, $filter) {
 	var catererId = $routeParams.catererId;
 	$scope.menuStyle=1;
+	$scope.selectedTags={tag:[]};
+	$scope.customFliter=function(element){
+		if($scope.selectedTags && $scope.selectedTags.tag && $scope.selectedTags.tag.length >=1){
+			var found = false;
+			angular.forEach($scope.selectedTags.tag, function(value,key){if(element.tag.indexOf(value)>=0){found=true; return;}});
+			return found;
+		}
+		else{
+			return true;
+		}
+	};
 	if($routeParams.dailyMenuDate){
 		$scope.dailyMenuDate = $routeParams.dailyMenuDate;
 	}
