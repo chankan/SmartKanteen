@@ -69,9 +69,9 @@ function getMenuList(role){
 	                 {name : "Master Menu",url : "#/admin/menu"}
 	                 ];
 	
-	if(role==3){mainMenu=userMenu}
-	else if(role==2){mainMenu=adminMenu}
-	else if(role==1){mainMenu=superAdminMenu}
+	if(role=='3'){mainMenu=userMenu}
+	else if(role=='2'){mainMenu=adminMenu}
+	else if(role=='1'){mainMenu=superAdminMenu}
 	else{mainMenu=normalMenu}
 	return mainMenu;
 }
@@ -177,7 +177,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	}).otherwise({
 		redirectTo : '/'
 	});
-}).controller('MenuCtrl', function($scope, Menus, UserMgr) {
+}).controller('MenuCtrl', function($scope, $rootScope, Menus, UserMgr) {
 	$scope.loginMenu = [ {
 		name : "Register Now!!",
 		url : "#/register"
@@ -189,7 +189,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.logout=function(){
 		UserMgr.logout();
 	};
-	$scope.mainMenu=getMenuList();
+	$rootScope.mainMenu=getMenuList();
 }).controller('LoginCtrl', function($scope,$rootScope, $alert, $location,UserMgr) {
 	$scope.user={name:"",password:""};
 	var myAlert = {title: 'Login Failed:', content: '', placement: 'top', type: 'danger', show: false,container:'#alerts-container'};
