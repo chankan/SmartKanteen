@@ -36,7 +36,7 @@ public class Test
 
 		testingTagsTable();*/
 		
-		testingOrderTable();
+		displayTags();
 	}
 
 	public static void testingMenuTable() throws ObjectNotFoundException, Exception
