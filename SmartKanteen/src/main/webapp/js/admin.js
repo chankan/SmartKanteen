@@ -201,7 +201,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 }).controller('StaticCtrl', function($scope) {
 
 }).controller('RegistrationCtrl', function($scope,$rootScope,UserMgr) {
-	$scope.user={userId:-1, loginId:"aa", password:"aa", emailId:"aa@aa.com"};
+	$scope.user={userId:-1, loginId:"", password:"", emailId:""};
 	$scope.errorMessage="";
 	$scope.signup=function(){UserMgr.signup($scope.user)};
 
