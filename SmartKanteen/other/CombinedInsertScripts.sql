@@ -1111,7 +1111,7 @@ INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (39
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (405, 405, '1,4');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (406, 406, '1,4');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (407, 407, '1,4');
-IN--SERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (408, 408, '');
+--INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (408, 408, '');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (409, 409, '1,4');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (410, 410, '1,4');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES (411, 411, '1,4');
