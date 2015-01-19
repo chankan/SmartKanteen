@@ -160,7 +160,32 @@ public class MenuDAO
 		{
 			MenuTagsMapping menuTagsMapping = menuMaster.getMenuTagsMapping();
 
-			session.update(menuMaster);
+			if(menuMaster!=null && menuMaster.getItemId()!=null)
+			{
+				Menu menuDB = (Menu)session.get(Menu.class, menuMaster.getItemId());
+				
+				if(menuMaster.getItemName()!=null)
+				{
+					menuDB.setItemName(menuMaster.getItemName());
+				}
+				
+				if(menuMaster.getDescription()!=null)
+				{
+					menuDB.setDescription(menuMaster.getDescription());
+				}
+				
+				if(menuMaster.getPrepTime()!=null)
+				{
+					menuDB.setPrepTime(menuMaster.getPrepTime());
+				}
+				
+				if(menuMaster.getPrice()!=null)
+				{
+					menuDB.setPrice(menuMaster.getPrice());
+				}
+				
+				session.update(menuDB);
+			}
 
 			if (menuTagsMapping != null)
 			{
