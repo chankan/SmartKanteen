@@ -217,8 +217,8 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.selectedTags={tag:[]};
 	$scope.customFliter=function(element){
 		if($scope.selectedTags && $scope.selectedTags.tag && $scope.selectedTags.tag.length >=1){
-			var found = false;
-			angular.forEach($scope.selectedTags.tag, function(value,key){if(element.tag.indexOf(value)>=0){found=true; return;}});
+			var found = true;
+			angular.forEach($scope.selectedTags.tag, function(value,key){if(element.tag.indexOf(value)<0){found=false; return;}});
 			return found;
 		}
 		else{
