@@ -773,7 +773,7 @@ INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(66,
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(67, 67, '1,8');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(68, 68, '1,8');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(69, 69, '1,8');
-INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(70, 10, '1,8');
+INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(70, 70, '1,8');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(71, 71, '1,8');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(72, 72, '1,8');
 INSERT INTO Menu_Tags_Mapping(menu_tags_mapping_id, item_id, tag_ids) VALUES(73, 73, '1,8');
@@ -1466,7 +1466,7 @@ INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) V
 INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(67, 67, 1);
 INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(68, 68, 1);
 INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(69, 69, 1);
-INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(70, 10, 1);
+INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(70, 70, 1);
 INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(71, 71, 1);
 INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(72, 72, 1);
 INSERT INTO Caterer_Menu_Mapping(caterer_menu_mapping_id, item_id, caterer_id) VALUES(73, 73, 1);
