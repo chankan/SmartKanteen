@@ -215,6 +215,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	var catererId = $routeParams.catererId;
 	$scope.menuStyle=1;
 	$scope.selectedTags={tag:[]};
+	$scope.tags=TagService.get();
 	$scope.customFliter=function(element){
 		if($scope.selectedTags && $scope.selectedTags.tag && $scope.selectedTags.tag.length >=1){
 			var found = true;
@@ -232,10 +233,10 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		$scope.dailyMenuDate =$filter('date')(new Date(), "yyyyMMdd");
 	}
 	$scope.get=function(){
-		Menus.get({catererId:catererId,menuDate:$scope.dailyMenuDate}, function(response){if(response){ angular.forEach(response.menu, function(value,key){if(value.menuTagsMapping.tags){value.tag=value.menuTagsMapping.tags.split(',');} }); $scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
-		$scope.tags=TagService.get();
+		Menus.get({catererId:catererId,menuDate:$scope.dailyMenuDate}, function(response){if(response){ angular.forEach(response.menu, function(value,key){if(value.menuTagsMapping.tags){value.tag=value.menuTagsMapping.tags.split(',');}else{value.tag=[];}; }); $scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
 	};
 	$scope.get();
+	
 }).controller('ListCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/1/menu').get();
 	// $scope.menus =[{itemID: 1, itemName: "Thali", description: "Jain
