@@ -1,26 +1,39 @@
 <div class="container">
-	<div class="row">
-		<div class="col-lg-12">
-			<h1 class="page-header">Caterer Selection</h1>
-		</div>
-	</div>
-	<div class="row" >
-		<div class="col-md-4 col-md-offset-4" ng-repeat="caterer in catererData.caterer| orderBy:'name'">
-			<a href="#/caterer/{{caterer.catererId}}/menu/{{todaysDate}}"><div class="panel panel-warning" >
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-xs-3">
-							<i class="larg glyphicon glyphicon-glass" aria-hidden="true"></i>
-						</div>
-						<div class="col-xs-9 text-right">
-							<div class="larg">{{caterer.catererName}}</div>
-							<div>{{caterer.caterer_description}}</div>
-						</div>
-					</div>
+	<div class="panel panel-primary">
+		<div class="panel-body" style="background-color: #E6EDF5;">
+			<div class="row">
+				<div class="col-lg-12">
+					<h3 class="text-center">
+						<strong>Caterer Selection</strong>
+					</h3>
 				</div>
-					<div class="panel-footer"></div>
 			</div>
-			</a>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<p></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4" ng-repeat="caterer in catererData.caterer| orderBy:'name'">
+					<a href="#/caterer/{{caterer.catererId}}/menu/{{todaysDate}}">
+						<div class="panel panel-warning">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="larg glyphicon glyphicon-glass" aria-hidden="true"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<div class="larg">{{caterer.catererName}}</div>
+										<div>{{caterer.caterer_description}}</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel-footer"></div>
+						</div>
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

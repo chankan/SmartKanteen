@@ -1,105 +1,117 @@
-<div class="container" >
+<div class="container">
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="panel panel-primary">
-				<div class="panel-body">
-<!-- 					<h4 >Filter Menus </h4> -->
-                    <form role="form">
-                        <fieldset>
-                            <div class="form-group col-lg-3 col-xs-12">
-                                <label>By Date:&nbsp;</label><input class="form-control" ng-model="dailyMenuDate" data-date-type="string" data-date-format="MMM dd, yyyy" data-model-date-format="yyyyMMdd" name="date" bs-datepicker type="text" ng-change="get()">
-                            </div>
-                            <div class="form-group col-lg-3 col-xs-12">
-                                <label>By keyword:&nbsp;</label><input class="form-control"  ng-model="search"  placeholder="Enter word to filter" autofocus="" type="text">
-                            </div>
-                            <div class="form-group col-lg-4 col-xs-12">
-								<label>By Category:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-								<button type="button" class="btn btn-default" ng-model="selectedTags.tag" data-html="1" max-length="7" data-multiple="1" data-animation="am-flip-x" ng-options="tag1.tagId as tag1.tagName for tag1 in tags.tag" data-iconCheckmark="glyphicon glyphicon-ok" bs-select >
-									Category <span class="caret"></span>
+				<div class="panel-body" style="background-color: #E6EDF5;">
+					<form role="form">
+						<fieldset>
+							<div class="form-group col-md-3 col-xs-12">
+								<h5><strong>By Date:</strong></h5>
+								<div class="form-group has-success">
+									<input class="form-control" ng-model="dailyMenuDate" align="center" data-date-type="string" data-date-format="MMM dd, yyyy" data-model-date-format="yyyyMMdd" name="date" bs-datepicker type="text" ng-change="get()">
+								</div>
+							</div>
+							<div class="form-group col-md-3 col-xs-12">
+								<h5><strong>By Keyword:</strong></h5>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess1"> <input class="form-control" ng-model="search" align="center" placeholder="Enter word to filter" autofocus="" type="text"></label>
+								</div>
+							</div>
+							<div class="form-group col-md-3 col-xs-12">
+								<h5><strong>By Category:</strong></h5>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess1">
+										<button type="button" class="btn btn-default" ng-model="selectedTags.tag" data-html="1" max-length="7" data-multiple="1" data-animation="am-flip-x" ng-options="tag1.tagId as tag1.tagName for tag1 in tags.tag" data-iconCheckmark="glyphicon glyphicon-ok" bs-select>	Category<span class="caret"></span></button>
+									</label>
+								</div>
+							</div>
+							<div class="form-group col-md-3 col-xs-12" align="top">
+								<h5><strong>View As:</strong></h5>
+								<button type="button" class="btn btn-default" ng-class="(menuStyle==1)?'active':''" ng-click="menuStyle=1;">
+									<i class="glyphicon glyphicon-th"></i>
 								</button>
-                            </div>
-                            <div class="form-group col-lg-2 col-xs-12">
-								<label>View As:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-								<div class="btn-group btn-group-lg" role="group" >
-									<button type="button" class="btn btn-default" ng-class="(menuStyle==1)?'active':''" ng-click="menuStyle=1;"><i class="glyphicon glyphicon-th"></i></button>
-									<button type="button" class="btn btn-default" ng-class="(menuStyle==2)?'active':''" ng-click="menuStyle=2;"><i class="glyphicon glyphicon-th-list"></i></button>
-								</div>
-                            </div>
-                            <!-- Change this to a button or input when using this as a form -->
-                            
-                        </fieldset>
-                    </form>
-                </div>
+								<button type="button" class="btn btn-default" ng-class="(menuStyle==2)?'active':''" ng-click="menuStyle=2;">
+									<i class="glyphicon glyphicon-th-list"></i>
+								</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
+
 	<div class="row" ng-show="menudata.length>0">
-				<div ng-show="menuStyle==2" class="panel panel-primary">
+		<div ng-show="menuStyle==2">
+			<div class="container">
 				<div class="row">
-					<div class="col-lg-12 col-md-12">
-						<div class="panel-body">
-							<div class="col-xs-3">
-								<i class="glyphicon glyphicon-glass"></i>&nbsp;&nbsp;<b>Menu Name</b>
-							</div>
-							<div class="col-xs-6">
-								Menu Description
-							</div>
-							<div class="col-xs-3">
-								Menu Price
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		<div ng-repeat="menu in menudata| filter:search | filter:customFliter | orderBy:'menu.itemName'">
-			<div ng-show="menuStyle==1">
-				<div class="col-lg-3 col-md-3">
-					<div class="panel panel-primary" >
-						<div class="panel-heading" data-animation="am-fade-and-scale" data-type="info" data-title="{{(menu.description)?menu.description:'No detail present'}}" bs-tooltip>
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="larg glyphicon glyphicon-glass"></i>
-									<div>&nbsp;</div>
-	<!-- 								<div>Rs.{{menu.price}}</div> -->
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class=""><b>{{menu.itemName}} </b></div>
-	<!-- 								<div>Prep Time: {{menu.prepTime}}</div> -->
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">Rs.:{{menu.price}}</span> 
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-shopping-cart"></i>
-								</span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-			</div>
-			<div ng-show="menuStyle==2" class="panel panel-primary">
-				<div class="row">
-					<div class="col-lg-12 col-md-12">
-						<div class="panel-body">
-							<div class="col-xs-3">
-								<i class="glyphicon glyphicon-glass"></i>&nbsp;&nbsp;<b>{{menu.itemName}} </b>
-							</div>
-							<div class="col-xs-6">
-								{{menu.description}} 
-							</div>
-							<div class="col-xs-3">
-								<b>Rs:&nbsp;&nbsp;{{menu.price}} </b>
-							</div>
+					<div class="col-lg-12 col-xs-12">
+						<div class="panel-heading">
+							<table class="table table-bordered">
+								<thead>
+									<tr class="bg-primary">
+										<th width="33%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>Menu Name</strong></h4></th>
+										<th width="33%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>Menu Description </strong></h4></th>
+										<th width="33%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>Menu Price </strong></h4></th>
+									</tr>
+								</thead>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row" ng-hide="menudata.length>0">
-		<h3>No Menu present for Selected date</h3>
+	<div ng-repeat="menu in menudata| filter:search | filter:customFliter | orderBy:'menu.itemName'">
+		<div ng-show="menuStyle==1">
+			<div class="col-lg-3 col-md-3">
+				<div class="panel panel-primary">
+					<div class="panel-heading" data-animation="am-fade-and-scale" data-type="info" data-title="{{(menu.description)?menu.description:'No detail present'}}" bs-tooltip>
+						<div class="row">
+							<div class="col-xs-3">
+								<i class="larg glyphicon glyphicon-glass"></i>
+								<div></div>
+							</div>
+							<div class="col-xs-9 text-right">
+								<div class=""><strong>{{menu.itemName}}</strong></div>
+							</div>
+						</div>
+					</div>
+					<a href="#">
+						<div class="panel-footer">
+							<span class="pull-left">Rs.:{{menu.price}}</span> 
+							<span class="pull-right"> <i class="glyphicon glyphicon-shopping-cart"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div ng-show="menuStyle==2">
+			<div class="row" class="bg-success">
+				<div class="col-lg-12 col-xs-12">
+					<div class="panel-heading">
+						<div class="bg-success">
+							<table class="table table-bordered">
+								<tr>
+									<td width="33%" align="center"><strong>{{menu.itemName}}</strong></td>
+									<td width="33%" align="center"><strong>{{menu.description}}</strong></td>
+									<td width="33%" align="center"><strong>Rs:{{menu.price}}</strong></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" ng-hide="menudata.length>0" style="padding-left: 10px; padding-right: 10px;">
+		<button type="button" class="btn btn-danger btn-block" style="max-height: 40px;">
+			<p class="lead">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp; No Menu present for Selected Date
+			</p>
+		</button>
 	</div>
 </div>

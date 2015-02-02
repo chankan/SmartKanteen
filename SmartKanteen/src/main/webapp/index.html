@@ -12,37 +12,37 @@
 <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="plugins/motion/angular-motion.min.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="css/custom.css" rel="stylesheet" 	type="text/css" media="screen" />
+<link href="css/custom.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
-	<div class="navbar navbar-static-top"  ng-controller="MenuCtrl">
+	<div class="navbar navbar-static-top" ng-controller="MenuCtrl" style="background-color: #4D505B;">
 		<div class="container">
 			<div class="navbar-header">
-				<a href="#/" class="navbar-brand">SmartKanteen</a>
+				<a href="#/" class="navbar-brand" style="color: #FFF;">SmartKanteen</a>
 			</div>
-			<div >
-				<ul class="nav navbar-nav"  ng-repeat="cMenu in mainMenu">
-					<li class="active"><a href="{{cMenu.url}}">{{cMenu.name}}</a></li>
+			<div>
+				<ul class="nav navbar-nav" ng-repeat="cMenu in mainMenu">
+					<li class="active"><a href="{{cMenu.url}}" style="color: #FFF;">{{cMenu.name}}</a></li>
 				</ul>
 			</div>
-			<div  ng-show="userSession">
+			<div ng-show="userSession">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href=""><i class="glyphicon glyphicon-user"></i>&nbsp;{{userSession.user.loginId}}</a></li>
-					<li class="active"><a href="#" ng-Click="logout()"><i class="glyphicon glyphicon-off"></i>&nbsp;Log Out</a></li>
+					<li class="active"><a href="" style="color: #FFF;"><i class="glyphicon glyphicon-user"></i>&nbsp;{{userSession.user.loginId}}</a></li>
+					<li class="active"><a href="#" ng-Click="logout()" style="color: #FFF;"><i class="glyphicon glyphicon-off"></i>&nbsp;Log Out</a></li>
 				</ul>
 			</div>
 			<div ng-hide="userSession">
-				<ul class="nav navbar-nav navbar-right"   ng-repeat="cMenu in loginMenu | orderBy:'name'">
-					<li class="active"><a href="{{cMenu.url}}">{{cMenu.name}}</a></li>
-				</ul>		
-			</div>	
+				<ul class="nav navbar-nav navbar-right" ng-repeat="cMenu in loginMenu | orderBy:'name'">
+					<li class="active"><a href="{{cMenu.url}}" style="color: #FFF;">{{cMenu.name}}</a></li>
+				</ul>
+			</div>
 		</div>
-		<div class="menubar">&nbsp;</div>
+		<!-- <div class="menubar">&nbsp;</div> -->
 	</div>
-<!-- 	<div class="container"> -->
-<!-- 		<div class="row"> -->
-			<div ng-view></div>
-<!-- 		</div> -->
-<!-- 	</div> -->
+	<!-- 	<div class="container"> -->
+	<!-- 		<div class="row"> -->
+	<div ng-view></div>
+	<!-- 		</div> -->
+	<!-- 	</div> -->
 </body>
 </html>
