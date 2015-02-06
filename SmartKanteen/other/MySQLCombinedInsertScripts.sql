@@ -1804,7 +1804,7 @@ INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VA
 INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VALUES (279, 432, 2);
 INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VALUES (280, 433, 2);
 INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VALUES (281, 458, 2);
---INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VALUES (282, 459, 2);
+
 INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VALUES (283, 460, 2);
 INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VALUES (284, 461, 2);
 INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VALUES (285, 462, 2);
@@ -1865,15 +1865,15 @@ INSERT INTO Daily_Menu_Mapping(daily_menu_mapping_id, item_id, daily_menu_id) VA
 
 
 
-INSERT INTO User(user_id, login_id, password, email_id, account_creation_date) VALUES (1, 'kanchan', 'e10adc3949ba59abbe56e057f20f883e', 'kanchan.thombare@mastek.com', SYSDATE);
-INSERT INTO User(user_id, login_id, password, email_id, account_creation_date) VALUES (2, 'tarul', 'e10adc3949ba59abbe56e057f20f883e', 'tarul.yadav@mastek.com', SYSDATE);
-INSERT INTO User(user_id, login_id, password, email_id, account_creation_date) VALUES (3, 'kiran', 'e10adc3949ba59abbe56e057f20f883e', 'kiran@mastek.com', SYSDATE);
+INSERT INTO User(user_id, login_id, password, email_id, account_creation_date) VALUES (1, 'kanchan', 'e10adc3949ba59abbe56e057f20f883e', 'kanchan.thombare@mastek.com', SYSDATE());
+INSERT INTO User(user_id, login_id, password, email_id, account_creation_date) VALUES (2, 'tarul', 'e10adc3949ba59abbe56e057f20f883e', 'tarul.yadav@mastek.com', SYSDATE());
+INSERT INTO User(user_id, login_id, password, email_id, account_creation_date) VALUES (3, 'kiran', 'e10adc3949ba59abbe56e057f20f883e', 'kiran@mastek.com', SYSDATE());
 
 
 
-INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (1, 'Kanchan', 'Thombare', 'M', '1985-08-22', 9619123456, 5678, 11050, 1);
-INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (2, 'Tarul', 'Yadav', 'F', '1985-08-22', 9619123456, 5678, 11050, 2);
-INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (3, 'Kiran', '', 'M', '1985-08-22', 9619123456, 5678, 11050, 3);
+INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (1, 'Kanchan', 'Thombare', 'M', '1985-08-22', 961912345, 5678, 11050, 1);
+INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (2, 'Tarul', 'Yadav', 'F', '1985-08-22', 961912345, 5678, 11050, 2);
+INSERT INTO User_Details(user_details_id, first_name, last_name, gender, date_of_birth, contact_no, extension_no, employee_id, user_id) VALUES (3, 'Kiran', '', 'M', '1985-08-22', 961912345, 5678, 11050, 3);
 
 
 
