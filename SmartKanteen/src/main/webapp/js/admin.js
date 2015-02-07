@@ -47,24 +47,24 @@ var adminRoleRequired = function( $location, $q,$rootScope ) {
 function getMenuList(role){
 	var mainMenu;
 	var normalMenu = [ 
-	                 {name : "Home", url : "#/"	}, 
-	                 {name : "Today's Menu",url : "#/todaymenus"},
+	                 {name : "Home", url : "#/", icon: "glyphicon-home"	}, 
+	                 {name : "Today's Menu",url : "#/todaymenus", icon: "glyphicon-fire"},
 	                 ];
 	var userMenu = [ 
-	                {name : "Home", url : "#/"	}, 
-	                {name : "Today's Menu",url : "#/todaymenus"},
-	                {name : "My Order",url : "#/new"},
+	                {name : "Home", url : "#/", icon: "glyphicon-home"	}, 
+	                {name : "Today's Menu",url : "#/todaymenus", icon: "glyphicon-fire"},
+//	                {name : "My Order",url : "#/new"},
 	                ];
 
 	var adminMenu = [ 
-	                 {name : "Home", url : "#/"},
+	                 {name : "Home", url : "#/", icon: "glyphicon-home"},
 	                 {name : "Master Menu",url : "#/admin/menu"},
 	                 {name : "Today's Menu",url : "#/admin/dailymenu"},
 	                 {name : "Order", url : "#/new"	},
 	                 ];
 		
 	var superAdminMenu = [ 
-	                 {name : "Home", url : "#/"},
+	                 {name : "Home", url : "#/", icon: "glyphicon-home"},
 	                 {name : "Caterers", url : "#/superadmin/caterer"},
 	                 {name : "Master Menu",url : "#/admin/menu"}
 	                 ];
@@ -178,13 +178,13 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		redirectTo : '/'
 	});
 }).controller('MenuCtrl', function($scope, $rootScope, Menus, UserMgr) {
-	$scope.loginMenu = [ {
-		name : "Register Now!!",
-		url : "#/register"
-	}, {
-		name : "Log In",
-		url : "#/login"
-	}, ];
+//	$scope.loginMenu = [ {
+//		name : "Register Now!!",
+//		url : "#/register"
+//	}, {
+//		name : "Log In",
+//		url : "#/login"
+//	}, ];
 	
 	$scope.logout=function(){
 		UserMgr.logout();
@@ -233,7 +233,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		$scope.dailyMenuDate =$filter('date')(new Date(), "yyyyMMdd");
 	}
 	$scope.get=function(){
-		Menus.get({catererId:catererId,menuDate:$scope.dailyMenuDate}, function(response){if(response){ angular.forEach(response.menu, function(value,key){if(value.menuTagsMapping.tags){value.tag=value.menuTagsMapping.tags.split(',');}else{value.tag=[];}; }); $scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
+		Menus.get({catererId:catererId,menuDate:$scope.dailyMenuDate}, function(response){if(response){ angular.forEach(response.menu, function(value,key){if(value.menuTagsMapping.tags){value.tag=value.menuTagsMapping.tags.split(',');if(value.tag.indexOf('1')>=0){value.tclass="panel-success"}else if(value.tag.indexOf('2')>=0){value.tclass="panel-warning"}else{value.tclass="panel-primary"} }else{value.tag=[];}; }); $scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
 	};
 	$scope.get();
 	
