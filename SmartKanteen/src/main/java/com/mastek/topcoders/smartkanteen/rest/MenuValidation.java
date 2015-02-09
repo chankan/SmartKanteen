@@ -19,16 +19,16 @@ public class MenuValidation {
 
 		if(itemName != null && itemName.matches(".*\\w.*"))
 		{
-			if(itemName.trim().length()<=10)
+			if(itemName.trim().length()<=100)
 			{
 				if(description !=null)
 				{
 					if(description.length()<255)
 					{
-						if(prepTime !=null)
-						{
-							if(prepTime > 0)
-							{
+//						if(prepTime !=null)
+//						{
+//							if(prepTime > 0)
+//							{
 								if(!(price.equals(null)) )
 								{
 									if(price.compareTo(new BigDecimal(0))!=0)
@@ -46,18 +46,18 @@ public class MenuValidation {
 									System.out.println("price can't be null");
 									return false;
 								}
-							}
-							else
-							{
-								System.out.println("prepTime can't be zero!!");
-								return false;
-							}
-						}
-						else
-						{
-							System.out.println("prepTime can't be null");
-							return false;
-						}
+//							}
+//							else
+//							{
+//								System.out.println("prepTime can't be zero!!");
+//								return false;
+//							}
+//						}
+//						else
+//						{
+//							System.out.println("prepTime can't be null");
+//							return false;
+//						}
 					}
 					else
 					{

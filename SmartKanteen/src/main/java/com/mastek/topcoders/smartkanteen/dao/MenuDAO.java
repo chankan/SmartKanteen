@@ -187,38 +187,38 @@ public class MenuDAO
 				session.update(menuDB);
 			}
 
-			if (menuTagsMapping != null)
-			{
-				Criteria criteria = session.createCriteria(MenuTagsMapping.class);
-				criteria.add(Restrictions.eq("menu", menuMaster));
-
-				List<MenuTagsMapping> menuTagsMappingList = criteria.list();
-
-				if (menuTagsMappingList != null && menuTagsMappingList.size() == 1)
-				{
-					MenuTagsMapping menuTagsMappingDB = menuTagsMappingList.get(0);
-
-					String tags = menuTagsMappingDB.getTags();
-
-					if (!tags.equalsIgnoreCase(""))
-					{
-						tags = tags + "," + menuMaster.getMenuTagsMapping().getTags();
-					}
-					else
-					{
-						tags = menuMaster.getMenuTagsMapping().getTags();
-					}
-
-					menuTagsMappingDB.setTags(tags);
-
-					session.update(menuTagsMappingDB);
-				}
-				else if (menuTagsMappingList == null || menuTagsMappingList.size() == 0)
-				{
-					menuTagsMapping.setItemId(menuMaster.getItemId());
-					session.saveOrUpdate(menuTagsMapping);
-				}
-			}
+//			if (menuTagsMapping != null)
+//			{
+//				Criteria criteria = session.createCriteria(MenuTagsMapping.class);
+//				criteria.add(Restrictions.eq("menu", menuMaster));
+//
+//				List<MenuTagsMapping> menuTagsMappingList = criteria.list();
+//
+//				if (menuTagsMappingList != null && menuTagsMappingList.size() == 1)
+//				{
+//					MenuTagsMapping menuTagsMappingDB = menuTagsMappingList.get(0);
+//
+//					String tags = menuTagsMappingDB.getTags();
+//
+//					if (!tags.equalsIgnoreCase(""))
+//					{
+//						tags = tags + "," + menuMaster.getMenuTagsMapping().getTags();
+//					}
+//					else
+//					{
+//						tags = menuMaster.getMenuTagsMapping().getTags();
+//					}
+//
+//					menuTagsMappingDB.setTags(tags);
+//
+//					session.update(menuTagsMappingDB);
+//				}
+//				else if (menuTagsMappingList == null || menuTagsMappingList.size() == 0)
+//				{
+//					menuTagsMapping.setItemId(menuMaster.getItemId());
+//					session.saveOrUpdate(menuTagsMapping);
+//				}
+//			}
 
 			tx.commit();
 			DatabaseUtil.closeSession(session);
