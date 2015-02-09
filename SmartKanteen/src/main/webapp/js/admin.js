@@ -60,13 +60,13 @@ function getMenuList(role){
 	                 {name : "Home", url : "#/", icon: "glyphicon-home"},
 	                 {name : "Master Menu",url : "#/admin/menu"},
 	                 {name : "Today's Menu",url : "#/admin/dailymenu"},
-	                 {name : "Order", url : "#/new"	},
+//	                 {name : "Order", url : "#/new"	},
 	                 ];
 		
 	var superAdminMenu = [ 
 	                 {name : "Home", url : "#/", icon: "glyphicon-home"},
 	                 {name : "Caterers", url : "#/superadmin/caterer"},
-	                 {name : "Master Menu",url : "#/admin/menu"}
+//	                 {name : "Master Menu",url : "#/admin/menu"}
 	                 ];
 	
 	if(role=='3'){mainMenu=userMenu}
@@ -118,6 +118,8 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		        logout: function() {
 		        	 $rootScope.userSession =null
 		        	 $http.defaults.headers.common['userSession']= null;
+		        	 $location.path('/login');
+		        	 $rootScope.mainMenu=getMenuList();
 		          //return $http.get('user/logout').success(function() {
 		        //	  $rootScope.userSession =null
 		          //});
