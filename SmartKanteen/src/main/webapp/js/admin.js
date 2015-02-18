@@ -78,7 +78,7 @@ function getMenuList(role){
 
 angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStrap'])
 		.factory('CatererRes',[ '$resource', function($resource) {
-			var service = $resource('rest/service/caterer');
+			var service = $resource('rest/service/caterer/:catererId' , {catererId: '@catererId'} );
 			return service;
 		} ])
 		.factory('Menus',[ '$resource', function($resource) {
@@ -213,11 +213,12 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	var cDate = new Date();
 	$scope.todaysDate= $filter('date')(cDate, "yyyyMMdd");
 	$scope.catererData = $resource('rest/service/caterer/').get();
-}).controller('CatererMenuCtrl', function($scope, Menus, $resource, $http, $routeParams, TagService, $select, $filter) {
+}).controller('CatererMenuCtrl', function($scope, Menus, CatererRes, $resource, $http, $routeParams, TagService, $select, $filter) {
 	var catererId = $routeParams.catererId;
 	$scope.menuStyle=1;
 	$scope.selectedTags={tag:[]};
 	$scope.tags=TagService.get();
+	CatererRes.get({catererId:catererId},function(response){if(response){$scope.caterer=response;}});
 	$scope.customFliter=function(element){
 		if($scope.selectedTags && $scope.selectedTags.tag && $scope.selectedTags.tag.length >=1){
 			var found = true;
