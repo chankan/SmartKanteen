@@ -95,11 +95,11 @@ public class MenuResource implements IMenuResource
 	public Caterer getCaterer(@HeaderParam("userSession") String userSession, @PathParam("catererId") Integer catererId)
 			throws Exception
 	{
-		if (!userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN)
-				|| !userService.authenicateUser(userSession, UserService.ROLE_USER))
-		{
-			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
-		}
+//		if (!userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN)
+//				|| !userService.authenicateUser(userSession, UserService.ROLE_USER))
+//		{
+//			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+//		}
 
 		try
 		{
