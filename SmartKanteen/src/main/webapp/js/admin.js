@@ -221,8 +221,8 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	CatererRes.get({catererId:catererId},function(response){if(response){$scope.caterer=response;}});
 	$scope.customFliter=function(element){
 		if($scope.selectedTags && $scope.selectedTags.tag && $scope.selectedTags.tag.length >=1){
-			var found = true;
-			angular.forEach($scope.selectedTags.tag, function(value,key){if(element.tag.indexOf(value)<0){found=false; return;}});
+			var found = false;
+			angular.forEach($scope.selectedTags.tag, function(value,key){if(element.tag.indexOf(value)>=0){found=true; return;}});
 			return found;
 		}
 		else{
