@@ -13,3 +13,4 @@ CREATE TABLE MENU_MASTER(itemID INT PRIMARY KEY, itemName VARCHAR(255), descript
 SELECT itemID ,itemName  ,description , price  ,prepTime  FROM MENU_MASTER
 INSERT INTO MENU_MASTER VALUES(1,'pizza','veg pizza',50.50,15)
 
+***************************
