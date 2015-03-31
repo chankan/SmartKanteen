@@ -77,13 +77,13 @@ public class OrderResource implements IOrderResource
 			throw new GenericException(Constants.INTERNAL_ERROR_MSG);
 		}
 	}
-
+	
 	@Path("/user/{userId}Id/{orderId}")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
 	public OrderMaster cancelOrder(@HeaderParam("userSession") String userSession,
-			@PathParam("orderId") Integer orderId, String remarks) throws Exception
+			@PathParam("orderId") Integer orderId, @PathParam("userId") Integer userId, String remarks) throws Exception
 	{
 		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN)
 				|| !userService.authenicateUser(userSession, UserService.ROLE_USER))
@@ -93,7 +93,7 @@ public class OrderResource implements IOrderResource
 
 		try
 		{
-			OrderMaster orderMaster = orderService.cancelOrder(orderId, remarks);
+			OrderMaster orderMaster = orderService.cancelOrder(orderId, userId, remarks);
 			return orderMaster;
 		}
 		catch (Exception e)
@@ -101,7 +101,31 @@ public class OrderResource implements IOrderResource
 			throw new GenericException(Constants.INTERNAL_ERROR_MSG);
 		}
 	}
+	
+	@Path("/{orderId}")
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Override
+	public OrderMaster getOrderById(@HeaderParam("userSession") String userSession,
+			@PathParam("orderId") Integer orderId)
+			throws Exception {
+		if (!userService.authenicateUser(userSession, UserService.ROLE_ADMIN)
+				|| !userService.authenicateUser(userSession, UserService.ROLE_SUPERADMIN))
+		{
+			throw new GenericException(Constants.NOT_AUTHORIZED_MSG);
+		}
 
+		try
+		{
+			OrderMaster orderMaster = orderService.getOrdersById(orderId);
+			return orderMaster;
+		}
+		catch (Exception e)
+		{
+			throw new GenericException(Constants.INTERNAL_ERROR_MSG);
+		}
+	}
+	
 	@Path("/caterer/{catererId}")
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -192,5 +216,7 @@ public class OrderResource implements IOrderResource
 			throw new GenericException(Constants.INTERNAL_ERROR_MSG);
 		}
 	}
+
+
 
 }

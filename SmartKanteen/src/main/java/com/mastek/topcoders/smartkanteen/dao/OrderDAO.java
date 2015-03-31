@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.mastek.topcoders.smartkanteen.bean.OrderMaster;
+import com.mastek.topcoders.smartkanteen.bean.User;
 import com.mastek.topcoders.smartkanteen.common.util.DatabaseUtil;
 import com.mastek.topcoders.smartkanteen.common.util.OrderStatus;
 
@@ -66,22 +67,25 @@ public class OrderDAO
 		DatabaseUtil.closeSession(session);
 		return order;
 	}
-
-	public OrderMaster cancelOrder(Integer orderId, String remarks) throws ObjectNotFoundException, Exception
+	
+	public OrderMaster cancelOrder(Integer orderId, Integer userId, String remarks) throws ObjectNotFoundException, Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
 		OrderMaster order = getOrderById(orderId);
+		User user = getUserById(userId);
 
-		if (order != null)
+		if (order != null && user!=null)
 		{
 			try
 			{
 				tx = session.beginTransaction();
 				order.setRemark(remarks);
 				order.setStatus(OrderStatus.CANCELLED.getOrderStatus());
-
-				System.out.println("In ORDER DAO" + order);
+				order.setUserCancellingTheOrder(user);
+				
+				System.out.println("In CANCEL ORDER DAO" + order);
+				System.out.println("Order cancelled is :"+order.getOrderId()+" , Cancelled by User : "+user.getEmailId());
 				session.update(order);
 
 				tx.commit();
@@ -96,7 +100,7 @@ public class OrderDAO
 		}
 		else
 		{
-			throw new ObjectNotFoundException(order, "Order not found");
+			throw new ObjectNotFoundException(order, "Order or User not found");
 		}
 
 		DatabaseUtil.closeSession(session);
@@ -109,6 +113,14 @@ public class OrderDAO
 		OrderMaster order = (OrderMaster) session.get(OrderMaster.class, orderId);
 		DatabaseUtil.closeSession(session);
 		return order;
+	}
+	
+	public User getUserById(Integer userId)
+	{
+		Session session = DatabaseUtil.getSession();
+		User user = (User) session.get(User.class, userId);
+		DatabaseUtil.closeSession(session);
+		return user;
 	}
 
 	public List<OrderMaster> getOrderByCaterer(int catererId) throws Exception

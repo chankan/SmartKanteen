@@ -19,7 +19,13 @@ public class OrderMaster implements java.io.Serializable
 	private String status;
 	private String remark;
 	private Set<OrderDetails> orderDetails;
-
+	
+	//
+	private User userCancellingTheOrder;
+	//
+	
+	
+	
 	public Integer getOrderId()
 	{
 		return orderId;
@@ -133,4 +139,18 @@ public class OrderMaster implements java.io.Serializable
 				+ totalCost + ", orderDate=" + orderDate + ", orderCreatedDate=" + orderCreatedDate + ", status="
 				+ status + ", remark=" + remark + ", orderDetails=" + orderDetails + "]";
 	}
+
+	public User getUserCancellingTheOrder() {
+		return userCancellingTheOrder;
+	}
+
+	public void setUserCancellingTheOrder(User userCancellingTheOrder) {
+		this.userCancellingTheOrder = userCancellingTheOrder;
+	}
+
+	
+
+
+	
+	
 }

@@ -28,15 +28,18 @@ public class Test
 {
 	public static void main(String[] args) throws Exception
 	{
-		/*testingMenuTable();
+		//testingMenuTable();
 
-		testingCatererTable();
+		//testingCatererTable();
 
-		testingDailyMenuTable();
+		testingOrderTable();
+		//testingDailyMenuTable();
 
-		testingTagsTable();*/
+		//testingTagsTable();
 		
-		displayTags();
+		//testAddMenu();
+		
+		//displayTags();
 	}
 
 	public static void testingMenuTable() throws ObjectNotFoundException, Exception
@@ -207,23 +210,23 @@ public class Test
 		System.out.println("Initial DB");
 		displayCaterers();
 
-		testAddCaterer();
-		System.out.println("After Adding Caterer");
-		displayCaterers();
+//		testAddCaterer();
+//		System.out.println("After Adding Caterer");
+//		displayCaterers();
 
 		testUpdateCaterer();
 		System.out.println("After Updating Caterer");
 		displayCaterers();
 
-		System.out.println("After Getting Caterer by ID");
-		testGetCatererById();
-
-		testDeleteCaterer();
-		System.out.println("After Deleting Caterer");
-		displayCaterers();
-
-		System.out.println("Getting Menu List by Caterer");
-		testGetMenuMasterByCaterer(1);
+//		System.out.println("After Getting Caterer by ID");
+//		testGetCatererById();
+//
+//		testDeleteCaterer();
+//		System.out.println("After Deleting Caterer");
+//		displayCaterers();
+//
+//		System.out.println("Getting Menu List by Caterer");
+//		testGetMenuMasterByCaterer(1);
 	}
 
 	public static void displayCaterers()
@@ -238,12 +241,12 @@ public class Test
 
 		Caterer caterer = new Caterer();
 		caterer.setCatererId(3);
-		caterer.setCatererName("Tadka Caterer");
+		caterer.setCatererName("Bhushan Caterer");
 		//caterer.setCatererDetails("Tadka");
 
 		Caterer caterer1 = new Caterer();
 		caterer1.setCatererId(4);
-		caterer1.setCatererName("Nitya Caterer");
+		caterer1.setCatererName("Harshad Caterer");
 		//caterer1.setCatererDetails("Nitya");
 
 		service.addCaterer(caterer);
@@ -256,7 +259,7 @@ public class Test
 
 		Caterer caterer = new Caterer();
 		caterer.setCatererId(1);
-		caterer.setCatererName("Royal Kings");
+		caterer.setCatererName("BHushan Kings");
 		//caterer.setCatererDetails("Royal Kings");
 
 		//service.updateCaterer(caterer.getCatererId(), caterer.getCatererName(), caterer.getCatererDetails());
@@ -464,9 +467,9 @@ public class Test
 
 	public static void testingOrderTable() throws Exception
 	{
-		testCreateOrder();
-		
-		testCancelOrder();
+		//testCreateOrder();
+		testUpdateOrder();
+//		testCancelOrder();
 	}
 	
 	public static void testCreateOrder() throws Exception
@@ -520,8 +523,15 @@ public class Test
 	public static void testCancelOrder() throws Exception
 	{
 		OrderService service = new OrderServiceImpl();
-		service.cancelOrder(2, "Item not available");
+		service.cancelOrder(2,4, "Item not available");
 	}
+	
+	
+	public static void testUpdateOrder() throws Exception{
+		OrderService orderservice = new OrderServiceImpl();
+		orderservice.updateOrderStatus(0,OrderStatus.CANCELLED,"Very Very nice");		 
+	}
+	
 	
 	/*public static void  testCreateOrder()
 	{

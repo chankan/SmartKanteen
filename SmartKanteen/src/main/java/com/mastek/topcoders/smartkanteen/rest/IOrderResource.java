@@ -12,7 +12,9 @@ public interface IOrderResource
 	OrderMaster updateOrderStatus(String userSession, Integer orderId, OrderStatus orderStatus, String remarks)
 			throws Exception;
 
-	OrderMaster cancelOrder(String userSession, Integer orderId, String remarks) throws Exception;
+	OrderMaster cancelOrder(String userSession, Integer orderId, Integer userId, String remarks) throws Exception;
+	
+	OrderMaster getOrderById(String userSession, Integer orderId) throws Exception;
 
 	List<OrderMaster> getOrdersByCaterer(String userSession, Integer catererId) throws Exception;
 

@@ -23,10 +23,10 @@ public class OrderServiceImpl implements OrderService
 	}
 
 	@Override
-	public OrderMaster cancelOrder(Integer orderId, String remarks) throws Exception
+	public OrderMaster cancelOrder(Integer orderId,Integer userId,  String remarks) throws Exception
 	{
 		OrderDAO dao = new OrderDAO();
-		return dao.cancelOrder(orderId, remarks);
+		return dao.cancelOrder(orderId,userId,remarks);
 	}
 
 	@Override
@@ -42,18 +42,27 @@ public class OrderServiceImpl implements OrderService
 		OrderDAO dao = new OrderDAO();
 		return dao.getOrderByUser(userId);
 	}
-	
+
 	@Override
 	public List<OrderMaster> getOrdersByUserByCaterer(Integer userId, Integer catererId) throws Exception
 	{
 		OrderDAO dao = new OrderDAO();
 		return dao.getOrdersByUserByCaterer(userId, catererId);
 	}
-	
+
 	@Override
 	public List<OrderMaster> getOrders() throws Exception
 	{
 		OrderDAO dao = new OrderDAO();
 		return dao.getOrders();
 	}
+	
+	@Override
+	public OrderMaster getOrdersById(Integer orderId) throws Exception
+	{
+		OrderDAO dao = new OrderDAO();
+		return dao.getOrderById(orderId);
+	}
+
+
 }

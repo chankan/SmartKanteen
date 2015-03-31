@@ -8,11 +8,13 @@ import com.mastek.topcoders.smartkanteen.common.util.OrderStatus;
 public interface OrderService
 {
 	OrderMaster createOrder(OrderMaster order) throws Exception;
-
+	
 	OrderMaster updateOrderStatus(Integer orderId, OrderStatus orderStatus, String remarks) throws Exception;
 
-	OrderMaster cancelOrder(Integer orderId, String remarks) throws Exception;
+	OrderMaster cancelOrder(Integer orderId,Integer userId, String remarks) throws Exception;
 
+	OrderMaster getOrdersById(Integer orderId) throws Exception;
+	
 	List<OrderMaster> getOrdersByCaterer(Integer catererId) throws Exception;
 
 	List<OrderMaster> getOrdersByUser(Integer userId) throws Exception;
@@ -21,3 +23,4 @@ public interface OrderService
 	
 	List<OrderMaster> getOrders() throws Exception;
 }
+
