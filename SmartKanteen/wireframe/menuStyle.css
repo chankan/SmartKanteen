@@ -1,0 +1,38 @@
+body{
+				background:url(sweets.jpg) no-repeat center center fixed;
+					-webkit-background-size: cover;
+					-moz-background-size: cover;
+					-o-background-size: cover;
+					background-size: cover;
+			}
+		.container{
+					height:100%; 
+					width:100%;
+				}
+		.panel{
+					height:100px;
+					width:250px;
+					background:url(bg3.jpg) no-repeat center center fixed;
+					-webkit-background-size: cover;
+					-moz-background-size: cover;
+					-o-background-size: cover;
+					background-size: cover;
+			      }
+		.row-col{  
+					padding-top: 100px;
+					padding-left: 50px;
+					}
+		.row-select{
+					padding-left: 80px;
+					padding-top: 50px;
+					padding-bottom:50px;
+						
+					}
+		select{
+			width: 250px;
+			height: 30px;
+			
+			}	
+		.input-group{
+						width:250px;
+					}

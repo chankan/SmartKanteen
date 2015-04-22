@@ -1,0 +1,30 @@
+body{
+					background:url(sweets.jpg) no-repeat center center fixed;
+					-webkit-background-size: cover;
+					-moz-background-size: cover;
+					-o-background-size: cover;
+					background-size: cover;
+				}
+		.container{
+					padding-top:150px;	
+					}
+		.input-group{
+						width: 300px;
+						
+					}
+		form{
+			padding-left: 400px;
+			}	
+		span{
+			color:beige;
+			font-family: cursive;
+			font-size:large;
+			
+		}
+		.input-group-addon{
+							  width: 100px;
+						 }
+		h3{
+			padding-left: 100px;
+			color: antiquewhite;
+		}

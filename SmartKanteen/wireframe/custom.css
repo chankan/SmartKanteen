@@ -1,0 +1,54 @@
+.navigation{
+					font-size:16px;				
+					padding:20px	
+		}
+		.container{
+						 
+						 width: 100%;
+						
+				}
+
+			body{
+					background:url(sweets.jpg) no-repeat center center fixed;
+					-webkit-background-size: cover;
+					-moz-background-size: cover;
+					-o-background-size: cover;
+					background-size: cover;
+				}
+		.row-centered{
+						height:80px;
+						background-color:#002952;
+					}	
+		.navbar-brand{
+					height:100%; 
+					width:100px; 
+					padding:0px;
+					padding-top: 15px;
+				}
+		.breakfast-row{
+						padding-top: 250px;
+						margin-left: 0px;
+						margin-right: 0px;
+						  padding-left: 80px;
+						  
+					}	
+		.span1{
+			color:beige;
+			font-family: cursive;
+			font-size:large;
+			
+		}
+		.info{
+			padding-right:10px;
+			color: beige;
+			font-family: -webkit-body;
+		}	
+		
+		.btn-order{
+				padding-left:0px;
+				padding-right:0px;
+			}
+		.img-responsive{
+						height:150px; 
+						width:200px;
+						}

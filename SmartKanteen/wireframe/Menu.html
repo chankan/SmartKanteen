@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+      <title>SmartKanteen</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Bootstrap -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+	  <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+	  <link href="css/font-awesome.min.css" rel="stylesheet">
+	  <script src="js/angular-strap.min.js"></script>
+      <script src="js/angular-sanitize.min.js"></script>
+	  <script src="js/angular-strap.tpl.min.js"></script>
+	 <link rel="shortcut icon" href="favicon.ico"/>
+	 <link rel="stylesheet" type="text/css" href="menuStyle.css">
+   </head>
+   
+   <body>
+   <!--starts Container  -->
+   <div class="container">
+   
+ <!--RoW 1 starts -->
+  <div class="row row-select">
+  <!-- Start DropDown column -->
+  <div class="col-lg-6 select">
+	<!-- Starts DropDown Menu -->
+		<select name="menu">
+		<option value="--Select--">Select Menu</option>
+		<option value="Breakfast">Breakfast</option>
+		<option value="Lunch">Lunch</option>
+		<option value="Veg">Veg</option>
+		<option value="NonVeg">Non Veg</option>
+		<option value="Snacks">Snacks</option>
+		<option value="Soups">Soups</option>
+		</select>
+		<!-- End DropDown Menu -->
+	</div>	
+	 <!-- End DropDown column -->
+		
+	 <!-- Start Datepicker column -->
+	<div class="col-lg-6">
+	<!-- Start Datepicker -->
+	            <p class="input-group">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+	<!-- End Datepicker -->	
+  </div>
+  <!-- End Datepicker column -->
+  </div>
+  <!--RoW 1 Ends -->
+ <!--RoW 2 starts -->
+   <div class="row row-col">
+    <div class="col-lg-3">
+		<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+	<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+		<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+	<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	
+	
+   </div>
+   <!--RoW 2 ends -->
+   
+  <!--RoW 3 starts -->
+   <div class="row row-col">
+    <div class="col-lg-3">
+		<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+	<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+		<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+	<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	
+	
+   </div>
+   <!--RoW 3 ends -->
+   
+    <!--RoW 4 starts -->
+   <div class="row row-col">
+    <div class="col-lg-3">
+		<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+	<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+		<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	<div class="col-lg-3">
+	<!-- Start of panel-->
+   <div class="panel panel-default">
+  <div class="panel-body">
+    Poha
+	<span class="pull-right"><i class="icon fa fa-inr"></i> 15</span>
+  </div>
+  <div class="panel-footer">
+  <i class="icon fa fa-clock-o"></i>:10 mins
+  <span class="pull-right"><button type="submit" class="btn btn-default btn-order">Order<i class="fa fa-shopping-cart"></i></button></span>
+  </div>
+</div>
+<!--End of panel -->
+	</div>
+	
+	
+   </div>
+   <!--RoW 4 ends -->
+    
+</div>	
+<!--Ends Container  -->	
+  </body>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="js/jquery.js"></script>
+   <!-- Include all compiled plugins (below), or include individual files as needed -->
+   <script src="js/bootstrap.min.js"></script>
+   <script src="js/bootstrap-datepicker.js"></script>
+</html>  
