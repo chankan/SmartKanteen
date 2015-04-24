@@ -22,7 +22,9 @@
 		<mapping resource="hibernate/DailyMenu.hbm.xml"/>
 		<mapping resource="hibernate/DailyMenuMapping.hbm.xml"/>
 		<mapping resource="hibernate/MenuMaster.hbm.xml"/>
+		<mapping resource="hibernate/MenuRating.hbm.xml"/>
 		<mapping resource="hibernate/MenuTagsMapping.hbm.xml"/>
+		<mapping resource="hibernate/MenuUserRatingMapping.hbm.xml"/>
 		<mapping resource="hibernate/OrderDetails.hbm.xml"/>
 		<mapping resource="hibernate/OrderMaster.hbm.xml"/>
 		<mapping resource="hibernate/Tags.hbm.xml"/>
