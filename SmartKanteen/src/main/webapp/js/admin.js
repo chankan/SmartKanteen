@@ -85,6 +85,10 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 			var MenuService = $resource('rest/service/caterer/:catererId/menu/:menuDate',{catererId: '@catererId', menuDate:'@menuDate'});
 			return MenuService;
 		} ])
+		.factory('OrderService',[ '$resource', function($resource) {
+			var OrderService = $resource('rest/order/caterer/:catererId',{catererId: '@catererId'});
+			return OrderService;
+		} ])
 		.factory('TagService',[ '$resource', function($resource) {
 			var TagService = $resource('rest/service/tag');
 			return TagService;
@@ -213,11 +217,15 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	var cDate = new Date();
 	$scope.todaysDate= $filter('date')(cDate, "yyyyMMdd");
 	$scope.catererData = $resource('rest/service/caterer/').get();
-}).controller('CatererMenuCtrl', function($scope, Menus, CatererRes, $resource, $http, $routeParams, TagService, $select, $filter) {
+}).controller('CatererMenuCtrl', function($scope, Menus, CatererRes, $resource, $http, $routeParams, TagService, $select, $filter, OrderService, $rootScope) {
 	var catererId = $routeParams.catererId;
 	$scope.menuStyle=1;
 	$scope.selectedTags={tag:[]};
 	$scope.tags=TagService.get();
+	$scope.user=$rootScope.userSession.user;
+	
+	$scope.order={userId: $scope.user.userId , catererId: catererId, orderDate:$scope.dailyMenuDate, orderCreatedDate:new Date(), status: 0, remark:'', orderDetails:[] };
+	
 	CatererRes.get({catererId:catererId},function(response){if(response){$scope.caterer=response;}});
 	$scope.customFliter=function(element){
 		if($scope.selectedTags && $scope.selectedTags.tag && $scope.selectedTags.tag.length >=1){
@@ -239,6 +247,75 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		Menus.get({catererId:catererId,menuDate:$scope.dailyMenuDate}, function(response){if(response){ angular.forEach(response.menu, function(value,key){if(value.menuTagsMapping.tags){value.tag=value.menuTagsMapping.tags.split(',');if(value.tag.indexOf('1')>=0){value.tclass="panel-success"}else if(value.tag.indexOf('2')>=0){value.tclass="panel-warning"}else{value.tclass="panel-primary"} }else{value.tag=[];}; }); $scope.menudata=response.menu;}}, function(){$scope.menudata=[];});
 	};
 	$scope.get();
+	
+	//$scope.quantityFilter = {};
+	
+	$scope.orderMenu = function(cMenu){
+		/*var orderdata=  {
+							menuId: cMenu.itemId, 
+							quantity: cMenu.quantity,
+							item:cMenu,
+			};*/
+		//var orderArr = $scope.order.orderDetails;
+		
+		//var existFlag = false;
+		/*
+		if(orderArr.length > 0){
+			for(var i=0;i<orderArr.length;i++){
+				//console.log("menuId :" + orderArr[i].menuId + "quantity :" + orderArr[i].quantity);
+				if(orderdata.menuId == orderArr[i].menuId){
+					existFlag = true;
+					var oldorderdata = orderArr[i];
+					//var oldprice = (oldorderdata.quantity*oldorderdata.price);
+					oldorderdata.quantity = orderdata.quantity;
+					//$scope.totalPrice = ($scope.totalPrice- oldprice + (orderdata.quantity*orderdata.price));
+					break;
+				}
+			}
+			if(!existFlag){
+				//$scope.totalPrice = $scope.totalPrice + (orderdata.quantity*orderdata.price);
+				$scope.order.orderDetails.push(orderdata);
+			}
+				
+		}else{
+			
+			$scope.order.orderDetails.push(orderdata);
+		}*/
+		//$scope.totalPriceCal();
+
+	};
+	
+	$scope.quantityFilter = function(oMenu){
+		//$scope.totalPriceCal();
+		return oMenu.quantity > 0;
+	};
+	
+	$scope.totalPriceCal = function(){
+		console.log("*********");
+		var total = 0;
+		for(var i=0;i<$scope.order.orderDetails.length;i++){
+			total+=($scope.order.orderDetails[i].quantity * $scope.order.orderDetails[i].item.price)
+		}
+		console.log("Total :" + total);
+		$scope.totalPrice =total;
+	}
+
+	/* function remove item from order list*/
+	$scope.removeItem = function(cOrderItem) { 
+		  var index = $scope.order.orderDetails.indexOf(cOrderItem);
+		  console.log("quantity :" + cOrderItem.quantity);
+		  $scope.order.orderDetails.splice(index, 1);
+		  console.log("length :" + $scope.order.orderDetails.length);
+		  $scope.totalPriceCal();
+		};
+	
+	/*
+	$scope.placeOrder=function(){
+		OrderService.save({catererId:catererId},$scope.order, function(response){if(response){}, function(){});
+	};
+	*/
+	
+	
 	
 }).controller('ListCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/1/menu').get();

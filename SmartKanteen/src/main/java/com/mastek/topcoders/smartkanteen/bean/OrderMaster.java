@@ -13,6 +13,8 @@ public class OrderMaster implements java.io.Serializable
 	private Integer orderId;
 	private User user;
 	private Caterer caterer;
+	private Integer userId;
+	private Integer catererId;
 	private double totalCost;
 	private Date orderDate;
 	private Date orderCreatedDate;
@@ -132,6 +134,23 @@ public class OrderMaster implements java.io.Serializable
 		this.orderDetails = orderDetails;
 	}
 
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Integer getCatererId() {
+		return catererId;
+	}
+
+	public void setCatererId(Integer catererId) {
+		this.catererId = catererId;
+	}
+
+	
 	@Override
 	public String toString()
 	{

@@ -32,7 +32,7 @@ public class OrderResource implements IOrderResource
 		userService = new UserServiceImpl();
 	}
 
-	@Path("/user/{userId}/caterer/{catererId}")
+	@Path("/caterer/{catererId}")
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

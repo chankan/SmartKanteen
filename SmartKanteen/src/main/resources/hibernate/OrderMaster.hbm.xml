@@ -8,11 +8,17 @@
 			<column name="ORDER_ID" />
 			<generator class="identity" />
 		</id>
-		<many-to-one name="user" column="USER_ID"
+		<!-- <many-to-one name="user" column="USER_ID"
 			class="com.mastek.topcoders.smartkanteen.bean.User" lazy="false" />
 		<many-to-one name="caterer" column="CATERER_ID"
-			class="com.mastek.topcoders.smartkanteen.bean.Caterer" lazy="false" />
+			class="com.mastek.topcoders.smartkanteen.bean.Caterer" lazy="false" /> -->
 		
+		<property name="userId" type="java.lang.Integer">
+			<column name="USER_ID" not-null="true" />
+		</property>
+		<property name="catererId" type="java.lang.Integer">
+			<column name="CATERER_ID" not-null="true" />
+		</property>
 		<property name="totalCost" type="double">
 			<column name="TOTAL_COST" not-null="true" />
 		</property>

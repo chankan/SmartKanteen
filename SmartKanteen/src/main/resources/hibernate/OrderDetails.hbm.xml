@@ -8,12 +8,15 @@
 			<column name="ORDER_DETAILS_ID" />
 			<generator class="identity" />
 		</id>
-		<many-to-one name="menu" column="ITEM_ID"
-			class="com.mastek.topcoders.smartkanteen.bean.Menu" lazy="false" />
+		<!-- <many-to-one name="menu" column="ITEM_ID"
+			class="com.mastek.topcoders.smartkanteen.bean.Menu" lazy="false" /> -->
 		<many-to-one name="orderMaster" column="ORDER_ID"
 			class="com.mastek.topcoders.smartkanteen.bean.OrderMaster" lazy="false" />
 		<property name="quantity" type="java.lang.Integer">
 			<column name="QUANTITY" />
+		</property>
+		<property name="menuId" type="java.lang.Integer">
+			<column name="MENUID" />
 		</property>
 	</class>
 </hibernate-mapping>

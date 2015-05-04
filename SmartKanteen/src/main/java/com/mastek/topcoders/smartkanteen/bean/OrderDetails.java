@@ -10,6 +10,7 @@ public class OrderDetails implements java.io.Serializable
 
 	private Integer orderDetailsId;
 	private Menu menu;
+	private Integer menuId;
 	private OrderMaster orderMaster;
 	private Integer quantity;
 
@@ -53,6 +54,14 @@ public class OrderDetails implements java.io.Serializable
 		this.quantity = quantity;
 	}
 
+	public Integer getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
+	}
+	
 	@Override
 	public String toString()
 	{
