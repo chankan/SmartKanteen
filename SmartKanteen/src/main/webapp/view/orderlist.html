@@ -1,0 +1,98 @@
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h4 >
+				<strong>Order List</strong> 
+			</h4>
+		</div>
+		<div class="panel-body">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading " >
+					<form role="form">
+						<fieldset>
+							<div class="form-group col-md-3 col-xs-12">
+								<label>Order By Date:</label>
+								<div class="form-group has-success">
+									<input class="form-control" ng-model="dailyMenuDate" align="center" data-date-type="string" data-date-format="MMM dd, yyyy" data-model-date-format="yyyyMMdd" name="date" bs-datepicker type="text" ng-change="get()">
+								</div>
+							</div>
+							<div class="form-group col-md-3 col-xs-12" align="top">
+								<label>View As:</label><br />
+								<div class="btn-group" >
+									<button type="button" class="btn btn-default btn-lg" title="View Menu as Grid" ng-class="(menuStyle==1)?'active':''" ng-click="menuStyle=1;">
+										<i class="glyphicon glyphicon-th"></i>
+									</button>
+									<button type="button" class="btn btn-default btn-lg"  title="View Menu as List"  ng-class="(menuStyle==2)?'active':''" ng-click="menuStyle=2;">
+										<i class="glyphicon glyphicon-th-list"></i>
+									</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="panel-body" >
+					<div class="row">
+						<div ng-show="menuStyle==2">
+							<div class="container">
+								<div class="row">
+									<div class="col-lg-12 col-xs-12">
+										<div class="panel-heading">
+											<table class="table table-bordered">
+												<thead>
+													<tr class="bg-primary">
+														<th width="20%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>Order Date.</strong></h4></th>
+														<th width="25%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>Order No.</strong></h4></th>
+														<th width="25%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>No.Of Items</strong></h4></th>
+														<th width="20%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>Total Price Rs.</strong></h4></th>
+														<th width="10%"><h4 align="center"><span class="glyphicon glyphicon-th-list"></span><strong>Operations </strong></h4></th>
+													</tr>
+												</thead>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div ng-show="menuStyle==2">
+							<div class="row" class="bg-success">
+								<div class="col-lg-12 col-xs-12">
+									<div class="panel-heading">
+										<div class="bg-success">
+											<table class="table table-bordered">
+												<tr>
+													<td align="center"><strong>May 13,2015</strong></td>
+													<td align="center"><strong>101</strong></td>
+													<td align="center"><strong>3</strong></td>
+													<td align="center"><strong>87</strong></td>
+													<td align="center"><strong>View/Cancel</strong></td>
+												</tr>
+												<tr>
+													<td align="center"><strong>May 12,2015</strong></td>
+													<td align="center"><strong>102</strong></td>
+													<td align="center"><strong>2</strong></td>
+													<td align="center"><strong>32</strong></td>
+													<td align="center"><strong>View/Cancel</strong></td>
+												</tr>
+												<tr>
+													<td align="center"><strong>May 08,2015</strong></td>
+													<td align="center"><strong>118</strong></td>
+													<td align="center"><strong>5</strong></td>
+													<td align="center"><strong>232</strong></td>
+													<td align="center"><strong>View/Cancel</strong></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+		</div>
+	</div>	
+</div>
