@@ -3,17 +3,20 @@
  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
 
 <hibernate-mapping>
-	<class name="com.mastek.topcoders.smartkanteen.bean.MenuRating" table="MENU_RATING">
-		<id name="menuRatingId" type="java.lang.Integer">
-			<column name="MENU_RATING_ID" />
+	<class name="com.mastek.topcoders.smartkanteen.bean.MenuUserRatingMapping" table="MENU_USER_RATING_MAPPING">
+		<id name="menuUserRatingMappingId" type="java.lang.Integer">
+			<column name="MENU_USER_RATING_MAPPING_ID" />
 			<generator class="identity" />
 		</id>
-		<property name="itemId" type="java.lang.Integer" unique="true">
-			<column name="ITEM_ID" />
+		<property name="rating" type="java.lang.Integer">
+			<column name="RATING" />
 		</property>
-		<many-to-one name="menu" column="ITEM_ID" unique="true"
+		<many-to-one name="itemId" column="ITEM_ID" unique="true"
 			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.Menu"
-			not-null="true" />
-	</class>
+			not-null="true" cascade="all" />
+		<many-to-one name="userId" column="user_id" unique="true"
+			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.User"
+			not-null="true" cascade="all" />
+ 	</class>
 </hibernate-mapping>
 

@@ -8,12 +8,14 @@
 			<column name="MENU_RATING_ID" />
 			<generator class="identity" />
 		</id>
-		<property name="itemId" type="java.lang.Integer" unique="true">
-			<column name="ITEM_ID" />
+		<property name="countOfPeopleWhoHaveRated" type="java.lang.Integer" >
+			<column name="COUNT_OF_PEOPLE_WHO_HAVE_RATED" />
 		</property>
-		<many-to-one name="menu" column="ITEM_ID" unique="true"
+		<property name="currentAverageRating" type="java.lang.Integer" >
+			<column name="CURRENT_AVERAGE_RATING INT" />
+		</property>
+  		<many-to-one name="itemId" column="ITEM_ID" unique="true"
 			lazy="false" class="com.mastek.topcoders.smartkanteen.bean.Menu"
-			not-null="true" />
-	</class>
+			not-null="true" cascade="all"/>
+ 		</class>
 </hibernate-mapping>
-
