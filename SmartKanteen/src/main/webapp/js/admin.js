@@ -224,7 +224,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.tags=TagService.get();
 	$scope.user=$rootScope.userSession.user;
 	
-	$scope.order={userId: $scope.user.userId , catererId: catererId, orderDate:$scope.dailyMenuDate, orderCreatedDate:new Date(), status: 0, remark:'', orderDetails:[] };
+	$scope.order={userId: $scope.user.userId , catererId: catererId, orderDate:$scope.dailyMenuDate, orderCreatedDate:new Date(), status: 0, remark:'', totalCost:0, orderDetails:[] };
 	
 	CatererRes.get({catererId:catererId},function(response){if(response){$scope.caterer=response;}});
 	$scope.customFliter=function(element){
@@ -250,39 +250,31 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	
 	//$scope.quantityFilter = {};
 	
-	$scope.orderMenu = function(cMenu){
-		/*var orderdata=  {
-							menuId: cMenu.itemId, 
-							quantity: cMenu.quantity,
-							item:cMenu,
-			};*/
-		//var orderArr = $scope.order.orderDetails;
-		
-		//var existFlag = false;
-		/*
-		if(orderArr.length > 0){
-			for(var i=0;i<orderArr.length;i++){
-				//console.log("menuId :" + orderArr[i].menuId + "quantity :" + orderArr[i].quantity);
-				if(orderdata.menuId == orderArr[i].menuId){
-					existFlag = true;
-					var oldorderdata = orderArr[i];
-					//var oldprice = (oldorderdata.quantity*oldorderdata.price);
-					oldorderdata.quantity = orderdata.quantity;
-					//$scope.totalPrice = ($scope.totalPrice- oldprice + (orderdata.quantity*orderdata.price));
-					break;
-				}
-			}
-			if(!existFlag){
-				//$scope.totalPrice = $scope.totalPrice + (orderdata.quantity*orderdata.price);
+	$scope.orderMenu = function(){
+		$scope.order={userId: $scope.user.userId , catererId: catererId, orderDate:$scope.dailyMenuDate, orderCreatedDate:new Date(), status: 0, remark:'',totalCost:0,orderDetails:[] };
+		console.log("orderMenu called");
+		for(var i=0;i<$scope.menudata.length;i++){
+			if($scope.menudata[i].quantity && $scope.menudata[i].quantity >0 && $scope.menudata[i].price>0){
+				var menudata = $scope.menudata[i];
+				var orderdata=  {
+						menuId: menudata.itemId, 
+						quantity: menudata.quantity,
+						price:menudata.price
+					};
 				$scope.order.orderDetails.push(orderdata);
 			}
-				
-		}else{
-			
-			$scope.order.orderDetails.push(orderdata);
-		}*/
-		//$scope.totalPriceCal();
+		}
+		//$scope.dailyMenuDate =$filter('date')(new Date(), "yyyyMMdd");
+		//$scope.order.orderDate = $filter('date')($scope.dailyMenuDate,'medium');
+		$scope.order.orderDate =new Date();
+		console.log("orderDate :" +  $scope.order.orderDate);
+		//$scope.order.totalCost= $scope.totalPrice;
 
+		OrderService.save({catererId:catererId},$scope.order, function(response){$scope.errormessage=response.data});
+		
+		/* Get User Order Details */
+		$scope.userOrders = $resource('rest/service/order/user/4').get();
+		console.log($scope.userOrders);
 	};
 	
 	$scope.quantityFilter = function(oMenu){
@@ -291,22 +283,19 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	};
 	
 	$scope.totalPriceCal = function(){
-		console.log("*********");
 		var total = 0;
-		for(var i=0;i<$scope.order.orderDetails.length;i++){
-			total+=($scope.order.orderDetails[i].quantity * $scope.order.orderDetails[i].item.price)
+		for(var i=0;i<$scope.menudata.length;i++){
+			if($scope.menudata[i].quantity && $scope.menudata[i].quantity >0 && $scope.menudata[i].price>0)
+				total+=($scope.menudata[i].quantity * $scope.menudata[i].price)
 		}
-		console.log("Total :" + total);
 		$scope.totalPrice =total;
 	}
 
 	/* function remove item from order list*/
-	$scope.removeItem = function(cOrderItem) { 
-		  var index = $scope.order.orderDetails.indexOf(cOrderItem);
-		  console.log("quantity :" + cOrderItem.quantity);
-		  $scope.order.orderDetails.splice(index, 1);
-		  console.log("length :" + $scope.order.orderDetails.length);
+	$scope.removeItem = function(oMenu) { 
+		  oMenu.quantity='';
 		  $scope.totalPriceCal();
+		  $scope.menudata.$apply();
 		};
 	
 	/*
