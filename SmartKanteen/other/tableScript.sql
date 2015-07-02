@@ -93,7 +93,7 @@ CREATE TABLE  Order_Master
 CREATE TABLE  Order_Details
 (
 	order_details_id		INT	auto_increment	CONSTRAINT	ordered_details_pk	PRIMARY KEY,
-	order_id				INT,
+	order_map_id				INT,
 	item_id					INT,
 	quantity				INT,
 	CONSTRAINT	order_fk	FOREIGN KEY	(order_id)	REFERENCES	Order_Master(order_id),

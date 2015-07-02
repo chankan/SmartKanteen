@@ -10,8 +10,9 @@
 		</id>
 		<!-- <many-to-one name="menu" column="ITEM_ID"
 			class="com.mastek.topcoders.smartkanteen.bean.Menu" lazy="false" /> -->
-		<many-to-one name="orderMaster" column="ORDER_ID"
+		<!--<many-to-one name="orderMaster" column="ORDER_ID"
 			class="com.mastek.topcoders.smartkanteen.bean.OrderMaster" lazy="false" />
+		 -->
 		<property name="quantity" type="java.lang.Integer">
 			<column name="QUANTITY" />
 		</property>

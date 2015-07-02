@@ -3,23 +3,23 @@
 		<div class="col-lg-12">
 			<div class="panel panel-warning">
 				<div class="panel-heading">
-					<i class="larg glyphicon glyphicon-glass" aria-hidden="true"></i>&nbsp;{{caterer.catererName}}
+					<h1><i class="larg glyphicon glyphicon-glass" aria-hidden="true"></i>&nbsp;{{caterer.catererName}}'s Menu list</h1>
 				</div>
 				<div class="panel-footer"></div>
 			</div>
 		</div>
 	</div>
 	<!-- Order Item Details Start -->
-	<div class="row">
+	<div class="row" ng-show="user">
 		<div class="col-lg-12">
 			<div class="panel panel-default">
   				<div class="panel-heading">
     				<h3 class="panel-title">Order Item Details</h3>
   				</div>
-  				{{order}}
   				<div class="panel-body">
-  					<div >
-  						<ul class="nav nav-pills" role="tablist" >
+  					<div class="row">
+  					<div class="col-lg-9 ">
+  						<ul class="nav nav-pills" >
   							<li role="presentation" class="active" ng-repeat="oMenu in menudata | filter:quantityFilter">
   								<a>
   									{{oMenu.itemName}} <span class="badge">{{oMenu.quantity}}</span>
@@ -28,15 +28,26 @@
   							</li>
   						</ul>
   					</div>
-  				</div>
-  				<div class="panel-footer">
-  					<span class="pull-right">Total Rs.:{{totalPrice}}</span>
-  					<div class="input-group">
-  						<input type="text" class="form-control" placeholder="Hr." ng-model="hour">
-  						<input type="text" class="form-control" placeholder="Min." ng-model="minute">
-  						<button type="button" class="btn btn-default" ng-click="orderMenu();">Place Order</button>			
+  					<div class="col-lg-3 well">
+	  					<span >Total Rs.:{{totalPrice}}</span>
+	  					<div class="input-group">
+	  						<div class="input-group-addon">Order Time:</div>
+	  						<input type="text" class="form-control" placeholder="Hr." ng-model="hour">
+	  						<div class="input-group-addon">-</div>
+	  						<input type="text" class="form-control" placeholder="Min." ng-model="minute">
+	  					</div>
+	  						<button type="button" class="btn btn-default" ng-click="orderMenu();">Place Order</button>			
+  					</div>
   					</div>
   				</div>
+<!--   				<div class="panel-footer"> -->
+<!--   					<span class="pull-right">Total Rs.:{{totalPrice}}</span> -->
+<!--   					<div class="input-group"> -->
+<!--   						<input type="text" class="form-control" placeholder="Hr." ng-model="hour"> -->
+<!--   						<input type="text" class="form-control" placeholder="Min." ng-model="minute"> -->
+<!--   						<button type="button" class="btn btn-default" ng-click="orderMenu();">Place Order</button>			 -->
+<!--   					</div> -->
+<!--   				</div> -->
   				
   			</div>
 		</div>

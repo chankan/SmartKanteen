@@ -53,14 +53,14 @@ function getMenuList(role){
 	var userMenu = [ 
 	                {name : "Home", url : "#/", icon: "glyphicon-home"	}, 
 	                {name : "Today's Menu",url : "#/todaymenus", icon: "glyphicon-fire"},
-//	                {name : "My Order",url : "#/new"},
+	                {name : "Order", url : "#/order"	},
 	                ];
 
 	var adminMenu = [ 
 	                 {name : "Home", url : "#/", icon: "glyphicon-home"},
 	                 {name : "Master Menu",url : "#/admin/menu"},
 	                 {name : "Today's Menu",url : "#/admin/dailymenu"},
-//	                 {name : "Order", url : "#/new"	},
+//	                 {name : "Order", url : "#/order"	},
 	                 ];
 		
 	var superAdminMenu = [ 
@@ -180,6 +180,9 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	}).when('/register', {//login Menu
 		controller : 'RegistrationCtrl',
 		templateUrl : 'view/adduser.html'
+	}).when('/order', {//login Menu
+		controller : 'OrderCtrl',
+		templateUrl : 'view/orderlist.html'
 	}).otherwise({
 		redirectTo : '/'
 	});
@@ -222,9 +225,15 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.menuStyle=1;
 	$scope.selectedTags={tag:[]};
 	$scope.tags=TagService.get();
-	$scope.user=$rootScope.userSession.user;
+	$scope.user=null;
+	$scope.order=null;
+	if($rootScope.userSession && $rootScope.userSession.user){
+		$scope.user=$rootScope.userSession.user;
+//		$scope.order={userId: $scope.user.userId , catererId: catererId, orderDate:$scope.dailyMenuDate, orderCreatedDate:new Date(), status: 0, remark:'', totalCost:0, orderDetails:[] };
+	}else{
+		$scope.user={userId:1};
+	}
 	
-	$scope.order={userId: $scope.user.userId , catererId: catererId, orderDate:$scope.dailyMenuDate, orderCreatedDate:new Date(), status: 0, remark:'', totalCost:0, orderDetails:[] };
 	
 	CatererRes.get({catererId:catererId},function(response){if(response){$scope.caterer=response;}});
 	$scope.customFliter=function(element){
@@ -249,6 +258,9 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.get();
 	
 	//$scope.quantityFilter = {};
+	if(!$scope.user){
+		return;
+	}
 	
 	$scope.orderMenu = function(){
 		$scope.order={userId: $scope.user.userId , catererId: catererId, orderDate:$scope.dailyMenuDate, orderCreatedDate:new Date(), status: 0, remark:'',totalCost:0,orderDetails:[] };
@@ -268,12 +280,12 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 		//$scope.order.orderDate = $filter('date')($scope.dailyMenuDate,'medium');
 		$scope.order.orderDate =new Date();
 		console.log("orderDate :" +  $scope.order.orderDate);
-		//$scope.order.totalCost= $scope.totalPrice;
+		$scope.order.totalCost= $scope.totalPrice;
 
 		OrderService.save({catererId:catererId},$scope.order, function(response){$scope.errormessage=response.data});
 		
 		/* Get User Order Details */
-		$scope.userOrders = $resource('rest/service/order/user/4').get();
+//		$scope.userOrders = $resource('rest/service/order/user/4').get();
 		console.log($scope.userOrders);
 	};
 	
@@ -295,7 +307,7 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	$scope.removeItem = function(oMenu) { 
 		  oMenu.quantity='';
 		  $scope.totalPriceCal();
-		  $scope.menudata.$apply();
+//		  $scope.menudata.$apply();
 		};
 	
 	/*
@@ -305,7 +317,19 @@ angular.module('canteen', [  'ngSanitize', 'ngRoute', 'ngResource','mgcrea.ngStr
 	*/
 	
 	
+}).controller('OrderCtrl', function($scope, Menus, CatererRes, $resource, $http, $routeParams, TagService, $select, $filter, OrderService, $rootScope) {
+	//$scope.user=$rootScope.userSession.user;
+	// $resource('rest/order/user/'+$scope.user.userId).get({}, function(response){$scope.userOrders =response.orderMaster});
+	$scope.menuStyle=1;
+	/* Get User Order Details */
+	//$scope.userOrders = $resource('rest/order/user/4').get();
 	
+	$scope.user=$rootScope.userSession.user;
+	var userId = $scope.user.userId;
+	console.log("userId :" + userId);
+	$scope.userOrders = $resource('rest/order/user/:userId',{userId:userId }).get();
+
+
 }).controller('ListCtrl', function($scope, Menus, $resource, $http) {
 	$scope.menudata = $resource('rest/service/caterer/1/menu').get();
 	// $scope.menus =[{itemID: 1, itemName: "Thali", description: "Jain

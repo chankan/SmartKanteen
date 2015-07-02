@@ -35,6 +35,64 @@
 					</form>
 				</div>
 				<div class="panel-body" >
+				
+					<div ng-show="menuStyle==1">
+						<div ng-repeat="userOrder in userOrders.orderMaster">
+							<div class="col-lg-12 col-md-12">
+								<div class="panel panel-success">
+									<div class="panel-heading" >
+										<div class="row">
+											<div class="col-xs-3">
+												<div class="">Order ID: <strong>{{userOrder.orderId}}</strong></div>
+											</div>
+											<div class="col-xs-9 text-right">
+												<div class=""><strong>{{userOrder.totalCost}}</strong></div>
+											</div>
+										</div>
+									</div>
+										<div class="panel-footer">
+											<div class="row">
+												<div class="col-lg-3 col-md-3" ng-repeat="orderDetails in userOrder.orderDetails">
+													<div class="panel">
+													<div class="panel-body">
+														<div class="col-xs-7 text-left">
+															<div class="">
+																<strong>Menu Id:{{orderDetails.menuId}}</strong>
+															</div>
+														</div>
+														<div class="col-xs-5 text-right">
+															<div class="">
+																<strong>Quantity:{{orderDetails.quantity}}</strong>
+															</div>
+														</div>
+													</div>
+													</div>
+												</div>
+											</div>
+      									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+						<div ng-show="menuStyle==2">
+							<div class="row" class="bg-success">
+								<div class="col-lg-12 col-xs-12">
+									<div class="panel-heading">
+										<div class="bg-success">
+											<table class="table table-bordered">
+												<tr>
+													<td width="33%" align="center"><strong>{{menu.itemName}}</strong></td>
+													<td width="33%" align="center"><strong>{{menu.description}}</strong></td>
+													<td width="33%" align="center"><strong>Rs:{{menu.price}}</strong></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				
 					<div class="row">
 						<div ng-show="menuStyle==2">
 							<div class="container">
@@ -64,8 +122,8 @@
 									<div class="panel-heading">
 										<div class="bg-success">
 											<table class="table table-bordered">
-												<tr>
-													<td align="center"><strong>May 13,2015</strong></td>
+												<tr ng-repeat="userOrder in userOrders">
+													<td align="center"><strong>{{userOrder.catererId}}</strong></td>
 													<td align="center"><strong>101</strong></td>
 													<td align="center"><strong>3</strong></td>
 													<td align="center"><strong>87</strong></td>

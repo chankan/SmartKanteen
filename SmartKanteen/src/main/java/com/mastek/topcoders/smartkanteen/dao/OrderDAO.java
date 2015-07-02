@@ -68,7 +68,7 @@ public class OrderDAO
 		return order;
 	}
 	
-	public OrderMaster cancelOrder(Integer orderId, Integer userId, String remarks) throws ObjectNotFoundException, Exception
+	public OrderMaster cancelOrder(Integer orderId, Integer userId, String remarks) throws  Exception
 	{
 		Session session = DatabaseUtil.getSession();
 		Transaction tx = null;
@@ -100,7 +100,8 @@ public class OrderDAO
 		}
 		else
 		{
-			throw new ObjectNotFoundException(order, "Order or User not found");
+//			throw new ObjectNotFoundException(order, "Order or User not found");
+			throw new Exception( "Order or User not found");
 		}
 
 		DatabaseUtil.closeSession(session);
@@ -154,7 +155,7 @@ public class OrderDAO
 		try
 		{
 			Criteria criteria = session.createCriteria(OrderMaster.class);
-			criteria.add(Restrictions.eq("user_id", userId));
+			criteria.add(Restrictions.eq("userId", userId));
 
 			orderMasterList = criteria.list();
 		}

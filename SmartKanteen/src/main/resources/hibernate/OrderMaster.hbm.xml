@@ -19,7 +19,7 @@
 		<property name="catererId" type="java.lang.Integer">
 			<column name="CATERER_ID" not-null="true" />
 		</property>
-		<property name="totalCost" type="double">
+		<property name="totalCost" type="java.lang.Double">
 			<column name="TOTAL_COST" not-null="true" />
 		</property>
 		<property name="orderDate" type="timestamp">
@@ -34,8 +34,8 @@
 		<property name="remark" type="string">
 			<column name="REMARK" length="200" />
 		</property>
-		<set name="orderDetails" cascade="all" lazy="false" inverse="true">
-			<key column="ORDER_ID" />
+		<set name="orderDetails" cascade="all" lazy="false">
+			<key column="ORDER_MAP_ID" />
 			<one-to-many class="com.mastek.topcoders.smartkanteen.bean.OrderDetails" />
 		</set>
 	</class>
